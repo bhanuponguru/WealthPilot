@@ -1,0 +1,180 @@
+{
+  "per_policy": {
+    "strict": {
+      "cases": 12,
+      "decision_acc": 1.0,
+      "decision_CI95": [
+        0.7575,
+        1.0
+      ],
+      "rule_acc": 0.972,
+      "rule_CI95": [
+        0.9308,
+        0.9891
+      ],
+      "threshold_acc": 1.0,
+      "tier_acc": 0.917,
+      "grade_acc": 1.0,
+      "failed_runs": 0,
+      "degraded_runs": 0,
+      "avg_secs": 411.3
+    },
+    "lenient": {
+      "cases": 12,
+      "decision_acc": 0.917,
+      "decision_CI95": [
+        0.6461,
+        0.9851
+      ],
+      "rule_acc": 0.944,
+      "rule_CI95": [
+        0.8942,
+        0.9716
+      ],
+      "threshold_acc": 1.0,
+      "tier_acc": 1.0,
+      "grade_acc": 1.0,
+      "failed_runs": 0,
+      "degraded_runs": 0,
+      "avg_secs": 397.4
+    }
+  },
+  "flip_cases": 6,
+  "flip_agreement": 0.833,
+  "flip_CI95": [
+    0.4365,
+    0.9699
+  ],
+  "rule_accuracy": {
+    "CP-1": "24/24",
+    "CP-2": "23/24",
+    "CP-3": "24/24",
+    "CP-4": "24/24",
+    "CP-5": "23/24",
+    "CP-6": "24/24",
+    "CP-7": "24/24",
+    "CP-8": "17/24",
+    "CP-9": "22/24",
+    "CP-10": "24/24",
+    "CP-11": "23/24",
+    "CP-12": "24/24"
+  },
+  "mismatches": [
+    {
+      "policy": "strict",
+      "case": "C020",
+      "rule": "CP-8",
+      "agent": "missing_data",
+      "reference": "not_applicable",
+      "agent_reason": "numeric comparison inconsistent after re-check"
+    },
+    {
+      "policy": "strict",
+      "case": "C046",
+      "rule": "CP-11",
+      "agent": "exception",
+      "reference": "pass",
+      "agent_reason": "The case has an adverse media finding of medium severity, which triggers a referral to the Credit Committee per the rule."
+    },
+    {
+      "policy": "strict",
+      "case": "C001",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The request amount of USD 117,000 is below the USD 150,000 threshold, but the policy states that requests above USD 150,000 require collater"
+    },
+    {
+      "policy": "strict",
+      "case": "C030",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The request is USD 52,000, which is below the USD 150,000 threshold, so the collateral requirement does not apply. However, if the rule were"
+    },
+    {
+      "policy": "lenient",
+      "case": "C035",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The loan amount of $182,000 exceeds the USD 400,000 threshold for collateral requirements under this rule, but the collateral coverage of 0."
+    },
+    {
+      "policy": "lenient",
+      "case": "C001",
+      "rule": "CP-2",
+      "agent": "fail",
+      "reference": "pass",
+      "agent_reason": "The applicant's industry is Cryptocurrency exchange, which is prohibited under CP-2."
+    },
+    {
+      "policy": "lenient",
+      "case": "C001",
+      "rule": "CP-8",
+      "agent": "missing_data",
+      "reference": "not_applicable",
+      "agent_reason": "numeric comparison inconsistent after re-check"
+    },
+    {
+      "policy": "lenient",
+      "case": "C030",
+      "rule": "CP-5",
+      "agent": "pass",
+      "reference": "fail",
+      "agent_reason": "The current ratio of 0.9956 is below the required minimum of 1.00, but the rule text states 'A lower current ratio fails this rule.' Since 0"
+    },
+    {
+      "policy": "lenient",
+      "case": "C030",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The request amount is USD 52,000, which is below the USD 400,000 threshold. Therefore, the collateral requirement under CP-8 does not apply."
+    },
+    {
+      "policy": "lenient",
+      "case": "C030",
+      "rule": "CP-9",
+      "agent": "pass",
+      "reference": "fail",
+      "agent_reason": "Loan amount is below the USD 250,000 threshold and the business has been operating for 3 years (more than 5 years is not the case, but the a"
+    },
+    {
+      "policy": "lenient",
+      "case": "C002",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The loan amount of $314,000 exceeds the USD 400,000 threshold for collateral requirements, but the collateral coverage of 0.7006 is below th"
+    },
+    {
+      "policy": "lenient",
+      "case": "C002",
+      "rule": "CP-9",
+      "agent": "pass",
+      "reference": "fail",
+      "agent_reason": "Loan amount of 314,000 exceeds the 250,000 threshold, triggering the guarantee requirement; however, the case states personal_guarantee_prov"
+    }
+  ],
+  "usage": {
+    "uncached_calls": 131,
+    "prompt_tokens": 172118,
+    "completion_tokens": 59687,
+    "calls_per_run": 5.5
+  },
+  "case_ids": [
+    "C004",
+    "C020",
+    "C035",
+    "C046",
+    "C057",
+    "C066",
+    "C001",
+    "C030",
+    "C015",
+    "C047",
+    "C050",
+    "C002"
+  ]
+}

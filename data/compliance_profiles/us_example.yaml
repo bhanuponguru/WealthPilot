@@ -1,0 +1,38 @@
+# EXAMPLE compliance profile (US ECOA / Regulation B style). The system is policy-agnostic: swap this file for another
+# jurisdiction's profile. It is configuration, not the subject of evaluation.
+name: us_example
+prohibited_bases: [race, color, religion, national origin, sex, marital status, age, receipt of public assistance]
+prohibited_terms:
+  - race
+  - racial
+  - ethnicity
+  - ethnic
+  - religion
+  - religious
+  - national origin
+  - gender
+  - sex
+  - female
+  - male
+  - woman
+  - women
+  - man
+  - she
+  - he
+  - her
+  - his
+  - hers
+  - husband
+  - wife
+  - mother
+  - father
+  - marital status
+  - married
+  - single
+  - pregnant
+  - immigrant
+  - minority
+adverse_action:
+  required_when: decline
+  must_state: specific principal reasons
+  max_reasons: 4

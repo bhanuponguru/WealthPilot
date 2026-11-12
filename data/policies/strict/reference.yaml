@@ -1,0 +1,21 @@
+# HIDDEN ground truth for the reference engine. Never exposed to agents or MCP tools.
+policy_id: strict
+min_years_in_business: 3
+prohibited_industries: [cannabis, firearms, gambling, adult_entertainment, crypto_exchange]
+min_dscr: 1.30
+dscr_exception_floor: null        # no exceptions
+dscr_exception_min_collateral: null
+max_debt_to_equity: 3.0
+min_current_ratio: 1.20
+max_loan_to_revenue: 0.30
+min_statement_years: 3
+collateral_threshold_amount: 150000
+min_collateral_coverage: 1.00
+guarantee_always: true
+guarantee_amount_trigger: null
+guarantee_years_trigger: null
+adverse_media_exception_levels: [medium, high]
+worst_acceptable_grade: C
+authority:
+  analyst_max: 75000
+  officer_max: 250000

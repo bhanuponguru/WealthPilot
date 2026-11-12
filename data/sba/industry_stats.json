@@ -1,0 +1,140 @@
+{
+ "11": {
+  "naics2": "11",
+  "default_rate": 0.0174,
+  "n": 7815,
+  "portfolio_rate": 0.0392
+ },
+ "21": {
+  "naics2": "21",
+  "default_rate": 0.0306,
+  "n": 1373,
+  "portfolio_rate": 0.0392
+ },
+ "22": {
+  "naics2": "22",
+  "default_rate": 0.0249,
+  "n": 402,
+  "portfolio_rate": 0.0392
+ },
+ "23": {
+  "naics2": "23",
+  "default_rate": 0.044,
+  "n": 50172,
+  "portfolio_rate": 0.0392
+ },
+ "31": {
+  "naics2": "31",
+  "default_rate": 0.0329,
+  "n": 10024,
+  "portfolio_rate": 0.0392
+ },
+ "32": {
+  "naics2": "32",
+  "default_rate": 0.0298,
+  "n": 8883,
+  "portfolio_rate": 0.0392
+ },
+ "33": {
+  "naics2": "33",
+  "default_rate": 0.0286,
+  "n": 19054,
+  "portfolio_rate": 0.0392
+ },
+ "42": {
+  "naics2": "42",
+  "default_rate": 0.0472,
+  "n": 25211,
+  "portfolio_rate": 0.0392
+ },
+ "44": {
+  "naics2": "44",
+  "default_rate": 0.0409,
+  "n": 47670,
+  "portfolio_rate": 0.0392
+ },
+ "45": {
+  "naics2": "45",
+  "default_rate": 0.0558,
+  "n": 17989,
+  "portfolio_rate": 0.0392
+ },
+ "48": {
+  "naics2": "48",
+  "default_rate": 0.0568,
+  "n": 23589,
+  "portfolio_rate": 0.0392
+ },
+ "49": {
+  "naics2": "49",
+  "default_rate": 0.0442,
+  "n": 1697,
+  "portfolio_rate": 0.0392
+ },
+ "51": {
+  "naics2": "51",
+  "default_rate": 0.0387,
+  "n": 5655,
+  "portfolio_rate": 0.0392
+ },
+ "52": {
+  "naics2": "52",
+  "default_rate": 0.0246,
+  "n": 8161,
+  "portfolio_rate": 0.0392
+ },
+ "53": {
+  "naics2": "53",
+  "default_rate": 0.0259,
+  "n": 10446,
+  "portfolio_rate": 0.0392
+ },
+ "54": {
+  "naics2": "54",
+  "default_rate": 0.0365,
+  "n": 47322,
+  "portfolio_rate": 0.0392
+ },
+ "55": {
+  "naics2": "55",
+  "default_rate": 0.0064,
+  "n": 312,
+  "portfolio_rate": 0.0392
+ },
+ "56": {
+  "naics2": "56",
+  "default_rate": 0.0417,
+  "n": 22159,
+  "portfolio_rate": 0.0392
+ },
+ "61": {
+  "naics2": "61",
+  "default_rate": 0.0449,
+  "n": 6684,
+  "portfolio_rate": 0.0392
+ },
+ "62": {
+  "naics2": "62",
+  "default_rate": 0.0229,
+  "n": 44706,
+  "portfolio_rate": 0.0392
+ },
+ "71": {
+  "naics2": "71",
+  "default_rate": 0.0473,
+  "n": 14045,
+  "portfolio_rate": 0.0392
+ },
+ "72": {
+  "naics2": "72",
+  "default_rate": 0.0417,
+  "n": 62648,
+  "portfolio_rate": 0.0392
+ },
+ "81": {
+  "naics2": "81",
+  "default_rate": 0.0401,
+  "n": 42853,
+  "portfolio_rate": 0.0392
+ }
+}

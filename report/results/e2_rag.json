@@ -1,0 +1,124 @@
+{
+  "arms": {
+    "structure/bm25": {
+      "arm": "structure/bm25",
+      "n_queries": 104,
+      "recall@1": 0.798,
+      "recall@3": 0.856,
+      "MRR": 0.822,
+      "MRR_95CI": [
+        0.75,
+        0.8942
+      ],
+      "rerank_degraded": 0
+    },
+    "structure/dense": {
+      "arm": "structure/dense",
+      "n_queries": 104,
+      "recall@1": 0.74,
+      "recall@3": 0.904,
+      "MRR": 0.821,
+      "MRR_95CI": [
+        0.758,
+        0.8846
+      ],
+      "rerank_degraded": 0
+    },
+    "structure/hybrid": {
+      "arm": "structure/hybrid",
+      "n_queries": 104,
+      "recall@1": 0.769,
+      "recall@3": 0.885,
+      "MRR": 0.819,
+      "MRR_95CI": [
+        0.7516,
+        0.883
+      ],
+      "rerank_degraded": 0
+    },
+    "structure/bm25+rerank": {
+      "arm": "structure/bm25+rerank",
+      "n_queries": 104,
+      "recall@1": 0.923,
+      "recall@3": 0.923,
+      "MRR": 0.923,
+      "MRR_95CI": [
+        0.8654,
+        0.9712
+      ],
+      "rerank_degraded": 0
+    },
+    "structure/dense+rerank": {
+      "arm": "structure/dense+rerank",
+      "n_queries": 104,
+      "recall@1": 0.942,
+      "recall@3": 0.942,
+      "MRR": 0.942,
+      "MRR_95CI": [
+        0.8942,
+        0.9808
+      ],
+      "rerank_degraded": 0
+    },
+    "structure/hybrid+rerank": {
+      "arm": "structure/hybrid+rerank",
+      "n_queries": 104,
+      "recall@1": 0.971,
+      "recall@3": 0.971,
+      "MRR": 0.971,
+      "MRR_95CI": [
+        0.9327,
+        1.0
+      ],
+      "rerank_degraded": 0
+    },
+    "fixed/bm25": {
+      "arm": "fixed/bm25",
+      "n_queries": 104,
+      "recall@1": 0.625,
+      "recall@3": 0.856,
+      "MRR": 0.732,
+      "MRR_95CI": [
+        0.6571,
+        0.8029
+      ],
+      "rerank_degraded": 0
+    },
+    "fixed/dense": {
+      "arm": "fixed/dense",
+      "n_queries": 104,
+      "recall@1": 0.683,
+      "recall@3": 0.904,
+      "MRR": 0.779,
+      "MRR_95CI": [
+        0.7099,
+        0.8446
+      ],
+      "rerank_degraded": 0
+    },
+    "fixed/hybrid": {
+      "arm": "fixed/hybrid",
+      "n_queries": 104,
+      "recall@1": 0.673,
+      "recall@3": 0.923,
+      "MRR": 0.79,
+      "MRR_95CI": [
+        0.7276,
+        0.8526
+      ],
+      "rerank_degraded": 0
+    },
+    "fixed/hybrid+rerank": {
+      "arm": "fixed/hybrid+rerank",
+      "n_queries": 104,
+      "recall@1": 0.923,
+      "recall@3": 0.99,
+      "MRR": 0.954,
+      "MRR_95CI": [
+        0.9199,
+        0.984
+      ],
+      "rerank_degraded": 0
+    }
+  }
+}

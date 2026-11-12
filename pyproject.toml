@@ -1,0 +1,61 @@
+[project]
+name = "wealthpilot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "bhanuponguru", email = "bhanuponguru@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fairlearn>=0.15.0",
+    "httpx>=0.28.1",
+    "langchain>=1.4.10",
+    "langchain-mcp-adapters>=0.3.2",
+    "langchain-nvidia-ai-endpoints>=1.5.0",
+    "langgraph>=1.2.20",
+    "langgraph-checkpoint-postgres>=3.2.0",
+    "lightgbm>=4.7.0",
+    "mcp>=1.30.0",
+    "mlflow>=3.18.0",
+    "pdfplumber>=0.11.10",
+    "polars>=2.1.0",
+    "psycopg[binary,pool]>=3.3.8",
+    "pybreaker>=1.4.1",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.2",
+    "pymupdf>=2.1",
+    "pyyaml>=6.0.3",
+    "rank-bm25>=0.2.2",
+    "rapidfuzz>=3.14.6",
+    "reportlab>=5.1.0",
+    "scikit-learn>=1.9.1",
+    "shap>=0.54.1",
+    "streamlit>=1.67.0",
+    "tenacity>=9.2.1",
+    "typer>=0.29.1",
+]
+
+[project.scripts]
+wealthpilot = "wealthpilot.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.6,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.4.1.post1",
+    "ruff>=0.17.4",
+]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.8.1",
+    "mkdocstrings[python]>=1.0.8",
+]
+
+[tool.pytest.ini_options]
+markers = ["live: needs NVIDIA key, Postgres and Ollama"]
+testpaths = ["tests"]
+asyncio_mode = "auto"

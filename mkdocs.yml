@@ -1,0 +1,139 @@
+site_name: WealthPilot
+site_description: A multi-agent assistant for SME loan underwriting and credit research, with policy RAG, MCP tools, human approval and a full evaluation suite.
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/git-alt
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            show_if_no_docstring: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            members_order: source
+            heading_level: 3
+            docstring_section_style: list
+            filters: ["!^_"]
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - getting-started/index.md
+      - Prerequisites: getting-started/prerequisites.md
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Configuration: getting-started/configuration.md
+  - Concepts:
+      - concepts/index.md
+      - Architecture: concepts/architecture.md
+      - The underwriting workflow: concepts/workflow.md
+      - Agents and tools: concepts/agents.md
+      - The decision rule: concepts/decision-rule.md
+      - Credit policy and RAG: concepts/policy-rag.md
+      - Document parsing: concepts/document-parsing.md
+      - Risk model: concepts/risk-model.md
+      - Memory: concepts/memory.md
+      - Compliance and human approval: concepts/compliance.md
+      - NIM gateway and reliability: concepts/nim-gateway.md
+      - MCP servers: concepts/mcp-servers.md
+      - Observability: concepts/observability.md
+  - Guides:
+      - guides/index.md
+      - Command-line interface: guides/cli.md
+      - Approval console: guides/console.md
+      - Writing a new policy: guides/new-policy.md
+      - The synthetic world: guides/synthetic-data.md
+      - Running the tests: guides/testing.md
+      - Operations: guides/operations.md
+  - Experiments:
+      - experiments/index.md
+      - "E0 · Policy adherence": experiments/e0-policy-adherence.md
+      - "E1 · Document parsing": experiments/e1-parsing.md
+      - "E2 · Policy RAG": experiments/e2-rag.md
+      - "E3 · Fairness and compliance": experiments/e3-fairness.md
+      - "E4 · Reliability": experiments/e4-reliability.md
+  - Reference:
+      - reference/index.md
+      - MCP tools: reference/mcp-tools.md
+      - Case state: reference/state.md
+      - Database: reference/database.md
+      - Policy rules: reference/policy-rules.md
+      - Python API: reference/api.md
+  - Project:
+      - Design decisions: project/decisions.md
+      - Lessons learned: project/lessons-learned.md
+      - Limitations and future work: project/limitations.md
+      - Troubleshooting: project/troubleshooting.md
+      - Glossary: project/glossary.md

@@ -1,0 +1,21 @@
+# HIDDEN ground truth for the reference engine. Never exposed to agents or MCP tools.
+policy_id: lenient
+min_years_in_business: 2
+prohibited_industries: [cannabis, adult_entertainment]
+min_dscr: 1.15
+dscr_exception_floor: 1.05
+dscr_exception_min_collateral: 1.20
+max_debt_to_equity: 4.5
+min_current_ratio: 1.00
+max_loan_to_revenue: 0.50
+min_statement_years: 2
+collateral_threshold_amount: 400000
+min_collateral_coverage: 0.80
+guarantee_always: false
+guarantee_amount_trigger: 250000
+guarantee_years_trigger: 5
+adverse_media_exception_levels: [high]
+worst_acceptable_grade: D
+authority:
+  analyst_max: 150000
+  officer_max: 500000

@@ -1,0 +1,3865 @@
+{
+  "table": [
+    {
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "docs": 12,
+      "field_acc": 1.0,
+      "CI95": "0.9937-1.0",
+      "doc_exact": "12/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 0.0
+    },
+    {
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "docs": 12,
+      "field_acc": 1.0,
+      "CI95": "0.9937-1.0",
+      "doc_exact": "12/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 0.0
+    },
+    {
+      "variant": "clean",
+      "arm": "llm_raw",
+      "docs": 12,
+      "field_acc": 0.9786,
+      "CI95": "0.9638-0.9875",
+      "doc_exact": "8/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 71.4
+    },
+    {
+      "variant": "clean",
+      "arm": "llm_layout",
+      "docs": 12,
+      "field_acc": 1.0,
+      "CI95": "0.9937-1.0",
+      "doc_exact": "12/12",
+      "wrong_docs_flagged_by_recon": "0/0",
+      "errors": 0,
+      "avg_secs": 76.7
+    },
+    {
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "docs": 12,
+      "field_acc": 1.0,
+      "CI95": "0.9937-1.0",
+      "doc_exact": "12/12",
+      "wrong_docs_flagged_by_recon": "0/0",
+      "errors": 0,
+      "avg_secs": 83.6
+    },
+    {
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "docs": 12,
+      "field_acc": 1.0,
+      "CI95": "0.9937-1.0",
+      "doc_exact": "12/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 0.0
+    },
+    {
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "docs": 12,
+      "field_acc": 0.3668,
+      "CI95": "0.3294-0.4058",
+      "doc_exact": "0/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 0.0
+    },
+    {
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "docs": 12,
+      "field_acc": 0.8026,
+      "CI95": "0.7691-0.8323",
+      "doc_exact": "7/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 86.1
+    },
+    {
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "docs": 12,
+      "field_acc": 0.9951,
+      "CI95": "0.9856-0.9983",
+      "doc_exact": "11/12",
+      "wrong_docs_flagged_by_recon": "1/1",
+      "errors": 0,
+      "avg_secs": 90.0
+    },
+    {
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "docs": 12,
+      "field_acc": 1.0,
+      "CI95": "0.9937-1.0",
+      "doc_exact": "12/12",
+      "wrong_docs_flagged_by_recon": "0/0",
+      "errors": 0,
+      "avg_secs": 99.4
+    },
+    {
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "docs": 12,
+      "field_acc": 0.0,
+      "CI95": "0.0-0.0063",
+      "doc_exact": "0/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 0.8
+    },
+    {
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "docs": 12,
+      "field_acc": 0.0,
+      "CI95": "0.0-0.0063",
+      "doc_exact": "0/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 0.6
+    },
+    {
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "docs": 12,
+      "field_acc": 0.9688,
+      "CI95": "0.9517-0.9799",
+      "doc_exact": "10/12",
+      "wrong_docs_flagged_by_recon": "-",
+      "errors": 0,
+      "avg_secs": 20.1
+    },
+    {
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "docs": 12,
+      "field_acc": 0.9688,
+      "CI95": "0.9517-0.9799",
+      "doc_exact": "10/12",
+      "wrong_docs_flagged_by_recon": "2/2",
+      "errors": 0,
+      "avg_secs": 9.9
+    },
+    {
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "docs": 12,
+      "field_acc": 0.9688,
+      "CI95": "0.9517-0.9799",
+      "doc_exact": "10/12",
+      "wrong_docs_flagged_by_recon": "2/2",
+      "errors": 0,
+      "avg_secs": 3.6
+    }
+  ],
+  "bank": [
+    {
+      "variant": "clean",
+      "docs": 12,
+      "month_rows_correct": "144/144",
+      "acc": 1.0,
+      "CI95": "0.974-1.0",
+      "errors": 0
+    },
+    {
+      "variant": "noisy",
+      "docs": 12,
+      "month_rows_correct": "144/144",
+      "acc": 1.0,
+      "CI95": "0.974-1.0",
+      "errors": 0
+    },
+    {
+      "variant": "scanned",
+      "docs": 12,
+      "month_rows_correct": "144/144",
+      "acc": 1.0,
+      "CI95": "0.974-1.0",
+      "errors": 0
+    }
+  ],
+  "rows": [
+    {
+      "case": "C001",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 62.6,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 17.3,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C001",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 5.6,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C001",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 11,
+      "tot": 19,
+      "exact": false,
+      "wrong": [
+        [
+          "2024",
+          "revenue"
+        ],
+        [
+          "2024",
+          "interest_expense"
+        ],
+        [
+          "2024",
+          "income_tax"
+        ],
+        [
+          "2024",
+          "net_income"
+        ],
+        [
+          "2024",
+          "accounts_receivable"
+        ],
+        [
+          "2024",
+          "accounts_payable"
+        ],
+        [
+          "2024",
+          "current_portion_ltd"
+        ],
+        [
+          "2024",
+          "long_term_debt"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 11.8,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 65.8,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C001",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 69.4,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C001",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 19,
+      "exact": false,
+      "wrong": [
+        [
+          "2024",
+          "revenue"
+        ],
+        [
+          "2024",
+          "cogs"
+        ],
+        [
+          "2024",
+          "operating_expenses"
+        ],
+        [
+          "2024",
+          "depreciation"
+        ],
+        [
+          "2024",
+          "interest_expense"
+        ],
+        [
+          "2024",
+          "income_tax"
+        ],
+        [
+          "2024",
+          "net_income"
+        ],
+        [
+          "2024",
+          "cash"
+        ]
+      ],
+      "secs": 2.4,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 19,
+      "exact": false,
+      "wrong": [
+        [
+          "2024",
+          "revenue"
+        ],
+        [
+          "2024",
+          "cogs"
+        ],
+        [
+          "2024",
+          "operating_expenses"
+        ],
+        [
+          "2024",
+          "depreciation"
+        ],
+        [
+          "2024",
+          "interest_expense"
+        ],
+        [
+          "2024",
+          "income_tax"
+        ],
+        [
+          "2024",
+          "net_income"
+        ],
+        [
+          "2024",
+          "cash"
+        ]
+      ],
+      "secs": 2.3,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 24.0,
+      "error": null
+    },
+    {
+      "case": "C001",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.6,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C001",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 19,
+      "tot": 19,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.9,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C006",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 56.4,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 67.8,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C006",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 82.0,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C006",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 27,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 98.3,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 93.9,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C006",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 91.2,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C006",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 21.6,
+      "error": null
+    },
+    {
+      "case": "C006",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.8,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C006",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 1.0,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C011",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 37,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "income_tax"
+        ]
+      ],
+      "secs": 57.4,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 65.6,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C011",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 61.4,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C011",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 6,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "cogs"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "net_income"
+        ],
+        [
+          "2023",
+          "cash"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 0,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "cogs"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "net_income"
+        ],
+        [
+          "2023",
+          "cash"
+        ]
+      ],
+      "secs": 64.3,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 68.3,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C011",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 67.7,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C011",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "cogs"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "net_income"
+        ],
+        [
+          "2023",
+          "cash"
+        ]
+      ],
+      "secs": 0.6,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "cogs"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "net_income"
+        ],
+        [
+          "2023",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 22.6,
+      "error": null
+    },
+    {
+      "case": "C011",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.8,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C011",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 2.0,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C016",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 74.1,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 96.4,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C016",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 121.2,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C016",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 24,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 133.8,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 136.9,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C016",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 130.7,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C016",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 3.0,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.7,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 26.0,
+      "error": null
+    },
+    {
+      "case": "C016",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 54.0,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C016",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 1.0,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C021",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 56,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 79.2,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 68.7,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C021",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 113.1,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C021",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 21,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "inventory"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 54,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "cash"
+        ],
+        [
+          "2023",
+          "current_portion_ltd"
+        ],
+        [
+          "2024",
+          "cash"
+        ]
+      ],
+      "secs": 135.4,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 125.9,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C021",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 123.5,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C021",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 50,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ]
+      ],
+      "secs": 31.8,
+      "error": null
+    },
+    {
+      "case": "C021",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 50,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null,
+      "recon_issues": 1
+    },
+    {
+      "case": "C021",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 50,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ]
+      ],
+      "secs": 13.1,
+      "error": null,
+      "recon_issues": 1,
+      "repaired": true
+    },
+    {
+      "case": "C026",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 104.4,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 107.7,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C026",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 119.5,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C026",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 14,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "cash"
+        ],
+        [
+          "2023",
+          "inventory"
+        ],
+        [
+          "2023",
+          "total_current_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 14,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "cash"
+        ],
+        [
+          "2023",
+          "accounts_receivable"
+        ],
+        [
+          "2023",
+          "inventory"
+        ],
+        [
+          "2023",
+          "total_current_assets"
+        ],
+        [
+          "2023",
+          "net_fixed_assets"
+        ],
+        [
+          "2023",
+          "total_assets"
+        ],
+        [
+          "2023",
+          "accounts_payable"
+        ],
+        [
+          "2023",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 111.0,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 71.2,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C026",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 90.8,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C026",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "cogs"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "net_income"
+        ],
+        [
+          "2023",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 38,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "revenue"
+        ],
+        [
+          "2023",
+          "cogs"
+        ],
+        [
+          "2023",
+          "operating_expenses"
+        ],
+        [
+          "2023",
+          "depreciation"
+        ],
+        [
+          "2023",
+          "interest_expense"
+        ],
+        [
+          "2023",
+          "income_tax"
+        ],
+        [
+          "2023",
+          "net_income"
+        ],
+        [
+          "2023",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 22.5,
+      "error": null
+    },
+    {
+      "case": "C026",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 25.6,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C026",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 38,
+      "tot": 38,
+      "exact": true,
+      "wrong": [],
+      "secs": 1.0,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C031",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 74.6,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 72.4,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C031",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 92.4,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C031",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 21,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 33,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "inventory"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ],
+        [
+          "2022",
+          "accounts_payable"
+        ],
+        [
+          "2022",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 95.6,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 104.0,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C031",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 146.9,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C031",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 36.0,
+      "error": null
+    },
+    {
+      "case": "C031",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 6.8,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C031",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.9,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C036",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 102.2,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 124.0,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C036",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 113.6,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C036",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 18,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "inventory"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 65.0,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 70.6,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C036",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 54.8,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C036",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 11.6,
+      "error": null
+    },
+    {
+      "case": "C036",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 10.1,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C036",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 1.1,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C041",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 47,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2023",
+          "accounts_receivable"
+        ],
+        [
+          "2023",
+          "total_current_assets"
+        ],
+        [
+          "2023",
+          "net_fixed_assets"
+        ],
+        [
+          "2023",
+          "total_assets"
+        ],
+        [
+          "2023",
+          "accounts_payable"
+        ],
+        [
+          "2023",
+          "current_portion_ltd"
+        ],
+        [
+          "2023",
+          "total_current_liabilities"
+        ],
+        [
+          "2023",
+          "long_term_debt"
+        ]
+      ],
+      "secs": 47.6,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 63.1,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C041",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 66.0,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C041",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 21,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 68.0,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 54,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2023",
+          "accounts_receivable"
+        ],
+        [
+          "2024",
+          "accounts_receivable"
+        ]
+      ],
+      "secs": 65.4,
+      "error": null,
+      "recon_issues": 3
+    },
+    {
+      "case": "C041",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 127.6,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": true
+    },
+    {
+      "case": "C041",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 8.4,
+      "error": null
+    },
+    {
+      "case": "C041",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.4,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C041",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.9,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C046",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 43.6,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 68.0,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C046",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 73.9,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C046",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 18,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "accounts_payable"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 26,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 71.2,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 59.7,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C046",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 71.2,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C046",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 15.9,
+      "error": null
+    },
+    {
+      "case": "C046",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 18.2,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C046",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 1.1,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C051",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 61.3,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 65.4,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C051",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 99.1,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C051",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 15,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "inventory"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 97.6,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 141.7,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C051",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 143.2,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C051",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 45,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "inventory"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ],
+        [
+          "2022",
+          "accounts_payable"
+        ],
+        [
+          "2022",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 9.8,
+      "error": null
+    },
+    {
+      "case": "C051",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 45,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "inventory"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ],
+        [
+          "2022",
+          "accounts_payable"
+        ],
+        [
+          "2022",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 0.5,
+      "error": null,
+      "recon_issues": 1
+    },
+    {
+      "case": "C051",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 45,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "cash"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "inventory"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "net_fixed_assets"
+        ],
+        [
+          "2022",
+          "total_assets"
+        ],
+        [
+          "2022",
+          "accounts_payable"
+        ],
+        [
+          "2022",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 19.9,
+      "error": null,
+      "recon_issues": 1,
+      "repaired": true
+    },
+    {
+      "case": "C056",
+      "variant": "clean",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "clean",
+      "arm": "baseline_canonical",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "clean",
+      "arm": "llm_raw",
+      "ok": 56,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "current_portion_ltd"
+        ]
+      ],
+      "secs": 93.1,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "clean",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 103.4,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C056",
+      "variant": "clean",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 55.2,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C056",
+      "variant": "noisy",
+      "arm": "baseline_oracle",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "noisy",
+      "arm": "baseline_canonical",
+      "ok": 27,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "accounts_receivable"
+        ],
+        [
+          "2022",
+          "total_current_assets"
+        ],
+        [
+          "2022",
+          "accounts_payable"
+        ],
+        [
+          "2022",
+          "total_current_liabilities"
+        ],
+        [
+          "2022",
+          "long_term_debt"
+        ]
+      ],
+      "secs": 0.0,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "noisy",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 81.0,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "noisy",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 76.8,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C056",
+      "variant": "noisy",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 76.2,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    },
+    {
+      "case": "C056",
+      "variant": "scanned",
+      "arm": "baseline_oracle",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "scanned",
+      "arm": "baseline_canonical",
+      "ok": 0,
+      "tot": 57,
+      "exact": false,
+      "wrong": [
+        [
+          "2022",
+          "revenue"
+        ],
+        [
+          "2022",
+          "cogs"
+        ],
+        [
+          "2022",
+          "operating_expenses"
+        ],
+        [
+          "2022",
+          "depreciation"
+        ],
+        [
+          "2022",
+          "interest_expense"
+        ],
+        [
+          "2022",
+          "income_tax"
+        ],
+        [
+          "2022",
+          "net_income"
+        ],
+        [
+          "2022",
+          "cash"
+        ]
+      ],
+      "secs": 0.4,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "scanned",
+      "arm": "llm_raw",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 10.7,
+      "error": null
+    },
+    {
+      "case": "C056",
+      "variant": "scanned",
+      "arm": "llm_layout",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.5,
+      "error": null,
+      "recon_issues": 0
+    },
+    {
+      "case": "C056",
+      "variant": "scanned",
+      "arm": "llm_layout_repair",
+      "ok": 57,
+      "tot": 57,
+      "exact": true,
+      "wrong": [],
+      "secs": 0.9,
+      "error": null,
+      "recon_issues": 0,
+      "repaired": false
+    }
+  ]
+}

@@ -1,0 +1,515 @@
+{
+  "rows": [
+    {
+      "redaction": "off",
+      "cf_runs": 6,
+      "decision_flip_rate": 0.0,
+      "rule_flip_rate": "2/72",
+      "noise_floor_rule_flips": "1/36",
+      "noise_floor_decision_flips": "0/3",
+      "prompts_with_identity": "70/88",
+      "leak_rate": 0.795,
+      "memos_with_prohibited_terms": "0/9",
+      "memos_with_identity": "6/9"
+    },
+    {
+      "redaction": "on",
+      "cf_runs": 6,
+      "decision_flip_rate": 0.0,
+      "rule_flip_rate": "0/72",
+      "noise_floor_rule_flips": "1/36",
+      "noise_floor_decision_flips": "0/3",
+      "prompts_with_identity": "3/84",
+      "leak_rate": 0.036,
+      "memos_with_prohibited_terms": "0/9",
+      "memos_with_identity": "0/9"
+    }
+  ],
+  "cases": [
+    "C001",
+    "C014",
+    "C028"
+  ],
+  "runs": {
+    "e3c-off-C001": {
+      "tag": "e3c-off-C001",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 310.3
+    },
+    "e3c-on-C001": {
+      "tag": "e3c-on-C001",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 36.5
+    },
+    "e3c-off-C001x1": {
+      "tag": "e3c-off-C001x1",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 432.1
+    },
+    "e3c-on-C001x1": {
+      "tag": "e3c-on-C001x1",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 148.3
+    },
+    "e3c-off-C001x2": {
+      "tag": "e3c-off-C001x2",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 372.4
+    },
+    "e3c-on-C001x2": {
+      "tag": "e3c-on-C001x2",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 8.9
+    },
+    "e3c-off-C014": {
+      "tag": "e3c-off-C014",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 589.4
+    },
+    "e3c-on-C014": {
+      "tag": "e3c-on-C014",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 507.5
+    },
+    "e3c-off-C014x1": {
+      "tag": "e3c-off-C014x1",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 416.4
+    },
+    "e3c-on-C014x1": {
+      "tag": "e3c-on-C014x1",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 101.4
+    },
+    "e3c-off-C014x2": {
+      "tag": "e3c-off-C014x2",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "pass",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 731.8
+    },
+    "e3c-on-C014x2": {
+      "tag": "e3c-on-C014x2",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 47.2
+    },
+    "e3c-off-C028": {
+      "tag": "e3c-off-C028",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 676.5
+    },
+    "e3c-on-C028": {
+      "tag": "e3c-on-C028",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 756.0
+    },
+    "e3c-off-C028x1": {
+      "tag": "e3c-off-C028x1",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 422.5
+    },
+    "e3c-on-C028x1": {
+      "tag": "e3c-on-C028x1",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 135.4
+    },
+    "e3c-off-C028x2": {
+      "tag": "e3c-off-C028x2",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 346.5
+    },
+    "e3c-on-C028x2": {
+      "tag": "e3c-on-C028x2",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 5.7
+    },
+    "e3c-noise-off-C001": {
+      "tag": "e3c-noise-off-C001",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 212.0
+    },
+    "e3c-noise-on-C001": {
+      "tag": "e3c-noise-on-C001",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "fail",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "fail"
+      },
+      "secs": 227.7
+    },
+    "e3c-noise-off-C014": {
+      "tag": "e3c-noise-off-C014",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 159.4
+    },
+    "e3c-noise-on-C014": {
+      "tag": "e3c-noise-on-C014",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "fail",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "fail",
+        "CP-8": "fail",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 116.8
+    },
+    "e3c-noise-off-C028": {
+      "tag": "e3c-noise-off-C028",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "pass",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 184.6
+    },
+    "e3c-noise-on-C028": {
+      "tag": "e3c-noise-on-C028",
+      "ok": true,
+      "rec": "decline",
+      "checks": {
+        "CP-1": "pass",
+        "CP-2": "fail",
+        "CP-3": "pass",
+        "CP-4": "pass",
+        "CP-5": "pass",
+        "CP-6": "pass",
+        "CP-7": "pass",
+        "CP-8": "pass",
+        "CP-9": "pass",
+        "CP-10": "pass",
+        "CP-11": "pass",
+        "CP-12": "pass"
+      },
+      "secs": 194.9
+    }
+  }
+}

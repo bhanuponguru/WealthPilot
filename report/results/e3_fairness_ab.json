@@ -1,0 +1,140 @@
+{
+  "proxy_audit": {
+    "threshold": 0.0534,
+    "n": 155941,
+    "auc": 0.6813,
+    "groups": {
+      "region": {
+        "by_group": {
+          "Midwest": {
+            "selection_rate": 0.2178,
+            "fpr": 0.213,
+            "tpr": 0.3645,
+            "base_rate": 0.0318,
+            "n": 36972
+          },
+          "Northeast": {
+            "selection_rate": 0.1082,
+            "fpr": 0.1034,
+            "tpr": 0.207,
+            "base_rate": 0.0456,
+            "n": 32431
+          },
+          "Other": {
+            "selection_rate": 0.3871,
+            "fpr": 0.3827,
+            "tpr": 0.6667,
+            "base_rate": 0.0156,
+            "n": 961
+          },
+          "South": {
+            "selection_rate": 0.3107,
+            "fpr": 0.2955,
+            "tpr": 0.5766,
+            "base_rate": 0.0542,
+            "n": 45084
+          },
+          "West": {
+            "selection_rate": 0.1666,
+            "fpr": 0.1605,
+            "tpr": 0.3148,
+            "base_rate": 0.0395,
+            "n": 40493
+          }
+        },
+        "demographic_parity_difference": 0.2789,
+        "equalized_odds_difference": 0.4596
+      },
+      "age_group": {
+        "by_group": {
+          "established (5y+)": {
+            "selection_rate": 0.1701,
+            "fpr": 0.1633,
+            "tpr": 0.3374,
+            "base_rate": 0.0392,
+            "n": 108227
+          },
+          "young (<5y/startup)": {
+            "selection_rate": 0.2991,
+            "fpr": 0.2884,
+            "tpr": 0.496,
+            "base_rate": 0.0518,
+            "n": 47714
+          }
+        },
+        "demographic_parity_difference": 0.129,
+        "equalized_odds_difference": 0.1585
+      },
+      "business_type": {
+        "by_group": {
+          "CORPORATION": {
+            "selection_rate": 0.2049,
+            "fpr": 0.1968,
+            "tpr": 0.3886,
+            "base_rate": 0.0425,
+            "n": 141004
+          },
+          "INDIVIDUAL": {
+            "selection_rate": 0.2953,
+            "fpr": 0.285,
+            "tpr": 0.476,
+            "base_rate": 0.0537,
+            "n": 12450
+          },
+          "PARTNERSHIP": {
+            "selection_rate": 0.0466,
+            "fpr": 0.0442,
+            "tpr": 0.1739,
+            "base_rate": 0.0185,
+            "n": 2487
+          }
+        },
+        "demographic_parity_difference": 0.2486,
+        "equalized_odds_difference": 0.3021
+      }
+    },
+    "mitigation": {
+      "attribute": "region",
+      "before_eo_diff": 0.5995,
+      "after_eo_diff": 0.387,
+      "before_selection_rate": 0.2089,
+      "after_selection_rate": 0.4011,
+      "before_balanced_acc": 0.594,
+      "after_balanced_acc": 0.5948
+    }
+  },
+  "planted_bias": {
+    "table": [
+      {
+        "bias": 0.0,
+        "dpd": 0.0112,
+        "dpd_sd": 0.0086,
+        "eod": 0.0162,
+        "detected": 0.15
+      },
+      {
+        "bias": 0.3,
+        "dpd": 0.0451,
+        "dpd_sd": 0.0143,
+        "eod": 0.0545,
+        "detected": 1.0
+      },
+      {
+        "bias": 0.6,
+        "dpd": 0.0902,
+        "dpd_sd": 0.0153,
+        "eod": 0.1278,
+        "detected": 1.0
+      },
+      {
+        "bias": 1.0,
+        "dpd": 0.1459,
+        "dpd_sd": 0.0164,
+        "eod": 0.2336,
+        "detected": 1.0
+      }
+    ],
+    "n": 20000,
+    "seeds": 20
+  }
+}
