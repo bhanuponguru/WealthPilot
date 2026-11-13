@@ -11,6 +11,8 @@ Every step is observable, every number is re-checked by code, and every decision
     the credit policy is a Markdown document the agents must read and apply. US-flavoured inputs (SBA 7(a) loan data, an
     ECOA/Reg-B-style compliance profile) are example configuration, not the thing under test.
 
+![The WealthPilot console showing a case under review: recommendation, grade, default probability, required approver, memo and decision form](assets/screenshots/case-review-memo.png)
+
 ## At a glance
 
 <div class="grid cards" markdown>
@@ -91,7 +93,7 @@ All numbers come from the scripts in `experiments/` and are stored in `report/re
 
     1. Check the [prerequisites](getting-started/prerequisites.md).
     2. Follow the [installation guide](getting-started/installation.md).
-    3. Underwrite your first case in the [quickstart](getting-started/quickstart.md).
+    3. Underwrite your first case in the [quickstart](getting-started/quickstart.md), or in the browser with [the web console](guides/console.md) (`uv run wealthpilot ui`).
 
 === "I want to understand it"
 

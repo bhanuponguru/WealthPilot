@@ -25,6 +25,17 @@ WealthPilot is a **research and teaching project**. These limits matter when int
 | **The audit log is tamper-evident, not tamper-proof** | Someone with database administrator access can rewrite the whole chain; anchoring the head hash externally would fix that. |
 | **Local, single-node deployment** | No authentication, multi-tenancy, queueing or horizontal scaling. Services bind to `127.0.0.1`. |
 
+## The console
+
+| Limitation | Detail |
+|---|---|
+| **No authentication or authorisation** | Anyone who can reach the port can underwrite and decide. The approver's tier and id are *declared* in the form, not verified. It binds to `127.0.0.1` by default; do not expose it. |
+| **Single-user, blocking runs** | A run blocks the page that started it (progress is streamed). There is no background queue, so closing the tab mid-run leaves the case to be reopened from **Cases** when it pauses. |
+| **Document understanding is untested beyond the generated layouts** | Uploads are validated for being a readable PDF of sensible size, not for being financial statements. Unusual layouts may fail reconciliation and pause for document review. |
+| **Identity attributes are minimal** | The new-application form never asks for gender or name origin (they are `unspecified`); only the owner's name and address are used, for screening and redaction. |
+| **Uploads are stored unencrypted** | PDFs are written under `data/uploads/<case id>/` (git-ignored) with normal file permissions. |
+| **Screenshots are generated, not tested pixel-for-pixel** | `scripts/capture_screenshots.py` documents what the pages look like at one viewport size; layout at other sizes is not verified. |
+
 ## Evaluation
 
 | Limitation | Detail |
@@ -43,6 +54,6 @@ WealthPilot is a **research and teaching project**. These limits matter when int
 * **A second model family** — measure how much of the behaviour is model-specific; revisit a fallback chain once a second dependable model exists.
 * **Real data sources** — plug a real news and registry provider into the `research` MCP server (the interface is unchanged).
 * **Stronger audit** — periodically anchor the audit chain's head hash in an external system.
-* **Operational hardening** — authentication on the MCP servers and console, a task queue for long runs, and containerised MCP servers.
+* **Operational hardening** — authentication on the MCP servers and console (with *verified* approver identity and tier), a background task queue so runs do not block the page, and containerised MCP servers.
 * **Active learning from overrides** — study (carefully, given bias risk) how human overrides could improve prompts or thresholds without feeding approver decisions back automatically.
 * **Langfuse or OpenTelemetry export** — for teams with more memory budget.

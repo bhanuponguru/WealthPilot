@@ -10,7 +10,7 @@ Built on LangGraph + LangChain, three MCP servers, NVIDIA NIM (free hosted endpo
 ## Architecture
 
 ```
-Streamlit approval console / Typer CLI                     (thread_id = case_id)
+Streamlit web console (7 pages) / Typer CLI                (thread_id = case_id)
                 │
 LangGraph StateGraph — deterministic workflow, Postgres checkpointer + store
    intake → parse ─┬(issues)→ doc_review [human] ─┐
@@ -78,18 +78,41 @@ uv run wealthpilot ingest-policy
 
 ## Use
 
+### Web console (recommended)
+
+```bash
+uv run wealthpilot doctor        # checks every service and prints the fix for anything missing
+uv run wealthpilot ui            # http://127.0.0.1:8501
+```
+
+![The review screen](docs/assets/screenshots/case-review-memo.png)
+
+| Page | What it does |
+|---|---|
+| **Overview** | service health and how many cases are waiting for you |
+| **Underwrite** | run a sample applicant, or enter a **new application and upload the financial-statement and bank-statement PDFs**; watch the agents work |
+| **Cases** | every run, filterable; reopen any case to review the evidence and decide (paused cases survive refreshes and restarts) |
+| **History** | decisions, overrides and the verified audit chain; CSV export |
+| **Policies** | read, compare and search the credit policies |
+| **Results** | the experiment reports |
+| **System** | health with fix commands, configuration, model-call diagnostics |
+
+Typical session: *Underwrite → pick an applicant (or upload your own) → ▶ Run → read the Memo, Policy checklist, Financials and Risk tabs → choose your authority tier → submit the decision → check History.*
+The full manual is in the documentation: *Guides → Using the web console*. Needs Postgres, Ollama, the MCP servers and a NIM key; the console has **no login**, so keep it on `127.0.0.1`.
+
+### Command line
+
 ```bash
 uv run wealthpilot run C004 --policy strict --variant clean --thread demo-1   # runs until the human gate (use a FRESH --thread each time)
 uv run wealthpilot approve demo-1 --decision decline --tier "Senior Credit Officer" --reason "..."
-uv run streamlit run src/wealthpilot/ui/app.py                   # approval console
 uv run wealthpilot audit-verify
 ```
 
 ## Tests and experiments
 
 ```bash
-uv run pytest -m "not live"          # offline unit tests
-uv run pytest -m live                # needs NIM key + Postgres + Ollama + MCP servers
+uv run pytest -m "not live"          # 56 offline tests (unit + console pages), ~15 s, no services needed
+uv run pytest -m live                # 15 live tests: needs NIM key + Postgres + Ollama + MCP servers
 cd experiments && uv run python e0_policy.py 12 && uv run python e1_parsing.py 12 && uv run python e2_rag.py \
   && uv run python e3_fairness.py && uv run python e3_counterfactual.py 4 && uv run python e4_reliability.py 4
 ```

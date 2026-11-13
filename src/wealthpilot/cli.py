@@ -88,6 +88,37 @@ def audit_verify():
     raise typer.Exit(0 if res["ok"] else 1)
 
 
+@app.command()
+def ui(port: int = typer.Option(8501, help="port to serve on"), host: str = typer.Option("127.0.0.1", help="address to bind (keep 127.0.0.1: there is no login)"),
+       headless: bool = typer.Option(False, help="do not open a browser tab")):
+    """Launch the Streamlit console (needs Postgres, Ollama, the MCP servers and a NIM key; see `wealthpilot doctor`)."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    app_path = Path(__file__).parent / "ui" / "app.py"
+    cmd = [sys.executable, "-m", "streamlit", "run", str(app_path), "--server.port", str(port), "--server.address", host,
+           "--browser.gatherUsageStats", "false", "--server.maxUploadSize", "25", *(["--server.headless", "true"] if headless else [])]
+    typer.echo(f"Console: http://{host}:{port}")
+    raise typer.Exit(subprocess.call(cmd))
+
+
+@app.command()
+def doctor():
+    """Check that every service and data artifact is ready, and print the command that fixes anything missing."""
+    from . import health
+
+    checks = health.run_all()
+    for c in checks:
+        mark = "✓" if c.ok else ("!" if not c.required else "✗")
+        typer.secho(f" {mark} {c.name:<24} {c.detail}", fg="green" if c.ok else ("yellow" if not c.required else "red"))
+        if not c.ok and c.fix:
+            typer.echo(f"     fix: {c.fix}")
+    bad = health.blocking(checks)
+    typer.secho("\nReady to underwrite." if not bad else f"\nNot ready: {', '.join(c.name for c in bad)}.", fg="green" if not bad else "red")
+    raise typer.Exit(0 if not bad else 1)
+
+
 @app.command("mcp-up")
 def mcp_up():
     """Start the three MCP servers (fincalc 8101, policydocs 8102, research 8103)."""

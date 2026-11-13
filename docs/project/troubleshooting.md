@@ -40,6 +40,32 @@ docker exec wealthpilot-postgres psql -U wealthpilot -d wealthpilot -c "select r
 ??? warning "MLflow warnings, 'MLflow logging skipped'"
     MLflow is not running. That is **non-fatal**: tracing and experiment logging are best-effort. Start it with `make mlflow &` if you want traces.
 
+## Console problems
+
+??? failure "Every console page says "Postgres is not reachable""
+    Start the database (`docker compose up -d postgres`) and press **R** in the browser. Run `uv run wealthpilot doctor` to see every component at once.
+
+??? failure "The console starts but **Run underwriting** shows a red message about Ollama, the key or the risk model"
+    The pre-flight check blocks a run that cannot work at all and shows the fix for each missing piece (`ollama pull nomic-embed-text`, export the key, `uv run wealthpilot train-pd`).
+
+??? warning "An orange warning says the run will be degraded"
+    One or more MCP servers are not reachable. The run is allowed but will recommend *refer*. Start them with `uv run wealthpilot mcp-up` and run the case again.
+
+??? question "A case I started is missing from **Cases**"
+    The default filter shows only cases *waiting for a human*. Widen the **Status** filter. Cases appear as soon as a run starts (status ⏳ Running).
+
+??? failure "A case shows 🛑 Error in **Cases**"
+    Select it: the message says what failed (usually a missing service). Fix that and run the case again from **Underwrite**.
+
+??? failure "Upload rejected"
+    The message names the reason: not a readable PDF, empty, over 25 MB, or over 40 pages. For a scanned PDF larger than 25 MB, reduce the resolution.
+
+??? question "The uploader says 200 MB but the form rejects files over 25 MB"
+    Start the console with `wealthpilot ui` (or from the project folder, so `.streamlit/config.toml` is read). Both set the 25 MB limit.
+
+??? question "The page looks stuck after a click"
+    Runs block the page while they work (the progress box shows each step). On the free model tier a first run can take several minutes. Closing the tab does not stop the run; reopen the case from **Cases** when it pauses.
+
 ## Model and rate-limit problems
 
 ??? failure "Calls are very slow; `[429] Too Many Requests` in `nim_calls`"

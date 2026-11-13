@@ -60,6 +60,25 @@ Similarly, a lint pass caught that cleaning up "dead code" had deleted a live pr
 
 Every ablation (`report/results/ablation_*`, `_first_attempt/`) documents a bug the experiments caught. They are more instructive than the final numbers.
 
+## 11. Look at the UI, not just at tests passing
+
+The console passed its tests and still had real problems that only screenshots exposed: the review screen was buried under the entry form, a long approver tier was truncated in a metric tile, short tables hid
+their last rows behind an inner scrollbar, and the upload widget advertised 200 MB while validation allowed 25 MB. A visual pass — rendered in a real browser — is cheap and finds a different class of bug.
+
+## 12. A dead dependency should cost seconds, not half a minute
+
+With Postgres down, every page waited for the library's 30-second connection timeout, and each failed attempt created a *new* connection pool. Failing fast (5 s), creating the pool once, and checking a cached
+health status *before* touching the database made the offline page tests 15× faster (180 s → 12 s) and the user-visible behaviour an instant, actionable message.
+
+## 13. Make the interface survive a refresh
+
+Keeping the "current case" only in the browser session meant a refresh lost a paused case. A small server-side index of runs made the human-in-the-loop workflow durable. Anything a person must come back to
+belongs in storage, not in widget state.
+
+## 14. Defaults are decisions
+
+The policy picker defaulted alphabetically to *lenient*, while the documentation's walkthrough used *strict*, and a UI test silently ran the wrong policy because of it. Defaults should match what the documentation shows.
+
 ## Process notes
 
 * Starting a background process with `pkill -f <pattern>` can kill your own shell if the pattern appears in its command line; bracket one character (`[m]lflow`).

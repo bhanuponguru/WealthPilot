@@ -1,0 +1,11 @@
+# Streamlit settings for the WealthPilot console (read when you run `streamlit run` from the project folder;
+# `wealthpilot ui` passes the same values explicitly).
+[server]
+maxUploadSize = 25          # MB; must match wealthpilot.ui.forms.MAX_UPLOAD_MB
+headless = false
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+primaryColor = "#3b4ba8"

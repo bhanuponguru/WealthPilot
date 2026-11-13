@@ -107,7 +107,17 @@ uv run python -m wealthpilot.synth.groundtruth    # PD + reference-engine decisi
 uv run pytest -m "not live"                      # offline unit tests (no services needed)
 uv run pytest -m live                            # needs Postgres, Ollama, MCP servers and a NIM key
 uv run wealthpilot audit-verify                  # {"ok": true, ...}
+uv run wealthpilot doctor                        # every service and artifact, with the fix for anything missing
+```
+
+`doctor` is the quickest health check at any time: it lists Postgres, Ollama, the three MCP servers, the NIM key, the risk model, the data files and MLflow, and exits non-zero if something
+required is missing.
+
+## 10. Launch the web console
+
+```bash
+uv run wealthpilot ui                            # http://127.0.0.1:8501
 ```
 
 !!! success "You are ready"
-    Continue with the [Quickstart](quickstart.md).
+    Continue with the [Quickstart](quickstart.md) or go straight to [Using the web console](../guides/console.md).

@@ -92,6 +92,7 @@ human with `validator_issues` visible — the validator never silently passes a 
 
 * The graph is compiled with an `AsyncPostgresSaver` (checkpoints) and an `AsyncPostgresStore` (long-term memory).
 * `thread_id` identifies a case run. Resuming a thread with no new input continues from the last checkpoint.
+* The `Runner` also mirrors each run's lifecycle status (`running`, `awaiting_approval`, `awaiting_doc_review`, `decided`, `error`) into a small **case index** table so the [console](user-interface.md#a-case-index-instead-of-scanning-checkpoints) can list and reopen cases. It is best-effort and never affects underwriting.
 * The crash/resume experiment ([E4](../experiments/e4-reliability.md#crash-and-resume)) killed the process after `risk` and resumed
   in a new session: `parse`, `research` and `analyst` were **not** re-run; only the node in flight at the crash re-ran
   (at-least-once semantics).

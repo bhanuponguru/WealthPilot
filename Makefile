@@ -1,4 +1,4 @@
-.PHONY: up down mlflow test docs docs-build
+.PHONY: up down mlflow test ui doctor docs docs-build
 
 up:
 	docker compose up -d postgres
@@ -14,6 +14,13 @@ mlflow:
 
 test:
 	uv run pytest -q
+
+# Web console (needs the services: see `make doctor`)
+ui:
+	uv run wealthpilot ui
+
+doctor:
+	uv run wealthpilot doctor
 
 # Documentation (needs: uv sync --group docs)
 docs:

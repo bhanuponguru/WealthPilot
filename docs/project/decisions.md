@@ -91,3 +91,24 @@ The significant decisions, in the style of lightweight architecture-decision rec
 
 * **Decision.** Every result superseded by a bug fix or design change is preserved in `report/results/ablation_*` and `_first_attempt/`.
 * **Why.** Several early results measured infrastructure problems (an empty-reply cache, a naive redactor, a missing decline cap). Keeping them documents what the experiments caught.
+
+## D18 · A case index table, not checkpoint scanning
+
+* **Context.** The first console lost a paused case when the browser tab was refreshed, and there was no way to list waiting cases.
+* **Decision.** The `Runner` mirrors each run's status and headline facts into a small `case_runs` table (best-effort; never holds identity). The console's **Cases** page and Overview counts read it.
+* **Why.** Checkpoints hold full state but cannot be listed cheaply; a purpose-built index makes the human-in-the-loop workflow durable across refreshes, restarts and reboots.
+
+## D19 · Blocking runs with live progress, one event loop per action
+
+* **Decision.** Each console action that executes the graph opens its own event loop and session and streams node updates into a progress box; viewing a case uses a cheap read-only session.
+* **Why.** Streamlit scripts are synchronous; a short-lived session per action avoids stale connections and shared mutable state. The cost is that a run blocks the page — acceptable for a single-user tool, and closing the tab does not stop the run.
+
+## D20 · Fail fast, and say how to fix it
+
+* **Decision.** The database pool times out in 5 s and is created once; pages check a cached health status before touching Postgres; every failed check carries the command that fixes it (`wealthpilot doctor` and the console's System page share the same checks).
+* **Why.** A missing service used to cost 30 s per page and end in a stack trace. A dead dependency should produce an instant, actionable sentence.
+
+## D21 · Hide identity from the approver by default
+
+* **Decision.** The *Application* tab shows what the agents saw and keeps the sealed identity behind an explicit checkbox; downloads never include it.
+* **Why.** An approver who decides on the same facts as the model cannot be nudged by names or places; seeing identity stays possible for the cases (verifying a document) that need it.

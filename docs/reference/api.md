@@ -15,6 +15,10 @@ Generated from the docstrings. Private helpers (leading underscore) are omitted.
 
 ::: wealthpilot.screening
 
+## Health and operations
+
+::: wealthpilot.health
+
 ## Graph
 
 ::: wealthpilot.graph.builder
@@ -24,6 +28,8 @@ Generated from the docstrings. Private helpers (leading underscore) are omitted.
 ::: wealthpilot.graph.runtime
 
 ::: wealthpilot.graph.state
+
+::: wealthpilot.graph.cases
 
 ## NIM gateway
 
@@ -56,6 +62,12 @@ Generated from the docstrings. Private helpers (leading underscore) are omitted.
 ::: wealthpilot.mcp_client
 
 ::: wealthpilot.observability
+
+## Console
+
+::: wealthpilot.ui.forms
+
+::: wealthpilot.ui.common
 
 ## Synthetic world
 

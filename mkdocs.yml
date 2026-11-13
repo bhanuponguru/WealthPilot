@@ -109,10 +109,11 @@ nav:
       - NIM gateway and reliability: concepts/nim-gateway.md
       - MCP servers: concepts/mcp-servers.md
       - Observability: concepts/observability.md
+      - The console (implementation): concepts/user-interface.md
   - Guides:
       - guides/index.md
       - Command-line interface: guides/cli.md
-      - Approval console: guides/console.md
+      - Using the web console: guides/console.md
       - Writing a new policy: guides/new-policy.md
       - The synthetic world: guides/synthetic-data.md
       - Running the tests: guides/testing.md

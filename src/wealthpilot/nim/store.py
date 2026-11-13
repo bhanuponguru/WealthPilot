@@ -31,10 +31,23 @@ def run_tag(tag: str):
         _tag.reset(token)
 
 
+_schema_ready = False
+
+
 @lru_cache
+def _pool() -> ConnectionPool:
+    """One shared pool per process. It fails fast (5 s instead of the library's 30 s) so callers can show an error promptly,
+    and keeps retrying in the background, so it recovers by itself when Postgres comes back."""
+    return ConnectionPool(get_settings().database_url, min_size=1, max_size=10, timeout=5, kwargs={"autocommit": True, "connect_timeout": 3}, open=True)
+
+
 def pool() -> ConnectionPool:
-    p = ConnectionPool(get_settings().database_url, min_size=1, max_size=10, kwargs={"autocommit": True}, open=True)
-    _init_schema(p)
+    """The shared pool, with the gateway's tables created on first successful use. Raises `PoolTimeout` within ~5 s if Postgres is down."""
+    global _schema_ready
+    p = _pool()
+    if not _schema_ready:
+        _init_schema(p)
+        _schema_ready = True
     return p
 
 

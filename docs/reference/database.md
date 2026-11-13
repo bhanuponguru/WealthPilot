@@ -81,6 +81,25 @@ Semantic memory of decided cases.
 | `embedding` | `vector(768)` | |
 | `created_at` | timestamptz | |
 
+### `case_runs`
+The case index used by the console: one row per underwriting run. Written by `Runner` (start, pause/finish, error); best-effort.
+
+| Column | Type | Notes |
+|---|---|---|
+| `thread_id` | text, PK | the checkpoint id |
+| `case_id` | text | e.g. `C004` or `U20261113-142530` |
+| `policy_id` | text | |
+| `variant` | text | `clean`, `noisy`, `scanned` or `uploaded` |
+| `source` | text | `synthetic` or `upload` |
+| `redaction` | boolean | |
+| `business_label` | text | **redacted** when redaction is on; never the owner's identity |
+| `loan_amount` | double | |
+| `status` | text | `running`, `awaiting_doc_review`, `awaiting_approval`, `decided`, `finished`, `error` |
+| `recommendation`, `decision`, `grade`, `required_tier` | text | mirrored from the case state |
+| `degraded` | boolean | |
+| `error` | text | message when `status = 'error'`; cleared on success |
+| `created_at`, `updated_at` | timestamptz | |
+
 ## LangGraph tables
 
 Created by `langgraph-checkpoint-postgres` and `langgraph-store-postgres` (`setup()` runs on every session open and is idempotent).

@@ -85,4 +85,8 @@ NIM_RPM_BUDGET=15
 | 5000 | MLflow |
 | 8101 / 8102 / 8103 | MCP servers `fincalc` / `policydocs` / `research` |
 | 11434 | Ollama |
-| 8501 | Streamlit console (when running) |
+| 8501 | Streamlit web console (`wealthpilot ui`) |
+
+### Console settings
+
+The console reads `.streamlit/config.toml` (upload limit 25 MB, usage statistics off, theme colour). `wealthpilot ui` passes the same limit explicitly, so the uploader and the form's own validation agree.

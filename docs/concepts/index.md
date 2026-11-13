@@ -17,3 +17,4 @@ the part you need.
 | [NIM gateway and reliability](nim-gateway.md) | Cache, adaptive rate limit, retries, breakers, fallback and fault injection |
 | [MCP servers](mcp-servers.md) | The three tool servers and how the graph consumes them |
 | [Observability](observability.md) | Traces, the call log, experiment runs and the audit trail |
+| [The console (implementation)](user-interface.md) | How the Streamlit console is built: the case index, sessions, fail-fast health checks, forms and tests |

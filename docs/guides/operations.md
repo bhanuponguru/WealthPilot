@@ -11,18 +11,21 @@ docker compose up -d postgres            # 1. database           (make up)
 ollama serve                             # 2. only if Ollama is not already running as a service
 make mlflow &                            # 3. traces + registry  (optional; http://127.0.0.1:5000)
 uv run wealthpilot mcp-up &              # 4. MCP servers 8101-8103 (wait ~30 s on first start: indexing)
+uv run wealthpilot ui                    # 5. the web console, http://127.0.0.1:8501 (optional)
 ```
 
 Check:
 
 ```bash
-ss -ltn | grep -E ':(5432|5000|8101|8102|8103|11434) '
+uv run wealthpilot doctor                # every service and artifact, with the fix for anything missing
+ss -ltn | grep -E ':(5432|5000|8101|8102|8103|8501|11434) '
 uv run wealthpilot audit-verify
 ```
 
 ## Stopping
 
 ```bash
+# Web console: Ctrl-C in its terminal, or  pkill -f "streamlit run"
 # MCP servers: Ctrl-C in their terminal, or
 pkill -f "wealthpilot.mcp_up"; pkill -f "mcp_servers\."
 
@@ -87,7 +90,9 @@ LightGBM and SHAP. Running several experiment processes at once is limited by th
 | Current rate | `SELECT rpm FROM nim_bucket;` | at or near `NIM_RPM_BUDGET` | pinned at the floor (6) — NIM is throttling the key |
 | Failures | `nim_calls` where `NOT ok` | few | many `[429]`, or `empty response` |
 | Cache hits | `nim_calls` where `cached` | high on re-runs | zero on a repeated case (prompt changed) |
-| Audit chain | `wealthpilot audit-verify` | `ok: true` | `ok: false` |
+| Audit chain | `wealthpilot audit-verify` or the console's **History** page | `ok: true` | `ok: false` |
+| Waiting cases | console **Overview** / **Cases** | few | many cases stuck *awaiting approval* |
+| Failed runs | console **Cases** (status 🛑 Error) | none | a rising count |
 | Degraded runs | `state.degraded` / memo limitations | rare | frequent — a tool server is down |
 
 ## Upgrading dependencies

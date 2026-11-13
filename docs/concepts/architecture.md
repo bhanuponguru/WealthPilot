@@ -6,7 +6,7 @@
 flowchart TB
     subgraph UI["Interfaces"]
         CLI["Typer CLI"]
-        ST["Streamlit approval console"]
+        ST["Streamlit web console<br/>7 pages: underwrite, review, audit, policies, system"]
     end
 
     subgraph ORCH["Orchestration (one Python process)"]
@@ -52,7 +52,7 @@ flowchart TB
 
 | Layer | Responsibility | Key modules |
 |---|---|---|
-| **Interfaces** | Start cases, show evidence, collect the human decision. | `wealthpilot.cli`, `wealthpilot.ui.app` |
+| **Interfaces** | Start cases, show evidence, collect the human decision, show service health. | `wealthpilot.cli`, `wealthpilot.ui.*` (see [the console](user-interface.md)), `wealthpilot.health` |
 | **Orchestration** | Run the workflow, persist state, pause and resume. | `wealthpilot.graph.builder`, `.nodes`, `.state`, `.runtime` |
 | **Tools (MCP)** | Deterministic credit math, policy search and borrower research, exposed as MCP tools. | `mcp_servers/*`, `wealthpilot.mcp_client` |
 | **Model gateway** | The only place that talks to NIM and Ollama; adds caching, rate limiting and resilience. | `wealthpilot.nim.*` |
@@ -102,7 +102,8 @@ src/wealthpilot/
   mcp_client.py        MultiServerMCPClient helpers; mcp_up.py launches the servers
   observability.py     MLflow tracing
   cli.py               Typer CLI
-  graph/               state, nodes, runtime (MCP calls + breaker), builder (graph + Runner)
+  health.py            service and artifact health checks (`wealthpilot doctor`, the console)
+  graph/               state, nodes, runtime (MCP calls + breaker), builder (graph + Runner), cases (case index)
   nim/                 gateway.py (chat/vision/embed/rerank), store.py (cache/limiter/log), chaos.py
   parsing/pipeline.py  PDF -> numbers
   rag/index.py         chunking, indexing, hybrid search, rerank
@@ -110,8 +111,10 @@ src/wealthpilot/
   compliance/          redaction, language scan, audit chain
   memory/precedents.py semantic similar-case memory
   synth/               synthetic applicants, documents, news, ground truth
-  ui/app.py            Streamlit console
+  ui/                  Streamlit console: app.py (navigation), common.py, forms.py (pure logic), views/ (one module per page)
 mcp_servers/           fincalc, policydocs, research (FastMCP)
+.streamlit/            console settings (upload limit, theme)
+scripts/               capture_screenshots.py (documentation screenshots)
 data/policies/         strict/ and lenient/ policy.md + hidden reference.yaml
 data/compliance_profiles/   example (US ECOA/Reg-B style) profile
 experiments/           E0-E4 scripts

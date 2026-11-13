@@ -15,9 +15,11 @@ uv run wealthpilot --help
 | [`train-pd`](#train-pd) | Train the SBA probability-of-default model |
 | [`audit-verify`](#audit-verify) | Verify the hash-chained audit log |
 | [`mcp-up`](#mcp-up) | Start the three MCP servers |
+| [`ui`](#ui) | Launch the Streamlit web console |
+| [`doctor`](#doctor) | Check every service and artifact and print the fix for anything missing |
 
 !!! info "Prerequisites"
-    `run`, `approve` and `show` need Postgres, Ollama, the MCP servers and a NIM key. `train-pd` needs the SBA CSV. `audit-verify` and
+    `run`, `approve`, `show` and `ui` need Postgres, Ollama, the MCP servers and a NIM key (`doctor` tells you what is missing). `train-pd` needs the SBA CSV. `audit-verify` and
     `ingest-policy` need Postgres (and Ollama for the latter).
 
 ## `run`
@@ -89,6 +91,33 @@ uv run wealthpilot mcp-up
 ```
 
 Starts `fincalc` (8101), `policydocs` (8102) and `research` (8103) as separate processes and waits; **Ctrl-C** stops all three.
+
+## `ui`
+
+```bash
+uv run wealthpilot ui [--port 8501] [--host 127.0.0.1] [--headless]
+```
+
+Launches the [web console](console.md). `--headless` does not open a browser tab. Keep the default host: the console has no login. The command also passes the 25 MB upload limit that matches the form's validation.
+
+## `doctor`
+
+```bash
+uv run wealthpilot doctor
+```
+
+Checks Postgres, Ollama (and the embedding model), the three MCP servers, the NIM key (presence only), the risk model, the synthetic data, the OFAC list and MLflow. Prints one line per component and, for anything wrong, the command that fixes it:
+
+```text
+ ✓ Postgres                 reachable
+ ✓ Ollama (embeddings)      ready
+ ✗ MCP: fincalc             port 8101 closed
+     fix: uv run wealthpilot mcp-up
+ ...
+Not ready: ...
+```
+
+Exit code `0` when everything *required* is ready, `1` otherwise (MLflow and the synthetic data are optional).
 
 ## Tips
 

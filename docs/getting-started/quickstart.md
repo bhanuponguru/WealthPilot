@@ -79,14 +79,14 @@ record is flagged `"override": true` and the reason is kept.
 
 ## 3. Look at what happened
 
-=== "Console"
+=== "Web console"
 
     ```bash
-    uv run streamlit run src/wealthpilot/ui/app.py      # http://localhost:8501
+    uv run wealthpilot ui           # http://127.0.0.1:8501
     ```
 
-    Pick a case, run it, and review the memo, ratios, SHAP risk factors, policy checklist with citations, and research
-    findings before deciding. See [Approval console](../guides/console.md).
+    Open **Cases** to find the case, or **History** to see the recorded decision and verify the audit chain. See
+    [Using the web console](../guides/console.md).
 
 === "MLflow trace"
 
@@ -113,6 +113,25 @@ uv run wealthpilot run C004 --policy strict  --no-redaction    --thread demo-4  
 
 Comparing `demo-1` and `demo-2` shows the central idea: same applicant, same documents, **different policy text → different
 decision**, because the agents read the policy rather than a hard-coded rule set.
+
+## 5. Do it all in the web console
+
+Everything above is also available — with more help along the way — in the browser:
+
+```bash
+uv run wealthpilot doctor       # is everything running? prints the fix for anything missing
+uv run wealthpilot ui           # opens http://127.0.0.1:8501
+```
+
+1. **Underwrite → Sample applicants**: pick `C004`, leave *strict* selected, press **▶ Run underwriting**.
+2. Review the **Memo**, **Policy checklist**, **Financials** and **Risk** tabs.
+3. In **Your decision**, choose a tier of at least *Senior Credit Officer* and submit.
+4. Open **History** to see the recorded decision and the verified audit chain.
+
+![The review screen](../assets/screenshots/case-review-memo.png)
+
+To underwrite **your own** applicant, use **Underwrite → New application**, fill in the form and upload the two PDFs. The full manual is
+[Using the web console](../guides/console.md).
 
 ## Next steps
 
