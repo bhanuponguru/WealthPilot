@@ -1,0 +1,90 @@
+{
+  "per_policy": {
+    "strict": {
+      "cases": 2,
+      "decision_acc": 1.0,
+      "decision_CI95": [
+        0.3424,
+        1.0
+      ],
+      "rule_acc": 0.958,
+      "rule_CI95": [
+        0.7976,
+        0.9926
+      ],
+      "threshold_acc": 1.0,
+      "tier_acc": 1.0,
+      "grade_acc": 1.0,
+      "failed_runs": 0,
+      "degraded_runs": 0,
+      "avg_secs": 194.7
+    },
+    "lenient": {
+      "cases": 2,
+      "decision_acc": 1.0,
+      "decision_CI95": [
+        0.3424,
+        1.0
+      ],
+      "rule_acc": 0.958,
+      "rule_CI95": [
+        0.7976,
+        0.9926
+      ],
+      "threshold_acc": 1.0,
+      "tier_acc": 1.0,
+      "grade_acc": 1.0,
+      "failed_runs": 0,
+      "degraded_runs": 0,
+      "avg_secs": 187.8
+    }
+  },
+  "flip_cases": 1,
+  "flip_agreement": 1.0,
+  "flip_CI95": [
+    0.2065,
+    1.0
+  ],
+  "rule_accuracy": {
+    "CP-1": "4/4",
+    "CP-2": "4/4",
+    "CP-3": "4/4",
+    "CP-4": "4/4",
+    "CP-5": "4/4",
+    "CP-6": "4/4",
+    "CP-7": "4/4",
+    "CP-8": "2/4",
+    "CP-9": "4/4",
+    "CP-10": "4/4",
+    "CP-11": "4/4",
+    "CP-12": "4/4"
+  },
+  "mismatches": [
+    {
+      "policy": "strict",
+      "case": "C001",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The loan amount of $117,000 is above the $150,000 threshold, requiring collateral coverage of at least 1.00, but the actual coverage is 0.40"
+    },
+    {
+      "policy": "lenient",
+      "case": "C001",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The loan amount of $117,000 exceeds the $400,000 threshold, requiring at least 80% collateral coverage, but the actual collateral coverage i"
+    }
+  ],
+  "usage": {
+    "uncached_calls": 40,
+    "prompt_tokens": 44299,
+    "completion_tokens": 16007,
+    "calls_per_run": 10.0
+  },
+  "case_ids": [
+    "C004",
+    "C001"
+  ]
+}

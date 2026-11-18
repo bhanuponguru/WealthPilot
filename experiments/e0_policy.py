@@ -4,11 +4,14 @@ read each policy's PROSE (the YAML answer key is hidden from them). Ground truth
 Reported: decision accuracy, per-rule status accuracy, threshold-extraction accuracy (did the agent read the right number
 out of the text?), approver-tier accuracy, and 'policy flip agreement' (cases whose correct decision differs between the
 two policies: did the system change its decision the same way?). Runs stop at the human-approval interrupt.
+
+Set E0_NAME to write results under another name (e.g. a model comparison) instead of overwriting e0_policy.*
 """
 
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 import time
 
@@ -117,7 +120,7 @@ async def main(n_cases: int = 12, concurrency: int = 4) -> dict:
     md = "# E0: end-to-end policy adherence\n\n" + md_table(rows, ["policy", "cases", "decision_acc", "decision_CI95", "rule_acc", "threshold_acc", "tier_acc", "grade_acc", "failed_runs", "degraded_runs", "avg_secs"]) \
         + f"\nPolicy-flip agreement: {res['flip_agreement']} over {res['flip_cases']} cases whose correct decision differs between policies (CI95 {res['flip_CI95']}).\n\n## Per-rule accuracy\n" \
         + md_table([{"rule": k, "correct": v} for k, v in res["rule_accuracy"].items()], ["rule", "correct"]) + f"\nUsage: {res['usage']}\n"
-    save("e0_policy", {**res, "case_ids": cases}, md)
+    save(os.environ.get("E0_NAME", "e0_policy"), {**res, "case_ids": cases}, md)
     for p, d in res["per_policy"].items():
         log_mlflow("wealthpilot-E0-policy", p, {"policy": p, "cases": d["cases"]}, {"decision_acc": d["decision_acc"], "rule_acc": d["rule_acc"], "threshold_acc": d["threshold_acc"]})
     print(md)

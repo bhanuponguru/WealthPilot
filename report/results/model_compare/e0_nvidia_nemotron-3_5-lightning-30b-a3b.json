@@ -1,0 +1,98 @@
+{
+  "per_policy": {
+    "strict": {
+      "cases": 2,
+      "decision_acc": 1.0,
+      "decision_CI95": [
+        0.3424,
+        1.0
+      ],
+      "rule_acc": 0.958,
+      "rule_CI95": [
+        0.7976,
+        0.9926
+      ],
+      "threshold_acc": 1.0,
+      "tier_acc": 1.0,
+      "grade_acc": 1.0,
+      "failed_runs": 0,
+      "degraded_runs": 0,
+      "avg_secs": 39.7
+    },
+    "lenient": {
+      "cases": 2,
+      "decision_acc": 1.0,
+      "decision_CI95": [
+        0.3424,
+        1.0
+      ],
+      "rule_acc": 0.917,
+      "rule_CI95": [
+        0.7415,
+        0.9768
+      ],
+      "threshold_acc": 1.0,
+      "tier_acc": 1.0,
+      "grade_acc": 1.0,
+      "failed_runs": 0,
+      "degraded_runs": 0,
+      "avg_secs": 42.3
+    }
+  },
+  "flip_cases": 1,
+  "flip_agreement": 1.0,
+  "flip_CI95": [
+    0.2065,
+    1.0
+  ],
+  "rule_accuracy": {
+    "CP-1": "4/4",
+    "CP-2": "3/4",
+    "CP-3": "4/4",
+    "CP-4": "4/4",
+    "CP-5": "4/4",
+    "CP-6": "4/4",
+    "CP-7": "4/4",
+    "CP-8": "2/4",
+    "CP-9": "4/4",
+    "CP-10": "4/4",
+    "CP-11": "4/4",
+    "CP-12": "4/4"
+  },
+  "mismatches": [
+    {
+      "policy": "strict",
+      "case": "C001",
+      "rule": "CP-8",
+      "agent": "fail",
+      "reference": "not_applicable",
+      "agent_reason": "The request amount of USD 117,000 is below the USD 150,000 threshold, but the policy states that requests above USD 150,000 require collater"
+    },
+    {
+      "policy": "lenient",
+      "case": "C001",
+      "rule": "CP-2",
+      "agent": "fail",
+      "reference": "pass",
+      "agent_reason": "The applicant's industry is Cryptocurrency exchange, which is prohibited under CP-2."
+    },
+    {
+      "policy": "lenient",
+      "case": "C001",
+      "rule": "CP-8",
+      "agent": "missing_data",
+      "reference": "not_applicable",
+      "agent_reason": "numeric comparison inconsistent after re-check"
+    }
+  ],
+  "usage": {
+    "uncached_calls": 4,
+    "prompt_tokens": 7567,
+    "completion_tokens": 1489,
+    "calls_per_run": 1.0
+  },
+  "case_ids": [
+    "C004",
+    "C001"
+  ]
+}
