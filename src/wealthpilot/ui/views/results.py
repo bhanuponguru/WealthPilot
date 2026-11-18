@@ -31,7 +31,7 @@ def _headline() -> None:
 
 
 def render() -> None:
-    st.title("🧪 Experiment results")
+    st.title("Experiments")
     st.caption("These reports are produced by the scripts in `experiments/` and stored in `report/results/`. Sample sizes are small (free model tier); they show "
                "mechanisms and failure modes rather than precise rates. The documentation site has the full write-up of each experiment.")
     if not RESULTS.exists():

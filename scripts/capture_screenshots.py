@@ -12,8 +12,8 @@ empty the case/audit tables), and point the script at it:
     DATABASE_URL=postgresql://wealthpilot:wealthpilot@127.0.0.1:5432/wealthpilot_demo uv run wealthpilot ui --headless --port 8502 &
     CONSOLE_URL=http://127.0.0.1:8502 uv run --no-project --with playwright python scripts/capture_screenshots.py
 
-The script runs sample applicant C004 under the strict policy and records a decision, then starts C020 under the lenient policy
-and leaves it waiting, so the Cases, History and Overview pages show realistic content. Cached model replies make this fast.
+The script signs in as a reviewer, runs sample applicant C004 under the strict policy and records a decision, then starts C020 under the
+lenient policy and leaves it waiting, so the Inbox, Cases and History pages show realistic content. Cached model replies make this fast.
 """
 
 from __future__ import annotations
@@ -59,20 +59,33 @@ def goto(page: Page, path: str) -> None:
     settle(page)
 
 
+def set_profile(page: Page, name: str, tier: str) -> None:
+    """Fill the sidebar's 'Signed in as' block (the decision form is pre-filled from it)."""
+    page.get_by_role("textbox", name="Your name or id").fill(name)
+    page.keyboard.press("Enter")
+    settle(page, 1.0)
+    page.get_by_role("combobox", name="Your authority").click()
+    page.keyboard.type(tier)
+    page.keyboard.press("Enter")
+    settle(page, 1.0)
+
+
 def run_sample(page: Page, case_id: str, policy: str) -> bool:
-    """On the Underwrite page: pick an applicant and policy, run it, and wait for the approval gate."""
+    """On New case -> Try a sample applicant: pick an applicant and policy, run it, and wait for the decision form."""
+    page.get_by_role("tab", name="Try a sample applicant").click()
+    time.sleep(1.0)
     page.get_by_role("combobox", name="Applicant").click()
     page.keyboard.type(case_id)
     page.keyboard.press("Enter")
     settle(page, 1.5)
     if policy != "strict":
-        page.get_by_text(policy, exact=True).first.click()
+        page.get_by_text(policy, exact=True).last.click()
         settle(page, 1.0)
-    page.get_by_role("button", name="▶ Run underwriting").first.click()
+    page.get_by_role("button", name="Run underwriting").last.click()
     try:
-        page.get_by_text("Your decision").first.wait_for(timeout=600_000)
+        page.get_by_role("heading", name="Your decision").first.wait_for(timeout=600_000)
     except PWTimeout:
-        print(f"{case_id} did not reach the approval gate in time", file=sys.stderr)
+        print(f"{case_id} did not reach the decision form in time", file=sys.stderr)
         return False
     settle(page, 2)
     return True
@@ -83,14 +96,16 @@ def main() -> int:
         browser = p.chromium.launch()
         page = browser.new_page(viewport=VIEWPORT)
 
-        goto(page, "underwrite")
-        shot(page, "underwrite-sample")
-        page.get_by_role("tab", name="New application").click()
+        goto(page, "")
+        shot(page, "inbox-empty")
+        goto(page, "new-case")
+        shot(page, "new-case-application")
+        page.get_by_role("tab", name="Try a sample applicant").click()
         time.sleep(1.5)
-        shot(page, "underwrite-new-application")
+        shot(page, "new-case-sample")
+        set_profile(page, "j.rivera", "Senior Credit Officer")
 
         # case 1: C004 under the strict policy -> review screens -> record the decision
-        goto(page, "underwrite")
         if not run_sample(page, "C004", "strict"):
             return 1
         shot(page, "case-review-memo")
@@ -100,24 +115,28 @@ def main() -> int:
             time.sleep(1.2)
             shot(page, name)
         page.get_by_role("tab", name="Memo").first.click()
-        page.get_by_text("Your decision").first.scroll_into_view_if_needed()
+        page.get_by_role("heading", name="Your decision").first.scroll_into_view_if_needed()
         time.sleep(0.8)
-        shot(page, "case-decision-form", tall=False)
-        page.get_by_role("textbox", name="Approver id").fill("sco-7")
         page.get_by_role("textbox", name="Reason / comments").fill("Loan-to-revenue above the policy maximum (CP-6).")
+        shot(page, "case-decision-form", tall=False)
         page.get_by_role("button", name="Submit decision").click()
+        page.get_by_text("Decision recorded").first.wait_for(timeout=120_000)
         settle(page, 2)
         shot(page, "case-decided")
 
         # case 2: C020 under the lenient policy, left waiting for a human
-        page.get_by_text("Start a new case").first.click()
-        time.sleep(1.0)
+        goto(page, "new-case")
         if not run_sample(page, "C020", "lenient"):
             return 1
 
-        for path, name in (("", "overview"), ("cases", "cases"), ("history", "history"), ("policies", "policies"), ("results", "results"), ("system", "system")):
+        for path, name in (("", "inbox"), ("cases", "cases"), ("history", "history"), ("policies", "policies"),
+                           ("experiments", "experiments"), ("system", "system")):
             goto(page, path)
             shot(page, name)
+        goto(page, "cases")                                        # the case view reached from the list
+        page.get_by_role("tab", name="All").click() if page.get_by_role("tab", name="All").count() else page.get_by_text("All", exact=True).first.click()
+        settle(page, 1.0)
+        shot(page, "cases-all")
         goto(page, "policies")
         page.get_by_role("tab", name="Compare policies").click()
         time.sleep(1.5)

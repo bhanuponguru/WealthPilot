@@ -73,7 +73,7 @@ def tab_search(pid: str) -> None:
 
 
 def render() -> None:
-    st.title("📘 Credit policies")
+    st.title("Credit policies")
     st.caption("The policy is a plain Markdown document. The agents read it, extract its thresholds and apply it — there is no hard-coded rule set. "
                "See the documentation page *Writing a new policy* to add your own.")
     ids = policy_ids()

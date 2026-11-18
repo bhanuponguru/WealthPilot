@@ -89,15 +89,14 @@ uv run wealthpilot ui            # http://127.0.0.1:8501
 
 | Page | What it does |
 |---|---|
-| **Overview** | service health and how many cases are waiting for you |
-| **Underwrite** | run a sample applicant, or enter a **new application and upload the financial-statement and bank-statement PDFs**; watch the agents work |
-| **Cases** | every run, filterable; reopen any case to review the evidence and decide (paused cases survive refreshes and restarts) |
+| **Inbox** | what needs your decision, what is still running, what was decided recently |
+| **New case** | enter a **new application and upload the financial-statement and bank-statement PDFs** (or try a sample applicant); runs continue in the background, so you can leave the page |
+| **Cases** | every case, filterable; reopen any case to review the evidence and decide (cases survive refreshes and restarts, and interrupted runs can be continued) |
 | **History** | decisions, overrides and the verified audit chain; CSV export |
-| **Policies** | read, compare and search the credit policies |
-| **Results** | the experiment reports |
-| **System** | health with fix commands, configuration, model-call diagnostics |
+| **Credit policies** | read, compare and search the credit policies |
+| **Experiments**, **System** | the evaluation reports, and health with fix commands and model-call diagnostics (kept in their own sidebar section, away from case work) |
 
-Typical session: *Underwrite → pick an applicant (or upload your own) → ▶ Run → read the Memo, Policy checklist, Financials and Risk tabs → choose your authority tier → submit the decision → check History.*
+Typical session: *set your name and authority in the sidebar → New case → enter the application and upload the PDFs → (the case lands in your Inbox when ready) → Review → read the Memo, Policy checklist, Financials and Risk tabs → submit the decision → check History.*
 The full manual is in the documentation: *Guides → Using the web console*. Needs Postgres, Ollama, the MCP servers and a NIM key; the console has **no login**, so keep it on `127.0.0.1`.
 
 ### Command line

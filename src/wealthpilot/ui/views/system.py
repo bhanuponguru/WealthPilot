@@ -74,7 +74,7 @@ def tab_models() -> None:
 
 
 def render() -> None:
-    st.title("🛠️ System")
+    st.title("System")
     t1, t2, t3 = st.tabs(["Health", "Configuration", "Model calls"])
     with t1:
         tab_health()

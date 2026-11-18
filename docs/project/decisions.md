@@ -95,13 +95,14 @@ The significant decisions, in the style of lightweight architecture-decision rec
 ## D18 · A case index table, not checkpoint scanning
 
 * **Context.** The first console lost a paused case when the browser tab was refreshed, and there was no way to list waiting cases.
-* **Decision.** The `Runner` mirrors each run's status and headline facts into a small `case_runs` table (best-effort; never holds identity). The console's **Cases** page and Overview counts read it.
+* **Decision.** The `Runner` mirrors each run's status and headline facts into a small `case_runs` table (best-effort; never holds identity). The console's **Inbox** and **Cases** pages read it.
 * **Why.** Checkpoints hold full state but cannot be listed cheaply; a purpose-built index makes the human-in-the-loop workflow durable across refreshes, restarts and reboots.
 
-## D19 · Blocking runs with live progress, one event loop per action
+## D19 · Runs execute on a background worker, one graph session per run
 
-* **Decision.** Each console action that executes the graph opens its own event loop and session and streams node updates into a progress box; viewing a case uses a cheap read-only session.
-* **Why.** Streamlit scripts are synchronous; a short-lived session per action avoids stale connections and shared mutable state. The cost is that a run blocks the page — acceptable for a single-user tool, and closing the tab does not stop the run.
+* **Decision.** A process-wide `RunManager` owns one worker thread with its own event loop. Each run opens its own graph session there; the page only *watches* a run through a progress object that a self-refreshing fragment polls. Viewing a case uses a cheap read-only session.
+* **Why.** The first version ran the graph inside the page script and blocked on a progress box. Streamlit stops a script as soon as the user changes page or closes the tab, which abandoned the run half-way and left the case marked *running* forever, and the documentation wrongly claimed otherwise. A run that belongs to the worker, not the page, survives navigation; the checkpointer makes a run interrupted by a process restart cheap to continue.
+* **Cost.** No durable queue: a console restart interrupts in-flight runs (shown as *Interrupted*, continued by hand).
 
 ## D20 · Fail fast, and say how to fix it
 
@@ -112,3 +113,14 @@ The significant decisions, in the style of lightweight architecture-decision rec
 
 * **Decision.** The *Application* tab shows what the agents saw and keeps the sealed identity behind an explicit checkbox; downloads never include it.
 * **Why.** An approver who decides on the same facts as the model cannot be nudged by names or places; seeing identity stays possible for the cases (verifying a document) that need it.
+
+## D22 · Product-first navigation; experiments and diagnostics in their own section
+
+* **Decision.** The sidebar groups pages by who needs them: *Work* (Inbox, New case, Cases, History), *Reference* (Credit policies) and *Admin and research* (Experiments, System). The home page is an inbox of cases that need a decision, not a status page, and **New application** is the first tab of **New case**; sample applicants are a secondary option. Experiment-only knobs (document quality, identity redaction) sit behind *Advanced options*.
+* **Why.** The first console exposed everything the research needed, which made it feel like a lab bench. A credit officer's day is: see what is waiting, review it, decide. The research pages are kept and fully working, just out of the main path.
+
+## D23 · A reviewer profile instead of retyping identity on every decision
+
+* **Decision.** The sidebar holds the reviewer's name and authority tier for the session; the decision form is pre-filled from it. The id is required and no placeholder id is written to the audit log.
+* **Why.** Typing the approver id and tier on every decision is error-prone and invites a default value ending up in a compliance record. The authoritative tier check stays in the `human_approval` node.
+* **Not changed on purpose.** Owner names stay masked on the review screens (D21); the case is identified by case number, industry, loan amount and the masked business name.

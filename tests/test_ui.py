@@ -136,3 +136,41 @@ def test_full_app_with_navigation_renders():
     from wealthpilot.config import PROJECT_ROOT
     at = AppTest.from_file(str(PROJECT_ROOT / "src" / "wealthpilot" / "ui" / "app.py"), default_timeout=60).run()
     assert not at.exception, [e.value for e in at.exception]
+
+
+DECISION_FORM_SCRIPT = """
+import streamlit as st
+from wealthpilot.ui import common
+st.sidebar.text_input("Your name or id", key="approver_id")
+st.sidebar.selectbox("Your authority", ["Analyst", "Senior Credit Officer", "Credit Committee"], index=None, key="reviewer_tier")
+common.approval_panel("t1", {"recommendation": "decline"}, {"required_tier": "Senior Credit Officer"})
+"""
+
+
+def _form_field(at, kind, label):
+    return next(w for w in getattr(at, kind) if w.label == label)
+
+
+def test_decision_form_is_prefilled_from_the_sidebar_profile_and_submits(monkeypatch):
+    """Regression: the form once wrote to the sidebar widget's session key and crashed, but only in the full app."""
+    sent = []
+    monkeypatch.setattr("wealthpilot.ui.common.resume_case", lambda thread, value: sent.append((thread, value)) or {"running": True})
+    at = AppTest.from_string(DECISION_FORM_SCRIPT, default_timeout=30).run()
+    at.sidebar.text_input[0].set_value("j.rivera")
+    at.sidebar.selectbox[0].select("Senior Credit Officer")
+    at.run()
+    assert _form_field(at, "text_input", "Approver id").value == "j.rivera"
+    assert _form_field(at, "selectbox", "Your authority tier").value == "Senior Credit Officer"
+    next(b for b in at.get("form_submit_button")).click()
+    at.run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert sent and sent[0][1]["approver_id"] == "j.rivera" and sent[0][1]["decision"] == "decline"
+
+
+def test_decision_form_refuses_an_empty_approver_id(monkeypatch):
+    sent = []
+    monkeypatch.setattr("wealthpilot.ui.common.resume_case", lambda thread, value: sent.append(value) or {})
+    at = AppTest.from_string(DECISION_FORM_SCRIPT, default_timeout=30).run()
+    next(b for b in at.get("form_submit_button")).click()
+    at.run()
+    assert any("name or id" in e.value for e in at.error) and not sent

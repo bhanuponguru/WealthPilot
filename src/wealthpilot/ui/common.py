@@ -10,13 +10,14 @@ import streamlit as st
 
 from .. import health
 from ..graph import cases
-from ..graph.builder import readonly_session, session
+from ..graph.builder import readonly_session
 from .forms import TIERS, evidence_json, memo_to_markdown, money
+from .runner import manager
 
 RULE_ICON = {"pass": "✅", "fail": "❌", "exception": "⚠️", "not_applicable": "➖", "missing_data": "❓"}
 STATUS_LABEL = {
-    "running": "⏳ Running", "awaiting_doc_review": "📄 Awaiting document review", "awaiting_approval": "🧑‍⚖️ Awaiting approval",
-    "decided": "✅ Decided", "finished": "✔️ Finished", "error": "🛑 Error",
+    "running": "⏳ Running", "awaiting_doc_review": "📄 Documents need checking", "awaiting_approval": "🧑‍⚖️ Needs your decision",
+    "decided": "✅ Decided", "finished": "✔️ Finished", "error": "🛑 Stopped (error)",
 }
 REC_COLOR = {"approve": "green", "decline": "red", "refer": "orange"}
 NODE_LABEL = {
@@ -37,16 +38,6 @@ def run_async(coro):
 async def _snapshot(thread_id: str) -> dict:
     async with readonly_session() as runner:
         return await runner.snapshot(thread_id)
-
-
-async def _start(state_in: dict, thread_id: str, meta: dict, on_update):
-    async with session() as runner:
-        return await runner.start(state_in, thread_id, on_update, meta)
-
-
-async def _resume(thread_id: str, value: dict):
-    async with session() as runner:
-        return await runner.resume(thread_id, value)
 
 
 @st.cache_data(ttl=3, show_spinner=False)
@@ -103,41 +94,98 @@ def preflight() -> bool:
 
 
 # --------------------------------------------------------------------------- running and resuming
-def start_case(state_in: dict, thread_id: str, meta: dict) -> dict | None:
-    """Run a case with live progress. Returns the final snapshot or None on failure."""
-    t0 = time.time()
-    with st.status("Running the underwriting agents…", expanded=True) as status:
-        def on_update(ev: dict) -> None:
-            for node in (k for k in ev if k != "__interrupt__"):
-                status.write(f"✓ {NODE_LABEL.get(node, node)}  · {time.time() - t0:.0f}s")
-        try:
-            snap = run_async(_start(state_in, thread_id, meta, on_update))
-        except Exception as e:  # noqa: BLE001
-            status.update(label="The run failed", state="error")
-            st.error(friendly_error(e))
-            return None
-        status.update(label="Paused for a human" if snap["interrupt"] else "Finished", state="complete")
+def start_case(state_in: dict, thread_id: str, meta: dict) -> dict:
+    """Hand a new run to the background worker and return at once. The run continues even if the user leaves the page."""
+    manager().start(state_in, thread_id, meta)
     load_snapshot.clear()
-    return snap
+    return {"running": True}
 
 
-def resume_case(thread_id: str, value: dict) -> dict | None:
-    with st.spinner("Recording the decision…"):
-        try:
-            snap = run_async(_resume(thread_id, value))
-        except Exception as e:  # noqa: BLE001
-            st.error(friendly_error(e))
-            return None
+def resume_case(thread_id: str, value: dict) -> dict:
+    """Record a human decision (or document review) in the background; *revise* re-drafts the memo, which takes minutes."""
+    manager().resume(thread_id, value)
     load_snapshot.clear()
-    return snap
+    return {"running": True}
+
+
+def continue_case(thread_id: str) -> dict:
+    """Resume an interrupted run from its last checkpoint."""
+    manager().continue_run(thread_id)
+    load_snapshot.clear()
+    return {"running": True}
+
+
+@st.fragment(run_every=2)
+def live_progress(thread_id: str) -> None:
+    """Progress of a background run. Refreshes itself every 2 s and reloads the page once the run has finished."""
+    prog = manager().progress(thread_id)
+    if prog is None or prog.done:
+        load_snapshot.clear()
+        st.rerun()
+        return
+    done_nodes = {n for n, _ in prog.events}
+    elapsed = time.time() - prog.started
+    st.progress(min(len(done_nodes) / len(NODE_LABEL), 0.97), text=f"Working… {len(done_nodes)} of {len(NODE_LABEL)} steps · {elapsed:.0f}s")
+    for node, t in prog.events:
+        st.markdown(f":green[✓] {NODE_LABEL.get(node, node)} <span style='opacity:.5'>· {t:.0f}s</span>", unsafe_allow_html=True)
+    st.caption("You can leave this page: the run continues in the background and the case will be waiting for you in your inbox.")
+
+
+def running_view(thread_id: str, row: dict | None) -> bool:
+    """Show a case that is running, failed or was interrupted. Returns True if it handled the case (so the caller shows no detail)."""
+    prog = manager().progress(thread_id)
+    if prog is not None and not prog.done:
+        label = (row or {}).get("business_label") or prog.label or thread_id
+        st.subheader(label)
+        live_progress(thread_id)
+        return True
+    status = (row or {}).get("status")
+    if prog is not None and prog.error and status in ("running", "error", None):
+        st.error(f"The run stopped: {friendly_run_error(prog.error)}")
+    elif status == "error":
+        st.error(f"The run stopped: {friendly_run_error((row or {}).get('error') or 'unknown error')}")
+    elif status == "running":
+        st.warning("This run was interrupted (the console was restarted while it was working).")
+    else:
+        return False
+    st.caption("Nothing is lost: every finished step was saved, and the run picks up where it stopped.")
+    if st.button("Continue the run", type="primary", key=f"continue-{thread_id}"):
+        continue_case(thread_id)
+        st.rerun()
+    return True
+
+
+def friendly_run_error(msg: str) -> str:
+    return friendly_error(RuntimeError(msg))
+
+
+def open_case(thread_id: str, *, actions: bool = True) -> None:
+    """The one entry point for showing a case in any state: running, interrupted, failed, waiting for a human, or decided."""
+    row = None
+    try:
+        row = cases.get(thread_id)
+    except Exception:  # noqa: BLE001 - the index is best-effort
+        pass
+    if running_view(thread_id, row):
+        return
+    try:
+        snap = load_snapshot(thread_id)
+    except Exception as e:  # noqa: BLE001
+        st.error(friendly_error(e))
+        return
+    if snap is None:
+        st.warning("This case has no saved state.")
+        return
+    if case_detail(thread_id, snap, actions=actions) is not None:
+        st.rerun()
 
 
 # --------------------------------------------------------------------------- case detail
 def case_header(thread_id: str, v: dict, status: str) -> None:
     app = v.get("application") or {}
     st.subheader(f"{app.get('business_label', v.get('case_id', thread_id))}")
-    st.caption(f"Case `{v.get('case_id')}` · thread `{thread_id}` · policy **{v.get('policy_id')}** · {STATUS_LABEL.get(status, status)} · "
-               f"{money(app.get('loan_amount'))} over {app.get('term_months', '—')} months")
+    st.caption(f"Case {v.get('case_id')} · {STATUS_LABEL.get(status, status)} · {money(app.get('loan_amount'))} over {app.get('term_months', '—')} months · "
+               f"credit policy: {v.get('policy_id')}")
     c1, c2, c3, c4 = st.columns(4)
     rec = v.get("recommendation")
     c1.metric("Recommendation", (rec or "—").upper())
@@ -269,7 +317,7 @@ def tab_application(thread_id: str, v: dict) -> None:
             "Loan amount": money(app.get("loan_amount")), "Term (months)": app.get("term_months"), "Purpose": app.get("purpose"),
             "Collateral value": money(app.get("collateral_value")), "Personal guarantee": "yes" if app.get("guarantor_provided") else "no",
             "State": prof.get("state"), "Legal form": prof.get("business_type"), "Rate type": prof.get("fixed_or_variable"),
-            "Jobs supported": prof.get("jobs_supported"), "Franchise": "yes" if prof.get("franchise") else "no"}
+            "Jobs supported": prof.get("jobs_supported"), "Franchise": "yes" if prof.get("franchise") else "no", "Run id": thread_id}
     show_table(pd.DataFrame({"Fact": list(rows), "Value": [str(x) for x in rows.values()]}))
     st.caption("These are the facts the agents see. Redaction is **" + ("on" if v.get("redaction", True) else "off") + "**.")
     if v.get("history"):
@@ -351,13 +399,17 @@ def approval_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
         # pre-select the recommendation for approve/decline; for REFER leave it blank so the approver is not nudged either way
         decision = c1.radio("Decision", ["approve", "decline", "revise"], index=["approve", "decline", "revise"].index(rec) if rec in ("approve", "decline") else None,
                             horizontal=True, help="*Revise* sends the memo back to the writer with your comments (up to two times).")
-        tier = c2.selectbox("Your authority tier", TIERS, index=TIERS.index(required))
-        approver = st.text_input("Approver id", value=st.session_state.get("approver_id", "approver-1"))
+        mine = st.session_state.get("reviewer_tier")
+        tier = c2.selectbox("Your authority tier", TIERS, index=TIERS.index(mine if mine in TIERS else required),
+                            help="Pre-filled from your profile in the sidebar.")
+        approver = st.text_input("Approver id", value=st.session_state.get("approver_id") or "", help="Pre-filled from your profile in the sidebar.")
         reason = st.text_area("Reason / comments", help="Required when you override the recommendation or ask for a revision.")
         submitted = st.form_submit_button("Submit decision", type="primary")
     if not submitted:
         return None
-    st.session_state["approver_id"] = approver
+    if not approver.strip():
+        st.error("Enter your name or id: it is recorded with the decision.")
+        return None
     if decision is None:
         st.error("Choose approve, decline or revise.")
         return None
@@ -368,7 +420,7 @@ def approval_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
     if TIERS.index(tier) < TIERS.index(required):
         st.error(f"Your tier ({tier}) is below the required tier ({required}). Choose a higher authority or escalate the case.")
         return None
-    return resume_case(thread_id, {"decision": decision, "approver_tier": tier, "approver_id": approver.strip() or "approver", "reason": reason.strip()})
+    return resume_case(thread_id, {"decision": decision, "approver_tier": tier, "approver_id": approver.strip(), "reason": reason.strip()})
 
 
 def doc_review_panel(thread_id: str, v: dict, intr: dict) -> dict | None:

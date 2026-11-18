@@ -91,8 +91,8 @@ LightGBM and SHAP. Running several experiment processes at once is limited by th
 | Failures | `nim_calls` where `NOT ok` | few | many `[429]`, or `empty response` |
 | Cache hits | `nim_calls` where `cached` | high on re-runs | zero on a repeated case (prompt changed) |
 | Audit chain | `wealthpilot audit-verify` or the console's **History** page | `ok: true` | `ok: false` |
-| Waiting cases | console **Overview** / **Cases** | few | many cases stuck *awaiting approval* |
-| Failed runs | console **Cases** (status 🛑 Error) | none | a rising count |
+| Waiting cases | console **Inbox** / **Cases** | few | many cases stuck *awaiting approval* |
+| Failed runs | console **Cases** (status *Stopped (error)*) | none | a rising count |
 | Degraded runs | `state.degraded` / memo limitations | rare | frequent — a tool server is down |
 
 ## Upgrading dependencies

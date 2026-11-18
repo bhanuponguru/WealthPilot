@@ -79,8 +79,17 @@ belongs in storage, not in widget state.
 
 The policy picker defaulted alphabetically to *lenient*, while the documentation's walkthrough used *strict*, and a UI test silently ran the wrong policy because of it. Defaults should match what the documentation shows.
 
+## 15. A page script is not a job runner
+
+Running the graph inside the Streamlit script looked fine in every test, because tests never navigate away. In a browser, switching page or closing the tab stops the script, abandoning the run and leaving the case stuck as *running*; the documentation had even claimed the opposite. Long work must belong to something that outlives the page (a worker thread here, a queue in a larger system), and a test must leave the page mid-run to prove it.
+
+## 16. Build for the user's job, not the builder's checklist
+
+The first console listed every capability the project had (including experiments and diagnostics) at equal weight. Re-organising around "what is waiting for me, review it, decide" and moving the research pages into their own section made the same features usable without changing a line of underwriting logic.
+
 ## Process notes
 
 * Starting a background process with `pkill -f <pattern>` can kill your own shell if the pattern appears in its command line; bracket one character (`[m]lflow`).
+* A running Streamlit server keeps imported modules in memory; restart it after editing code that pages import, or the browser keeps showing the old behaviour.
 * Run one capacity-sensitive experiment at a time: concurrent experiments distort each other's latency and trigger rate limits.
 * Cheap offline checks (lint for undefined names, import-all-modules) catch mistakes that slow, expensive live runs would only reveal late.

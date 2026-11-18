@@ -30,7 +30,9 @@ WealthPilot is a **research and teaching project**. These limits matter when int
 | Limitation | Detail |
 |---|---|
 | **No authentication or authorisation** | Anyone who can reach the port can underwrite and decide. The approver's tier and id are *declared* in the form, not verified. It binds to `127.0.0.1` by default; do not expose it. |
-| **Single-user, blocking runs** | A run blocks the page that started it (progress is streamed). There is no background queue, so closing the tab mid-run leaves the case to be reopened from **Cases** when it pauses. |
+| **Single-process worker, no queue** | Runs execute on one background worker thread inside the console process, so leaving the page or closing the tab does not stop them. There is no durable job queue: restarting the console mid-run interrupts the run, which then shows as *Interrupted* and is continued from its last checkpoint by hand (**Continue the run**). Concurrent runs share the same model-rate budget. |
+| **Reviewer identity is declared, not verified** | The sidebar's name and authority tier pre-fill the decision form and go into the audit log, but nothing proves who typed them. |
+| **Masked names on the review screens** | By design the business name is shown with owner names masked (e.g. `[OWNER] Auto Inc.`); a case is identified by case number, industry and loan amount. Identity can be revealed per case on the *Application* tab. |
 | **Document understanding is untested beyond the generated layouts** | Uploads are validated for being a readable PDF of sensible size, not for being financial statements. Unusual layouts may fail reconciliation and pause for document review. |
 | **Identity attributes are minimal** | The new-application form never asks for gender or name origin (they are `unspecified`); only the owner's name and address are used, for screening and redaction. |
 | **Uploads are stored unencrypted** | PDFs are written under `data/uploads/<case id>/` (git-ignored) with normal file permissions. |

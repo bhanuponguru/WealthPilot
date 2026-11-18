@@ -1,56 +1,100 @@
-"""Overview page: are the services up, what is waiting for me, and where do I start."""
+"""Inbox: what needs the reviewer's decision, what is still running, and what was decided recently."""
 
 from __future__ import annotations
 
 import streamlit as st
 
 from ...graph import cases
-from ..common import STATUS_LABEL, cached_health, friendly_error, require_db
+from .. import nav
+from ..common import cached_health, friendly_error, require_db
+from ..forms import money
+from ..runner import manager
+
+REC_BADGE = {"approve": ("APPROVE", "green"), "decline": ("DECLINE", "red"), "refer": ("REFER", "orange")}
+WAITING = ["awaiting_approval", "awaiting_doc_review"]
+
+
+def _case_card(r: dict, *, key: str, action: str = "Review") -> None:
+    rec, color = REC_BADGE.get(r.get("recommendation") or "", ("", "gray"))
+    with st.container(border=True):
+        left, mid, right = st.columns([5, 3, 1.4], vertical_alignment="center")
+        left.markdown(f"**{r['business_label'] or r['case_id']}**")
+        left.caption(f"{money(r['loan_amount'])} · case {r['case_id']} · policy {r['policy_id']}")
+        if r["status"] == "awaiting_doc_review":
+            mid.badge("Documents need checking", color="orange", icon=":material/description:")
+        elif rec:
+            mid.badge(f"Recommends {rec.title()}" + (f" · grade {r['grade']}" if r.get("grade") else ""), color=color)
+        if right.button(action, key=key, width="stretch"):
+            nav.open_in_cases(r["thread_id"])
 
 
 def render() -> None:
-    st.title("📊 WealthPilot")
-    st.markdown("**A multi-agent assistant for SME loan underwriting.** It reads the applicant's documents, applies your credit policy exactly as written, "
-                "checks its own numbers, drafts a credit memo — and then **stops for a human decision**.")
+    top_l, top_r = st.columns([4, 1], vertical_alignment="center")
+    top_l.title("Inbox")
+    if top_r.button("New case", icon=":material/add_circle:", type="primary", width="stretch", key="inbox-new"):
+        nav.go("new-case")
 
-    checks = cached_health()
-    required_bad = [c for c in checks if not c.ok and c.required]
-    if required_bad:
-        st.error("Some services need attention before you can underwrite: " + ", ".join(f"**{c.name}**" for c in required_bad) + ". See the **System** page for the fix commands.")
-    else:
-        st.success("All required services are running.")
+    problems = [c for c in cached_health() if not c.ok and c.required]
+    if problems:
+        st.error("Underwriting is unavailable right now: " + ", ".join(f"**{c.name}**" for c in problems) + " not ready.")
+        if st.button("See how to fix this", key="inbox-fix"):
+            nav.go("system")
 
-    st.markdown("#### What needs you")
     if not require_db():
         return
     try:
-        counts = cases.counts()
+        waiting = cases.list_cases(WAITING, limit=50)
+        running = cases.list_cases(["running"], limit=50)
+        failed = cases.list_cases(["error"], limit=20)
+        decided = cases.list_cases(["decided", "finished"], limit=5)
     except Exception as e:  # noqa: BLE001
         st.warning(friendly_error(e))
-        counts = {}
-    cols = st.columns(4)
-    cols[0].metric(STATUS_LABEL["awaiting_approval"], counts.get("awaiting_approval", 0))
-    cols[1].metric(STATUS_LABEL["awaiting_doc_review"], counts.get("awaiting_doc_review", 0))
-    cols[2].metric(STATUS_LABEL["decided"], counts.get("decided", 0))
-    cols[3].metric(STATUS_LABEL["error"], counts.get("error", 0))
-    waiting = counts.get("awaiting_approval", 0) + counts.get("awaiting_doc_review", 0)
-    if waiting:
-        st.info(f"**{waiting} case(s)** are waiting for a human. Open the **Cases** page to review them.")
-        try:
-            recent = cases.list_cases(["awaiting_approval", "awaiting_doc_review"], limit=5)
-            for r in recent:
-                st.markdown(f"- `{r['case_id']}` · {r['business_label']} · {STATUS_LABEL[r['status']]} · recommendation **{(r['recommendation'] or '—').upper()}**")
-        except Exception:  # noqa: BLE001
-            pass
+        return
 
-    st.markdown("#### How it works")
-    a, b, c = st.columns(3)
-    a.markdown("**1 · Underwrite**\n\nChoose a sample applicant or enter a new application with PDF statements. The agents parse the documents, compute ratios, "
-               "screen the borrower, score risk and apply the policy.")
-    b.markdown("**2 · Review**\n\nOpen the case: read the memo, the policy checklist with quoted evidence, the financials and the risk factors. "
-               "Anything the system was unsure of is flagged.")
-    c.markdown("**3 · Decide**\n\nApprove, decline or ask for a revision. You need the authority tier the policy requires, and every decision "
-               "is written to a tamper-evident audit log.")
-    st.markdown("#### Pages")
-    st.caption("**Underwrite** start a case · **Cases** review and decide · **History** audit trail · **Policies** read the rules and test retrieval · "
-               "**Results** the experiments · **System** diagnostics")
+    if not (waiting or running or failed or decided):
+        st.info("No cases yet.")
+        st.markdown("**Get started:** open **New case**, enter an application and upload the applicant's financial statements and bank statement as PDFs. "
+                    "The assistant reads them, applies your credit policy, researches the borrower and drafts a credit memo. "
+                    "Then it stops and waits for **your** decision.")
+        st.caption("No application to hand? **New case → Try a sample applicant** runs one of the bundled examples.")
+        return
+
+    st.subheader(f"Needs your decision ({len(waiting)})")
+    if waiting:
+        for r in waiting:
+            _case_card(r, key=f"inbox-{r['thread_id']}")
+    else:
+        st.caption("Nothing is waiting for you.")
+
+    if failed or running:
+        active = set(manager().active_threads())
+        st.subheader("In progress")
+        for r in running:
+            interrupted = r["thread_id"] not in active
+            with st.container(border=True):
+                left, mid, right = st.columns([5, 3, 1.4], vertical_alignment="center")
+                left.markdown(f"**{r['business_label'] or r['case_id']}**")
+                left.caption(f"{money(r['loan_amount'])} · case {r['case_id']}")
+                mid.badge("Interrupted" if interrupted else "Working…", color="orange" if interrupted else "blue")
+                if right.button("Open", key=f"run-{r['thread_id']}", width="stretch"):
+                    nav.open_in_cases(r["thread_id"])
+        for r in failed:
+            with st.container(border=True):
+                left, mid, right = st.columns([5, 3, 1.4], vertical_alignment="center")
+                left.markdown(f"**{r['business_label'] or r['case_id']}**")
+                left.caption(f"{money(r['loan_amount'])} · case {r['case_id']}")
+                mid.badge("Stopped with an error", color="red")
+                if right.button("Open", key=f"err-{r['thread_id']}", width="stretch"):
+                    nav.open_in_cases(r["thread_id"])
+
+    if decided:
+        st.subheader("Recently decided")
+        for r in decided:
+            d = (r.get("decision") or "").lower()
+            with st.container(border=True):
+                left, mid, right = st.columns([5, 3, 1.4], vertical_alignment="center")
+                left.markdown(f"**{r['business_label'] or r['case_id']}**")
+                left.caption(f"{money(r['loan_amount'])} · case {r['case_id']} · {r['updated_at']:%Y-%m-%d %H:%M}")
+                mid.badge(d.title() or "Finished", color=REC_BADGE.get(d, ("", "gray"))[1])
+                if right.button("View", key=f"done-{r['thread_id']}", width="stretch"):
+                    nav.open_in_cases(r["thread_id"])

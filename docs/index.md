@@ -93,7 +93,7 @@ All numbers come from the scripts in `experiments/` and are stored in `report/re
 
     1. Check the [prerequisites](getting-started/prerequisites.md).
     2. Follow the [installation guide](getting-started/installation.md).
-    3. Underwrite your first case in the [quickstart](getting-started/quickstart.md), or in the browser with [the web console](guides/console.md) (`uv run wealthpilot ui`).
+    3. Underwrite your first case in the [quickstart](getting-started/quickstart.md), or in the browser with [the web console](guides/console.md) (`uv run wealthpilot ui`), which is the way an officer would normally work.
 
 === "I want to understand it"
 

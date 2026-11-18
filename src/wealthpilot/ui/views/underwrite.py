@@ -1,4 +1,4 @@
-"""Underwrite page: run a synthetic applicant, or submit a new application with your own PDFs."""
+"""New case page: submit an application with its PDF statements, or try one of the bundled sample applicants."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from ...config import PROJECT_ROOT
 from ...graph.builder import make_input, make_input_from_applicant
 from ...synth.render_docs import DOCS_DIR
 from .. import forms
-from ..common import case_detail, load_snapshot, preflight, start_case
+from ..common import open_case, preflight, start_case
 
 POLICY_DIR = PROJECT_ROOT / "data" / "policies"
 
@@ -52,18 +52,19 @@ def tab_sample() -> None:
     c2.metric("Latest revenue", forms.money(latest["revenue"]))
     c3.metric("Years in business", a["years_in_business"])
     c4.metric("Statement years", len(a["statements"]))
-    c1, c2, c3 = st.columns(3)
-    policy = c1.radio("Credit policy", policy_ids(), index=default_policy_index(policy_ids()), horizontal=True, key="sample-policy")
-    variant = c2.radio("Documents", ["clean", "noisy", "scanned"], horizontal=True, key="sample-variant",
-                       help="Noisy = messy layouts and label synonyms. Scanned = image-only PDFs read by the vision model.")
-    redaction = c3.toggle("Redact the owner's identity", value=True, key="sample-red", help="On: names, address and ZIP are removed from everything the model reads.")
+    policy = st.radio("Credit policy", policy_ids(), index=default_policy_index(policy_ids()), horizontal=True, key="sample-policy")
+    with st.expander("Advanced options"):
+        variant = st.radio("Document quality", ["clean", "noisy", "scanned"], horizontal=True, key="sample-variant",
+                           help="Clean = tidy text PDFs. Noisy = messy layouts and label synonyms. Scanned = image-only PDFs that are read by the vision model.")
+        redaction = st.toggle("Hide the owner's identity from the AI", value=True, key="sample-red",
+                              help="On (recommended): names, address and ZIP are removed from everything the model reads, so it decides on the facts.")
     with st.expander("Download this applicant's documents (to try the upload flow)"):
         d = DOCS_DIR / cid / variant
         for fname, label in (("financials.pdf", "Financial statements"), ("bank_statement.pdf", "Bank statement")):
             f = d / fname
             if f.exists():
                 st.download_button(f"⬇️ {label} ({variant})", f.read_bytes(), file_name=f"{cid}-{variant}-{fname}", mime="application/pdf", key=f"dl-{cid}-{variant}-{fname}")
-    if st.button("▶ Run underwriting", type="primary", key="sample-run"):
+    if st.button("Run underwriting", icon=":material/play_arrow:", type="primary", key="sample-run"):
         if preflight():
             thread = f"{cid}-ui-{time.strftime('%H%M%S')}"
             snap = start_case(make_input(a, policy, variant, redaction), thread, {"source": "synthetic", "variant": variant})
@@ -110,10 +111,11 @@ def tab_new() -> None:
     c1, c2 = st.columns(2)
     fin = c1.file_uploader("Financial statements (PDF)", type=["pdf"], key="f-fin", help="Income statement and balance sheet; one to three fiscal years.")
     bank = c2.file_uploader("Bank statement (PDF)", type=["pdf"], key="f-bank", help="A 12-month summary with opening, deposits, withdrawals and closing balances.")
-    c1, c2 = st.columns(2)
-    policy = c1.radio("Credit policy", policy_ids(), index=default_policy_index(policy_ids()), horizontal=True, key="f-policy")
-    redaction = c2.toggle("Redact the owner's identity", value=True, key="f-red")
-    if st.button("▶ Run underwriting", type="primary", key="f-run"):
+    policy = st.radio("Credit policy", policy_ids(), index=default_policy_index(policy_ids()), horizontal=True, key="f-policy")
+    with st.expander("Advanced options"):
+        redaction = st.toggle("Hide the owner's identity from the AI", value=True, key="f-red",
+                              help="On (recommended): the owner's name, address and ZIP are removed from everything the model reads, so it decides on the facts.")
+    if st.button("Run underwriting", icon=":material/play_arrow:", type="primary", key="f-run"):
         form = {"business_name": business, "owner_name": owner, "industry_name": industry_name, "naics": naics, "years_in_business": years, "business_type": btype,
                 "jobs_supported": jobs, "street": street, "city": city, "state": state, "zip": zipc, "loan_amount": loan, "term_months": term, "purpose": purpose,
                 "collateral_value": collateral, "fixed_or_variable": rate, "guarantor_provided": guarantor, "franchise": franchise}
@@ -137,31 +139,34 @@ def tab_new() -> None:
 
 
 def active_case() -> bool:
-    """Show the case that was just run (or reopened). Returns True if one is being shown."""
+    """Show the case that was just started (or reopened). Returns True if one is being shown."""
     tid = st.session_state.get("active_thread")
     if not tid:
         return False
-    snap = load_snapshot(tid)
-    left, right = st.columns([5, 1])
-    left.markdown("### Current case")
-    if right.button("Dismiss", key="dismiss-active", help="Close this case view (the case stays in the Cases list)."):
+    left, right = st.columns([5, 1], vertical_alignment="center")
+    left.subheader("Current case")
+    if right.button("Close", key="dismiss-active", help="Close this view. The case stays in your Cases list."):
         st.session_state.pop("active_thread")
         st.rerun()
-    if snap is None:
-        st.warning("That case has no saved state.")
-        return True
-    if case_detail(tid, snap) is not None:
-        st.rerun()
+    open_case(tid)
     return True
 
 
 def render() -> None:
-    st.title("▶ Underwrite")
-    st.caption("Start a case, watch the agents work, then review the evidence and make the decision. Runs take a few minutes on the free model tier; repeating an identical run is served from the cache in seconds.")
-    showing = active_case()          # the case under review comes first; the entry form folds away
-    with st.expander("Start a new case" if showing else "Start a case", expanded=not showing):
-        t1, t2 = st.tabs(["Sample applicants", "New application"])
-        with t1:
-            tab_sample()
-        with t2:
-            tab_new()
+    st.title("New case")
+    st.caption("Enter the application and upload the applicant's statements. The assistant reads them, applies the credit policy and drafts a memo, "
+               "then waits for your decision. A run takes a few minutes; you can leave the page and the case will be in your inbox when it needs you.")
+    showing = active_case()          # the case just started comes first; the entry form folds away
+    if showing:
+        with st.expander("Start another case"):
+            _entry_tabs()
+    else:
+        _entry_tabs()
+
+
+def _entry_tabs() -> None:
+    t_new, t_sample = st.tabs(["New application", "Try a sample applicant"])
+    with t_new:
+        tab_new()
+    with t_sample:
+        tab_sample()

@@ -123,14 +123,15 @@ uv run wealthpilot doctor       # is everything running? prints the fix for anyt
 uv run wealthpilot ui           # opens http://127.0.0.1:8501
 ```
 
-1. **Underwrite → Sample applicants**: pick `C004`, leave *strict* selected, press **▶ Run underwriting**.
-2. Review the **Memo**, **Policy checklist**, **Financials** and **Risk** tabs.
-3. In **Your decision**, choose a tier of at least *Senior Credit Officer* and submit.
-4. Open **History** to see the recorded decision and the verified audit chain.
+1. In the sidebar, enter your name and choose the authority *Senior Credit Officer*.
+2. **New case → Try a sample applicant**: pick `C004`, leave *strict* selected, press **Run underwriting**. (You can leave the page while it works; the case appears in your **Inbox**.)
+3. Open the case and review the **Memo**, **Policy checklist**, **Financials** and **Risk** tabs.
+4. In **Your decision**, submit approve, decline or revise.
+5. Open **History** to see the recorded decision and the verified audit chain.
 
 ![The review screen](../assets/screenshots/case-review-memo.png)
 
-To underwrite **your own** applicant, use **Underwrite → New application**, fill in the form and upload the two PDFs. The full manual is
+To underwrite **your own** applicant, use **New case → New application**, fill in the form and upload the two PDFs. The full manual is
 [Using the web console](../guides/console.md).
 
 ## Next steps

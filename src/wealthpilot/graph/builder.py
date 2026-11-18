@@ -116,6 +116,10 @@ class Runner:
     async def resume(self, thread_id: str, value: dict, on_update=None) -> dict:
         return await self._drive(Command(resume=value), thread_id, on_update)
 
+    async def continue_run(self, thread_id: str, on_update=None) -> dict:
+        """Pick an interrupted run (process killed, browser closed, transient error) up from its last checkpoint."""
+        return await self._drive(None, thread_id, on_update)
+
     async def snapshot(self, thread_id: str) -> dict:
         snap = await self.graph.aget_state(self.cfg(thread_id))
         pending = [i.value for t in snap.tasks for i in t.interrupts]

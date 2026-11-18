@@ -67,6 +67,8 @@ Generated from the docstrings. Private helpers (leading underscore) are omitted.
 
 ::: wealthpilot.ui.forms
 
+::: wealthpilot.ui.runner
+
 ::: wealthpilot.ui.common
 
 ## Synthetic world

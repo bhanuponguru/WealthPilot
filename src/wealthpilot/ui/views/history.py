@@ -17,7 +17,7 @@ def _load(limit: int) -> list[tuple]:
 
 
 def render() -> None:
-    st.title("📜 History and audit")
+    st.title("History")
     st.caption("Every decision is appended to a hash-chained log: each record contains the hash of the one before it, so editing or deleting history is detectable.")
     if not require_db():
         return

@@ -55,7 +55,7 @@ docker exec wealthpilot-postgres psql -U wealthpilot -d wealthpilot -c "select r
     The default filter shows only cases *waiting for a human*. Widen the **Status** filter. Cases appear as soon as a run starts (status ⏳ Running).
 
 ??? failure "A case shows 🛑 Error in **Cases**"
-    Select it: the message says what failed (usually a missing service). Fix that and run the case again from **Underwrite**.
+    Select it: the message says what failed (usually a missing service). Fix that and press **Continue the run** on the case.
 
 ??? failure "Upload rejected"
     The message names the reason: not a readable PDF, empty, over 25 MB, or over 40 pages. For a scanned PDF larger than 25 MB, reduce the resolution.

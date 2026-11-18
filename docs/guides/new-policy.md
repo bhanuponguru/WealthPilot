@@ -50,7 +50,7 @@ uv run python -c "from wealthpilot.rag import index; [print(s, index.ingest('myp
 ## 4. Check it in the console, then run cases under it
 
 In the [web console](console.md), the **Policies** page lets you read your new policy, **compare it side by side** with another (showing only the rules that differ), and **try retrieval** with real questions
-to confirm each rule is findable. Then run cases under it from **Underwrite**, or from the command line:
+to confirm each rule is findable. Then run cases under it from **New case**, or from the command line:
 
 ```bash
 uv run wealthpilot run C004 --policy mypolicy --thread try-1
