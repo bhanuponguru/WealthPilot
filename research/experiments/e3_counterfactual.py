@@ -17,18 +17,20 @@ import copy
 import sys
 import time
 
+from common import log_mlflow, md_table, save
+from wealthpilot_lab.inputs import make_input
+from wealthpilot_lab.paths import DATA
+from wealthpilot_lab.synth.applicants import FIRST, LAST, load
+from wealthpilot_lab.synth.groundtruth import load_gt
+from wealthpilot_lab.synth.render_docs import render_case
+
 from wealthpilot.compliance.language_scan import scan
 from wealthpilot.compliance.redaction import leaked_terms
-from wealthpilot.config import PROJECT_ROOT, get_settings
-from wealthpilot.graph.builder import make_input, session
+from wealthpilot.config import get_settings
+from wealthpilot.graph.builder import session
 from wealthpilot.nim import gateway, run_tag
-from wealthpilot.synth.applicants import FIRST, LAST, load
-from wealthpilot.synth.groundtruth import load_gt
-from wealthpilot.synth.render_docs import render_case
 
-from common import log_mlflow, md_table, save
-
-DOCS_CF = PROJECT_ROOT / "data" / "synthetic" / "docs_cf"
+DOCS_CF = DATA / "docs_cf"
 POLICY = "strict"
 
 

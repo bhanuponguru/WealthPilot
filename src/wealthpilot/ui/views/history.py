@@ -28,9 +28,9 @@ def render() -> None:
         st.error(friendly_error(e))
         return
     if ver["ok"]:
-        st.success(f"✅ Audit chain intact — {ver['records']} records verified.")
+        st.success(f"Audit chain intact: {ver['records']} records verified.")
     else:
-        st.error(f"🛑 The audit chain is BROKEN at record {ver['first_bad_id']}. Records from there on cannot be trusted.")
+        st.error(f"The audit chain is broken at record {ver['first_bad_id']}. Records from there on cannot be trusted.")
     if not rows:
         st.info("No decisions recorded yet.")
         return
@@ -55,7 +55,7 @@ def render() -> None:
     if only_over:
         view = view[view["Override"]]
     ev = st.dataframe(view, hide_index=True, width="stretch", on_select="rerun", selection_mode="single-row", key="h-table")
-    st.download_button("⬇️ Download as CSV", view.to_csv(index=False), file_name="decisions.csv", mime="text/csv")
+    st.download_button("Download as CSV", view.to_csv(index=False), icon=":material/download:", file_name="decisions.csv", mime="text/csv")
     sel = ev.selection.rows if ev and ev.selection else []
     if sel:
         rid = int(view.iloc[sel[0]]["ID"])

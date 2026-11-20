@@ -16,14 +16,37 @@ Note: langchain-nvidia-ai-endpoints only auto-reads ``NVIDIA_API_KEY``, so the
 NIM gateway must always pass ``api_key=get_settings().nvidia_api_key`` explicitly.
 """
 
+import os
 from functools import lru_cache
 from pathlib import Path
 
 from pydantic import AliasChoices, Field, SecretStr, ValidationError
-from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
+from pydantic_settings import (
+    BaseSettings,
+    PydanticBaseSettingsSource,
+    SettingsConfigDict,
+)
 
 # src/wealthpilot/config.py -> project root
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _path(env: str, default: Path) -> Path:
+    return Path(os.environ[env]) if os.environ.get(env) else default
+
+
+# Where things live. Every location can be moved with an environment variable (the container image does this).
+DATA_DIR = _path("WEALTHPILOT_DATA_DIR", PROJECT_ROOT / "data")                 # runtime data: uploads, sanctions list, optional demo data
+ARTIFACTS_DIR = _path("WEALTHPILOT_ARTIFACTS_DIR", PROJECT_ROOT / "artifacts")  # trained model and statistics that ship with the product
+POLICIES_DIR = _path("WEALTHPILOT_POLICIES_DIR", PROJECT_ROOT / "policies")     # one folder per credit policy, each with a policy.md
+CONFIG_DIR = _path("WEALTHPILOT_CONFIG_DIR", PROJECT_ROOT / "config")           # compliance profile(s)
+DEMO_DIR = _path("WEALTHPILOT_DEMO_DIR", DATA_DIR / "demo")                     # optional demonstration data (sample applicants, mock sources)
+
+# Network layout of the tool servers. MCP_HOST is where the console and workflow reach them; MCP_BIND is the address they listen on.
+MCP_HOST = os.environ.get("MCP_HOST", "127.0.0.1")
+MCP_BIND = os.environ.get("MCP_BIND", "127.0.0.1")
+MCP_PORTS = {"fincalc": 8101, "policydocs": 8102, "research": 8103}
+DEMO_MODE = os.environ.get("WEALTHPILOT_DEMO", "").lower() in ("1", "true", "yes", "on")  # show the sample-applicant feature in the console
 
 
 class Settings(BaseSettings):
@@ -39,18 +62,18 @@ class Settings(BaseSettings):
     )  # required: no default
     database_url: str = "postgresql://wealthpilot:wealthpilot@127.0.0.1:5432/wealthpilot"
     mlflow_tracking_uri: str = "http://127.0.0.1:5000"
-    nim_rpm_budget: int = 15  # ceiling for the adaptive shared limiter; NIM returned real 429s at 25-35
+    nim_rpm_budget: int = 15  # ceiling for the adaptive, shared requests-per-minute limiter
 
-    # Model IDs verified callable for this account on 2026-11-11 (the public catalog lists many retired ones).
-    chat_model: str = "nvidia/nemotron-3.5-lightning-30b-a3b"   # fast + available; the 550B model returned 503s during testing
-    chat_fallback_model: str = ""  # disabled by default: the only other usable chat model (550B) returned garbled text on long outputs. E4 enables it explicitly.
+    # Model identifiers. The public catalog lists models that a given account cannot call, so verify availability before changing them.
+    chat_model: str = "nvidia/nemotron-3.5-lightning-30b-a3b"
+    chat_fallback_model: str = ""  # optional second chat model, used after the primary fails; empty disables it
     vlm_model: str = "nvidia/nemotron-3.5-super-vl-120b-a12b"
     rerank_model: str = "nvidia/llama-nemotron-rerank-vl-1b-v2"
-    embed_model: str = "nomic-embed-text"  # served by local Ollama (no NIM embedding model works for this account)
+    embed_model: str = "nomic-embed-text"  # served by a local Ollama instance
     ollama_url: str = "http://127.0.0.1:11434"
     nim_cache_enabled: bool = True
-    nim_timeout_s: float = 45.0  # fail over faster than the library default of 60 s
-    nim_thinking: bool = False  # reasoning models: thinking off = ~0 reasoning tokens, 3x faster
+    nim_timeout_s: float = 45.0  # per-request read timeout, seconds
+    nim_thinking: bool = False  # reasoning models: leave their extended thinking off for much lower latency
 
     @classmethod
     def settings_customise_sources(

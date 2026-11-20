@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
+from wealthpilot.config import MCP_BIND
 from wealthpilot.memory import precedents
 from wealthpilot.rag import index
 
 PORT = 8102
-mcp = FastMCP("policydocs", host="127.0.0.1", port=PORT)
+mcp = FastMCP("policydocs", host=MCP_BIND, port=PORT)
 
 
 @mcp.tool()

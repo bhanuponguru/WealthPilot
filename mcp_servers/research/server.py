@@ -1,6 +1,7 @@
-"""research MCP server: sanctions screening (real OFAC SDN + synthetic watchlist), adverse media, registry, SBA industry stats.
+"""research MCP server: sanctions screening (OFAC SDN list), adverse media, business registry and SBA industry statistics.
 
-adverse_media and registry_lookup are MOCK external sources backed by the synthetic world, clearly labelled as such.
+adverse_media and registry_lookup are integration points for external providers. The bundled implementations are MOCKS backed by
+the optional demonstration data; without it they report no results.
 """
 
 from __future__ import annotations
@@ -11,12 +12,12 @@ from mcp.server.fastmcp import FastMCP
 from rapidfuzz import fuzz
 
 from wealthpilot import screening
-from wealthpilot.config import PROJECT_ROOT
+from wealthpilot.config import ARTIFACTS_DIR, DEMO_DIR, MCP_BIND
 
 PORT = 8103
-mcp = FastMCP("research", host="127.0.0.1", port=PORT)
-SYN = PROJECT_ROOT / "data" / "synthetic"
-STATS = PROJECT_ROOT / "data" / "sba" / "industry_stats.json"
+mcp = FastMCP("research", host=MCP_BIND, port=PORT)
+DEMO = DEMO_DIR  # mock providers read plain files here; without them they report no results
+STATS = ARTIFACTS_DIR / "industry_stats.json"
 
 
 def _json(path):
@@ -25,7 +26,7 @@ def _json(path):
 
 @mcp.tool()
 def ofac_screen(name: str) -> dict:
-    """Screen a person or company name against the OFAC SDN list (and a synthetic watchlist). Fuzzy match, score 0-100.
+    """Screen a person or company name against the OFAC SDN list (and an optional extra watchlist). Fuzzy match, score 0-100.
     Returns matches with score >= 92; an empty list means no match."""
     hits = screening.screen(name)
     return {"name": name, "match_count": len(hits), "matches": hits}
@@ -35,7 +36,7 @@ def ofac_screen(name: str) -> dict:
 def adverse_media(subject: str, owner: str = "") -> dict:
     """Adverse-media search (MOCK corpus). Returns articles about the business or its owner with severity low|medium|high|none."""
     arts = []
-    for a in _json(SYN / "news.json"):
+    for a in _json(DEMO / "news.json"):
         if fuzz.token_set_ratio(subject.lower(), a["subject"].lower()) >= 92 or (owner and a.get("owner", "").lower() == owner.lower()):
             arts.append({k: a[k] for k in ("headline", "severity", "date", "source")})
     rank = {"high": 3, "medium": 2, "low": 1, "none": 0}
@@ -46,7 +47,7 @@ def adverse_media(subject: str, owner: str = "") -> dict:
 @mcp.tool()
 def registry_lookup(business_name: str, state: str = "") -> dict:
     """Business registry lookup (MOCK). Returns registration status and incorporation year if found."""
-    for a in _json(SYN / "applicants.json"):
+    for a in _json(DEMO / "applicants.json"):
         if fuzz.ratio(business_name.lower(), a["business_name"].lower()) >= 95 and (not state or state == a["address"]["state"]):
             return {"found": True, "status": "active", "incorporation_year": a["incorporation_year"], "state": a["address"]["state"]}
     return {"found": False}

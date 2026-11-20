@@ -6,9 +6,9 @@ A hit means the gold rule id is among the rules the retrieved chunk covers (gene
 
 from __future__ import annotations
 
-from wealthpilot.rag import index
-
 from common import bootstrap_ci, log_mlflow, md_table, save
+
+from wealthpilot.rag import index
 
 QUERIES = {
     "CP-1": ["What is the minimum operating history required?", "How long must a business have been operating to qualify?",

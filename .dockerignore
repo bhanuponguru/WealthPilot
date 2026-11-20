@@ -1,0 +1,23 @@
+# secrets and local state
+.env
+.git
+.claude
+.agents
+.venv
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+mlflow.db
+mlartifacts
+mlruns
+site
+# large or generated data (never part of an image)
+data
+research/data
+research/results/model_compare
+# not needed at run time
+docs
+tests
+scripts
+Makefile

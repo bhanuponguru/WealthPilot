@@ -1,8 +1,7 @@
 """WealthPilot console (Streamlit).
 
 Run it with ``uv run wealthpilot ui`` (or ``uv run streamlit run src/wealthpilot/ui/app.py``).
-Day-to-day work (inbox, new case, cases, history) comes first in the sidebar; reference material and the experiment and
-diagnostic pages sit in their own sections below it.
+Day-to-day work (inbox, new case, cases, history) comes first in the sidebar; reference material and administration follow.
 """
 
 from __future__ import annotations

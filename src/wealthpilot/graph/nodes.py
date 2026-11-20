@@ -13,12 +13,18 @@ from langchain.agents import create_agent
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langgraph.types import interrupt
 
-from .. import finance, policy_ref
+from .. import decision, finance
 from ..compliance import audit
 from ..compliance.language_scan import scan
 from ..compliance.redaction import Redactor, leaked_terms
 from ..memory import precedents
-from ..parsing.pipeline import extract_bank, llm_json, parse_financials, reconcile, reconcile_bank
+from ..parsing.pipeline import (
+    extract_bank,
+    llm_json,
+    parse_financials,
+    reconcile,
+    reconcile_bank,
+)
 from .runtime import ToolUnavailable, rt
 from .state import CaseState
 
@@ -387,7 +393,7 @@ async def approver_tier(policy_id: str, loan_amount: float, has_exception: bool)
 
 
 def final_recommendation(checks: list[dict], degraded: bool) -> str:
-    rec = policy_ref.derive_recommendation(checks)
+    rec = decision.derive_recommendation(checks)
     # A degraded run never auto-decides in EITHER direction: approving on incomplete checks is unsafe, and declining because a
     # tool was down (e.g. "sanctions screening not performed" read as a failure) would be an adverse action with no real basis
     # (E4 found 4 such wrongful declines before this cap).

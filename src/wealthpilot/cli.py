@@ -23,17 +23,20 @@ def _print_snapshot(snap: dict) -> None:
         typer.secho(f"\nFINAL: {json.dumps(v.get('final'), indent=1)}", fg="green")
 
 
-@app.command()
-def run(case_id: str, policy: str = "strict", variant: str = "clean", redaction: bool = True, thread: str = typer.Option(None, help="thread id (default: case id)")):
-    """Run one synthetic case through the graph until it needs a human."""
-    from .graph.builder import make_input, session
-    from .synth.applicants import load
+@app.command("demo-run")
+def demo_run(case_id: str, policy: str = "strict", variant: str = "clean", redaction: bool = True, thread: str = typer.Option(None, help="thread id (default: case id)")):
+    """Run one sample applicant (demonstration data) through the workflow until it needs a human."""
+    from . import demo
+    from .graph.builder import session
 
-    rec = next(a for a in load() if a["case_id"] == case_id)
+    rec = next((a for a in demo.applicants() if a["case_id"] == case_id), None)
+    if rec is None:
+        typer.secho("No such sample applicant. Demonstration data is needed (see the documentation).", fg="red")
+        raise typer.Exit(1)
 
     async def go():
         async with session() as runner:
-            snap = await runner.start(make_input(rec, policy, variant, redaction), thread or case_id,
+            snap = await runner.start(demo.make_input(rec, policy, variant, redaction), thread or case_id,
                                       on_update=lambda ev: typer.echo("  ✓ " + ", ".join(k for k in ev if k != "__interrupt__")))
             _print_snapshot(snap)
     asyncio.run(go())
@@ -65,11 +68,27 @@ def show(thread: str):
 
 @app.command("ingest-policy")
 def ingest_policy():
-    """(Re)build the policy RAG indexes (structure + fixed chunking, both policies)."""
+    """(Re)build the policy search indexes for every credit policy."""
+    from .config import POLICIES_DIR
     from .rag import index
-    for pid in ("strict", "lenient"):
+    for pid in sorted(p.name for p in POLICIES_DIR.iterdir() if (p / "policy.md").exists()):
         for st in index.STRATEGIES:
             typer.echo(f"{pid}/{st}: {index.ingest(pid, st)} chunks")
+
+
+@app.command()
+def bootstrap():
+    """Prepare a fresh deployment: create data folders and fetch the sanctions list."""
+    from . import bootstrap as b
+    raise typer.Exit(b.main())
+
+
+@app.command("fetch-ofac")
+def fetch_ofac(force: bool = typer.Option(False, help="download again even if the list is already present")):
+    """Download the OFAC SDN sanctions list used for screening."""
+    from .bootstrap import fetch_ofac as fetch
+    path = fetch(force=force)
+    typer.echo(f"sanctions list: {path} ({path.stat().st_size // 1024} KB)")
 
 
 @app.command("train-pd")

@@ -4,8 +4,7 @@ import time
 import pytest
 from langchain_core.tools import tool
 
-from wealthpilot.nim import embed, get_chat, rerank
-from wealthpilot.nim import chaos, gateway, store
+from wealthpilot.nim import chaos, embed, gateway, get_chat, rerank, store
 
 pytestmark = pytest.mark.live
 

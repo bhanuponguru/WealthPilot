@@ -22,11 +22,11 @@ import numpy as np
 import pandas as pd
 import polars as pl
 
-from ..config import PROJECT_ROOT
+from ..config import ARTIFACTS_DIR, DATA_DIR
 
-SBA_CSV = PROJECT_ROOT / "data" / "sba" / "raw" / "FOIA_7a_FY2010_FY2019_asof_260930.csv"
-MODEL_PATH = PROJECT_ROOT / "models" / "pd_model.joblib"
-METRICS_PATH = PROJECT_ROOT / "models" / "pd_metrics.json"
+SBA_CSV = DATA_DIR / "sba" / "raw" / "FOIA_7a_FY2010_FY2019_asof_260930.csv"
+MODEL_PATH = ARTIFACTS_DIR / "pd_model.joblib"
+METRICS_PATH = ARTIFACTS_DIR / "pd_metrics.json"
 
 CAT = ["naics2", "business_age", "business_type", "state", "fixed_var", "collateral"]
 NUM = ["log_loan", "jobs", "franchise"]

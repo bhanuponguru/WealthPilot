@@ -11,32 +11,37 @@ import csv
 import json
 import random
 
-from .. import screening
-from ..config import PROJECT_ROOT
+from wealthpilot import screening
+from wealthpilot.config import DEMO_DIR
 
-OUT_DIR = PROJECT_ROOT / "data" / "synthetic"
+OUT_DIR = DEMO_DIR  # applicants, documents, mock news and the watchlist: plain files the product's demo mode reads
 LATEST_FY = 2024
 
+from wealthpilot.catalog import INDUSTRIES as _INDUSTRIES  # noqa: F401
+from wealthpilot.catalog import PROHIBITED as _PROHIBITED
+from wealthpilot.catalog import PURPOSES
+
+RANGES = {  # policy tag -> (gross-margin range, turnover range)
+    "restaurant": ((0.55, 0.70), (0.9, 1.6)),
+    "auto_repair": ((0.45, 0.60), (0.6, 1.1)),
+    "software": ((0.60, 0.80), (0.8, 1.4)),
+    "manufacturing": ((0.28, 0.42), (0.7, 1.2)),
+    "retail": ((0.35, 0.50), (1.2, 2.2)),
+    "logistics": ((0.20, 0.32), (0.8, 1.3)),
+    "healthcare": ((0.55, 0.72), (0.9, 1.5)),
+    "construction": ((0.22, 0.34), (1.0, 1.8)),
+    "wholesale": ((0.18, 0.30), (1.5, 2.6)),
+    "landscaping": ((0.40, 0.55), (1.0, 1.7)),
+    "cannabis": ((0.40, 0.55), (1.0, 1.6)),
+    "firearms": ((0.30, 0.42), (1.0, 1.6)),
+    "gambling": ((0.50, 0.70), (0.5, 0.9)),
+    "adult_entertainment": ((0.55, 0.70), (0.8, 1.3)),
+    "crypto_exchange": ((0.55, 0.75), (0.4, 0.8)),
+}
+
 # (display name, policy tag, NAICS, gross-margin range, turnover range)
-INDUSTRIES = [
-    ("Restaurant and catering", "restaurant", "722511", (0.55, 0.70), (0.9, 1.6)),
-    ("Auto repair shop", "auto_repair", "811111", (0.45, 0.60), (0.6, 1.1)),
-    ("Software consulting", "software", "541511", (0.60, 0.80), (0.8, 1.4)),
-    ("Light manufacturing", "manufacturing", "332710", (0.28, 0.42), (0.7, 1.2)),
-    ("Apparel retail", "retail", "448140", (0.35, 0.50), (1.2, 2.2)),
-    ("Freight and trucking", "logistics", "484110", (0.20, 0.32), (0.8, 1.3)),
-    ("Medical clinic", "healthcare", "621111", (0.55, 0.72), (0.9, 1.5)),
-    ("Construction contractor", "construction", "236220", (0.22, 0.34), (1.0, 1.8)),
-    ("Wholesale distribution", "wholesale", "423990", (0.18, 0.30), (1.5, 2.6)),
-    ("Landscaping services", "landscaping", "561730", (0.40, 0.55), (1.0, 1.7)),
-]
-PROHIBITED = [  # appear with ~12% probability
-    ("Cannabis dispensary", "cannabis", "453998", (0.40, 0.55), (1.0, 1.6)),
-    ("Firearms and ammunition retailer", "firearms", "451110", (0.30, 0.42), (1.0, 1.6)),
-    ("Casino and gambling operator", "gambling", "713210", (0.50, 0.70), (0.5, 0.9)),
-    ("Adult entertainment venue", "adult_entertainment", "713990", (0.55, 0.70), (0.8, 1.3)),
-    ("Cryptocurrency exchange", "crypto_exchange", "523130", (0.55, 0.75), (0.4, 0.8)),
-]
+INDUSTRIES = [(n, t, c, *RANGES[t]) for n, t, c in _INDUSTRIES]
+PROHIBITED = [(n, t, c, *RANGES[t]) for n, t, c in _PROHIBITED]  # appear with ~12% probability
 
 # name origin groups are internal labels used only for counterfactual testing
 FIRST = {
@@ -63,7 +68,6 @@ LOCATIONS = [  # city, state, zip, street
     ("Boise", "ID", "83702", "300 Idaho St"), ("Memphis", "TN", "38103", "45 Beale St"),
     ("Tucson", "AZ", "85701", "180 Congress St"), ("Omaha", "NE", "68102", "1200 Harney St"),
 ]
-PURPOSES = ["equipment purchase", "working capital", "expansion", "inventory build", "debt refinancing", "vehicle fleet"]
 BANK_NAMES = ["Summit Community Bank", "Riverbend Savings", "Harbor Trust"]
 
 

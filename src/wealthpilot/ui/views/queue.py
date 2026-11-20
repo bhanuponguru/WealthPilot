@@ -6,8 +6,8 @@ import pandas as pd
 import streamlit as st
 
 from ...graph import cases
-from ..forms import money
 from ..common import STATUS_LABEL, friendly_error, load_snapshot, open_case, require_db
+from ..forms import money
 from ..runner import manager
 
 GROUPS = {
@@ -39,7 +39,7 @@ def _list() -> None:
     view = pd.DataFrame({
         "Business": df["business_label"], "Case": df["case_id"], "Loan": df["loan_amount"].map(money), "Status": status,
         "Recommendation": df["recommendation"].fillna("").str.upper(), "Grade": df["grade"], "Decision": df["decision"].fillna("").str.upper(),
-        "Flag": df["degraded"].map({True: "⚠️ degraded", False: ""}), "Updated": pd.to_datetime(df["updated_at"]).dt.strftime("%Y-%m-%d %H:%M"),
+        "Flag": df["degraded"].map({True: "Degraded", False: ""}), "Updated": pd.to_datetime(df["updated_at"]).dt.strftime("%Y-%m-%d %H:%M"),
     })
     ev = st.dataframe(view, hide_index=True, width="stretch", on_select="rerun", selection_mode="single-row", key="q-table")
     sel = ev.selection.rows if ev and ev.selection else []

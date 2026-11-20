@@ -10,13 +10,14 @@ unsafe_approve          = approved a case whose correct outcome is not approve  
 import json
 
 from common import RESULTS, md_table
+from wealthpilot_lab.paths import DATA
 
 PROFILES = ["none", "429_storm", "timeouts", "malformed_output", "mcp_flaky", "research_down", "fincalc_down"]
 
 
 def main() -> None:
     d = json.loads((RESULTS / "e4_reliability.json").read_text())
-    gt = json.loads((RESULTS.parent.parent / "data" / "synthetic" / "ground_truth.json").read_text())
+    gt = json.loads((DATA / "ground_truth.json").read_text())
     rows = []
     for prof in PROFILES:
         c = {"correct": 0, "safe_refer": 0, "escalated_doc_review": 0, "wrongful_decline": 0, "unsafe_approve": 0}

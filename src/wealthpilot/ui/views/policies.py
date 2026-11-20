@@ -5,14 +5,14 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
-from ...config import PROJECT_ROOT
+from ...config import POLICIES_DIR
 from .. import forms
 from ..common import cached_health, friendly_error, show_table
 from .underwrite import policy_ids
 
 
 def _read(pid: str) -> str:
-    return (PROJECT_ROOT / "data" / "policies" / pid / "policy.md").read_text()
+    return (POLICIES_DIR / pid / "policy.md").read_text()
 
 
 def tab_read(pid: str) -> None:
@@ -40,7 +40,7 @@ def tab_compare() -> None:
         if only_diff and ta == tb:
             continue
         shown += 1
-        st.markdown(f"**{rid} · {(ra.get(rid) or rb.get(rid))['title']}**  {'🟰 identical' if ta == tb else '🔀 differs'}")
+        st.markdown(f"**{rid} · {(ra.get(rid) or rb.get(rid))['title']}**  ({'identical' if ta == tb else 'differs'})")
         l, r = st.columns(2)
         l.caption(f"{a}"); l.write(ta)
         r.caption(f"{b}"); r.write(tb)
@@ -78,7 +78,7 @@ def render() -> None:
                "See the documentation page *Writing a new policy* to add your own.")
     ids = policy_ids()
     if not ids:
-        st.warning("No policies found in `data/policies/`.")
+        st.warning("No credit policies found.")
         return
     pid = st.selectbox("Policy", ids, key="pol-id")
     t1, t2, t3, t4 = st.tabs(["Read", "Rules", "Compare policies", "Try retrieval"])

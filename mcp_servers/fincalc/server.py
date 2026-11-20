@@ -5,10 +5,11 @@ from __future__ import annotations
 from mcp.server.fastmcp import FastMCP
 
 from wealthpilot import finance
+from wealthpilot.config import MCP_BIND
 from wealthpilot.risk import pd_model
 
 PORT = 8101
-mcp = FastMCP("fincalc", host="127.0.0.1", port=PORT)
+mcp = FastMCP("fincalc", host=MCP_BIND, port=PORT)
 
 
 @mcp.tool()

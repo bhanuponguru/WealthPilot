@@ -10,15 +10,15 @@ import re
 import time
 from pathlib import Path
 
-from ..config import PROJECT_ROOT
-from ..synth.applicants import INDUSTRIES, PROHIBITED, PURPOSES
+from ..catalog import INDUSTRIES, PROHIBITED, PURPOSES
+from ..config import DATA_DIR
 
-UPLOAD_DIR = PROJECT_ROOT / "data" / "uploads"
+UPLOAD_DIR = DATA_DIR / "uploads"
 MAX_UPLOAD_MB = 25
 MAX_PAGES = 40
 
 #: every industry the system knows, as {name, tag, naics}; "tag" drives nothing in the agents (they read the industry NAME) but is kept for ground truth.
-INDUSTRY_OPTIONS = [{"name": n, "tag": t, "naics": c} for n, t, c, *_ in [*INDUSTRIES, *PROHIBITED]]
+INDUSTRY_OPTIONS = [{"name": n, "tag": t, "naics": c} for n, t, c in [*INDUSTRIES, *PROHIBITED]]
 OTHER_INDUSTRY = "Other (enter name and NAICS code)"
 BUSINESS_TYPES = ["CORPORATION", "INDIVIDUAL", "PARTNERSHIP"]
 RATE_TYPES = {"V": "Variable", "F": "Fixed"}
@@ -106,7 +106,7 @@ def check_pdf(data: bytes, label: str) -> None:
 
 
 def save_uploads(case_id: str, financials: bytes, bank: bytes, root: Path = UPLOAD_DIR) -> dict:
-    """Validate and store the two PDFs under ``data/uploads/<case_id>/``; return the ``doc_paths`` dict for the graph."""
+    """Validate and store the two PDFs under the uploads folder, in ``<case_id>/``; return the ``doc_paths`` dict for the graph."""
     check_pdf(financials, "Financial statements")
     check_pdf(bank, "Bank statement")
     d = root / case_id

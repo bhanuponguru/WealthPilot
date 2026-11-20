@@ -13,14 +13,15 @@ import json
 import sys
 import time
 
+from common import RESULTS, log_mlflow, md_table, save
+from wealthpilot_lab.inputs import make_input
+from wealthpilot_lab.synth.applicants import load
+from wealthpilot_lab.synth.groundtruth import load_gt
+
 from wealthpilot.config import get_settings
-from wealthpilot.graph.builder import make_input, session
+from wealthpilot.graph.builder import session
 from wealthpilot.nim import chaos, gateway, run_tag
 from wealthpilot.nim.store import pool
-from wealthpilot.synth.applicants import load
-from wealthpilot.synth.groundtruth import load_gt
-
-from common import RESULTS, log_mlflow, md_table, save
 
 POLICY = "strict"
 PROFILES = {

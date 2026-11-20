@@ -7,9 +7,8 @@ import math
 import random
 from pathlib import Path
 
-from wealthpilot.config import PROJECT_ROOT
+from wealthpilot_lab.paths import RESULTS
 
-RESULTS = PROJECT_ROOT / "report" / "results"
 RESULTS.mkdir(parents=True, exist_ok=True)
 
 

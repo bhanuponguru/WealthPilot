@@ -1,4 +1,4 @@
-"""New case page: submit an application with its PDF statements, or try one of the bundled sample applicants."""
+"""New case page: submit an application with its PDF statements (and, in demo mode, try a sample applicant)."""
 
 from __future__ import annotations
 
@@ -6,30 +6,20 @@ import time
 
 import streamlit as st
 
-from ...config import PROJECT_ROOT
-from ...graph.builder import make_input, make_input_from_applicant
-from ...synth.render_docs import DOCS_DIR
+from ... import demo
+from ...config import POLICIES_DIR
+from ...graph.builder import make_input_from_applicant
 from .. import forms
 from ..common import open_case, preflight, start_case
 
-POLICY_DIR = PROJECT_ROOT / "data" / "policies"
-
 
 def policy_ids() -> list[str]:
-    return sorted(p.name for p in POLICY_DIR.iterdir() if (p / "policy.md").exists())
+    return sorted(p.name for p in POLICIES_DIR.iterdir() if (p / "policy.md").exists())
 
 
 def default_policy_index(ids: list[str]) -> int:
     """Pre-select the conservative `strict` policy (the one the documentation's walkthrough uses) when it exists."""
     return ids.index("strict") if "strict" in ids else 0
-
-
-def _load_synthetic() -> list[dict]:
-    try:
-        from ...synth.applicants import load
-        return load()
-    except FileNotFoundError:
-        return []
 
 
 def _finish(snap: dict | None, thread_id: str) -> None:
@@ -39,9 +29,9 @@ def _finish(snap: dict | None, thread_id: str) -> None:
 
 
 def tab_sample() -> None:
-    apps = _load_synthetic()
+    apps = demo.applicants()
     if not apps:
-        st.info("No synthetic applicants yet. Generate them with `uv run python -m wealthpilot.synth.applicants` and `uv run python -m wealthpilot.synth.render_docs`.")
+        st.info("No demonstration data found.")
         return
     labels = {a["case_id"]: f"{a['case_id']} · {a['business_name']} — {a['industry']['name']}" for a in apps}
     cid = st.selectbox("Applicant", list(labels), format_func=labels.get, key="sample-case")
@@ -59,15 +49,15 @@ def tab_sample() -> None:
         redaction = st.toggle("Hide the owner's identity from the AI", value=True, key="sample-red",
                               help="On (recommended): names, address and ZIP are removed from everything the model reads, so it decides on the facts.")
     with st.expander("Download this applicant's documents (to try the upload flow)"):
-        d = DOCS_DIR / cid / variant
+        d = demo.docs_dir(cid, variant)
         for fname, label in (("financials.pdf", "Financial statements"), ("bank_statement.pdf", "Bank statement")):
             f = d / fname
             if f.exists():
-                st.download_button(f"⬇️ {label} ({variant})", f.read_bytes(), file_name=f"{cid}-{variant}-{fname}", mime="application/pdf", key=f"dl-{cid}-{variant}-{fname}")
+                st.download_button(f"{label} ({variant})", f.read_bytes(), icon=":material/download:", file_name=f"{cid}-{variant}-{fname}", mime="application/pdf", key=f"dl-{cid}-{variant}-{fname}")
     if st.button("Run underwriting", icon=":material/play_arrow:", type="primary", key="sample-run"):
         if preflight():
             thread = f"{cid}-ui-{time.strftime('%H%M%S')}"
-            snap = start_case(make_input(a, policy, variant, redaction), thread, {"source": "synthetic", "variant": variant})
+            snap = start_case(demo.make_input(a, policy, variant, redaction), thread, {"source": "demo", "variant": variant})
             _finish(snap, thread)
 
 
@@ -165,6 +155,9 @@ def render() -> None:
 
 
 def _entry_tabs() -> None:
+    if not demo.enabled():
+        tab_new()
+        return
     t_new, t_sample = st.tabs(["New application", "Try a sample applicant"])
     with t_new:
         tab_new()

@@ -1,13 +1,13 @@
 """Contract tests: every MCP tool called through the real MultiServerMCPClient (servers must be running:
-`uv run python -m wealthpilot.mcp_up`). Run: uv run pytest -m live tests/test_mcp_contract.py"""
+`uv run wealthpilot mcp-up`). Run: uv run pytest -m live tests/test_mcp_contract.py"""
 
 import pytest
 
-from wealthpilot import finance
+from wealthpilot import demo, finance
 from wealthpilot.mcp_client import call, load_tools
-from wealthpilot.synth.applicants import load
 
 pytestmark = pytest.mark.live
+load = demo.applicants   # the sample applicants (demonstration data)
 
 
 @pytest.fixture(scope="module")
@@ -59,7 +59,7 @@ async def test_research_tools(tools):
     if planted:
         a = planted[0]
         hit = await call(tools, "ofac_screen", name=a["owner_name"])
-        assert hit["match_count"] >= 1 and hit["matches"][0]["list"] == "SYNTH-WATCHLIST"
+        assert hit["match_count"] >= 1 and hit["matches"][0]["list"] == "WATCHLIST"
     flagged = next(a for a in load() if a["planted"]["adverse_severity"] in ("medium", "high"))
     am = await call(tools, "adverse_media", subject=flagged["business_name"], owner=flagged["owner_name"])
     assert am["max_severity"] == flagged["planted"]["adverse_severity"]

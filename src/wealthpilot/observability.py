@@ -18,10 +18,14 @@ def enable() -> bool:
     if _enabled:
         return True
     try:
+        import httpx
         import mlflow
 
         from .config import get_settings
-        mlflow.set_tracking_uri(get_settings().mlflow_tracking_uri)
+        uri = get_settings().mlflow_tracking_uri
+        if uri.startswith("http"):  # probe first: the client's own connection retries would otherwise stall a run for minutes
+            httpx.get(f"{uri}/health", timeout=2).raise_for_status()
+        mlflow.set_tracking_uri(uri)
         mlflow.set_experiment("wealthpilot-traces")
         mlflow.langchain.autolog()
         _enabled = True

@@ -1,13 +1,38 @@
+name: wealthpilot
+
+# Every WealthPilot service runs the same image, built once by the `console` service.
+x-app: &app
+  image: wealthpilot:latest
+  restart: unless-stopped
+  environment: &app-env
+    DATABASE_URL: postgresql://${POSTGRES_USER:-wealthpilot}:${POSTGRES_PASSWORD:-wealthpilot}@postgres:5432/${POSTGRES_DB:-wealthpilot}
+    OLLAMA_URL: http://ollama:11434
+    MLFLOW_TRACKING_URI: http://mlflow:5000
+    MCP_HOST: mcp
+    NVIDIA_API_KEY: ${NVIDIA_API_KEY:-${NVIDIA_NIM_API_KEY:-}}
+    NIM_RPM_BUDGET: ${NIM_RPM_BUDGET:-15}
+    NIM_TIMEOUT_S: ${NIM_TIMEOUT_S:-45}
+    NIM_CACHE_ENABLED: ${NIM_CACHE_ENABLED:-true}
+    NIM_THINKING: ${NIM_THINKING:-false}
+    CHAT_MODEL: ${CHAT_MODEL:-nvidia/nemotron-3.5-lightning-30b-a3b}
+    CHAT_FALLBACK_MODEL: ${CHAT_FALLBACK_MODEL:-}
+    VLM_MODEL: ${VLM_MODEL:-nvidia/nemotron-3.5-super-vl-120b-a12b}
+    RERANK_MODEL: ${RERANK_MODEL:-nvidia/llama-nemotron-rerank-vl-1b-v2}
+    EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+    WP_CHAOS: ${WP_CHAOS:-}
+    WEALTHPILOT_DEMO: ${WEALTHPILOT_DEMO:-0}
+
 services:
   postgres:
     image: pgvector/pgvector:pg16
     container_name: wealthpilot-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-wealthpilot}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wealthpilot}
       POSTGRES_DB: ${POSTGRES_DB:-wealthpilot}
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -20,9 +45,141 @@ services:
         limits:
           memory: 768m
 
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  # One-shot: make sure the embedding model is available before anything that needs it starts.
+  ollama-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["ollama", "pull", "nomic-embed-text"]
+    restart: "no"
+
+  # One-shot: create data folders and fetch the sanctions list (the first start needs internet access).
+  bootstrap:
+    <<: *app
+    command: ["wealthpilot", "bootstrap"]
+    restart: "no"
+    volumes:
+      - data:/data
+
+  mlflow:
+    <<: *app
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000 --workers 1
+      --allowed-hosts mlflow,mlflow:5000,localhost,localhost:5000,127.0.0.1,127.0.0.1:5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+    environment:
+      <<: *app-env
+      # The tracking server only stores traces here; its background job executor (online scoring, trace archival) is not needed and is memory-hungry.
+      MLFLOW_SERVER_ENABLE_JOB_EXECUTION: "false"
+      MLFLOW_SERVER_JOB_ENABLE_PERIODIC_TASKS: "false"
+    volumes:
+      - mlflow:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:5000/health', timeout=15)"]
+      interval: 15s
+      timeout: 20s
+      retries: 12
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  # The three tool servers (fincalc 8101, policydocs 8102, research 8103).
+  mcp:
+    <<: *app
+    command: ["wealthpilot", "mcp-up"]
+    environment:
+      <<: *app-env
+      MCP_BIND: 0.0.0.0
+    volumes:
+      - data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
+      bootstrap:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; [socket.create_connection(('127.0.0.1', p), 2).close() for p in (8101, 8102, 8103)]"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 1536m
+
+  console:
+    <<: *app
+    build:
+      context: .
+      target: app
+    command: ["wealthpilot", "ui", "--host", "0.0.0.0", "--headless"]
+    ports:
+      - "127.0.0.1:${CONSOLE_PORT:-8501}:8501"
+    volumes:
+      - data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mcp:
+        condition: service_healthy
+      mlflow:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  # Research and demonstration tooling. Not started by default: `docker compose --profile lab run --rm lab ...`
+  lab:
+    build:
+      context: .
+      target: lab
+    image: wealthpilot-lab:latest
+    profiles: ["lab"]
+    environment:
+      <<: *app-env
+    volumes:
+      - data:/data
+      - ./research/results:/app/research/results
+      - labdata:/app/research/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mcp:
+        condition: service_healthy
+
 volumes:
   pgdata:
-
-# MLflow and the MCP servers run from the uv venv during development
-# (`uv run mlflow server ...`, see Makefile) to keep memory use low on the
-# 5.8 GB WSL VM. They can be containerised later if needed.
+  ollama:
+  data:
+  mlflow:
+  labdata:

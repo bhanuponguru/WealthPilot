@@ -14,10 +14,10 @@ from ..graph.builder import readonly_session
 from .forms import TIERS, evidence_json, memo_to_markdown, money
 from .runner import manager
 
-RULE_ICON = {"pass": "✅", "fail": "❌", "exception": "⚠️", "not_applicable": "➖", "missing_data": "❓"}
+RULE_LABEL = {"pass": "Pass", "fail": "Fail", "exception": "Exception", "not_applicable": "Not applicable", "missing_data": "Missing data"}
 STATUS_LABEL = {
-    "running": "⏳ Running", "awaiting_doc_review": "📄 Documents need checking", "awaiting_approval": "🧑‍⚖️ Needs your decision",
-    "decided": "✅ Decided", "finished": "✔️ Finished", "error": "🛑 Stopped (error)",
+    "running": "Running", "awaiting_doc_review": "Documents need checking", "awaiting_approval": "Needs your decision",
+    "decided": "Decided", "finished": "Finished", "error": "Stopped (error)",
 }
 REC_COLOR = {"approve": "green", "decline": "red", "refer": "orange"}
 NODE_LABEL = {
@@ -53,7 +53,7 @@ def friendly_error(e: Exception) -> str:
     if "5432" in text or "OperationalError" in name or "PoolTimeout" in name or "connection failed" in text.lower():
         return "Postgres is not reachable. Start it with `docker compose up -d postgres`."
     if "NVIDIA API key" in text:
-        return "No NVIDIA NIM key found. Export `NVIDIA_NIM_API_KEY` or set `NVIDIA_API_KEY` in `.env`, then restart the console."
+        return "No model API key found. Set `NVIDIA_API_KEY` (or `NVIDIA_NIM_API_KEY`) in the environment or in `.env`, then restart the console."
     if "11434" in text or "ollama" in text.lower():
         return "Ollama is not reachable or the embedding model is missing. Run `ollama serve` and `ollama pull nomic-embed-text`."
     return f"{name}: {text[:300]}"
@@ -127,7 +127,7 @@ def live_progress(thread_id: str) -> None:
     elapsed = time.time() - prog.started
     st.progress(min(len(done_nodes) / len(NODE_LABEL), 0.97), text=f"Working… {len(done_nodes)} of {len(NODE_LABEL)} steps · {elapsed:.0f}s")
     for node, t in prog.events:
-        st.markdown(f":green[✓] {NODE_LABEL.get(node, node)} <span style='opacity:.5'>· {t:.0f}s</span>", unsafe_allow_html=True)
+        st.markdown(f":green[:material/check:] {NODE_LABEL.get(node, node)} :gray[· {t:.0f}s]")
     st.caption("You can leave this page: the run continues in the background and the case will be waiting for you in your inbox.")
 
 
@@ -226,14 +226,14 @@ def tab_policy(v: dict) -> None:
         st.info("The policy rules have not been evaluated yet.")
         return
     counts = pd.Series([c["status"] for c in checks]).value_counts()
-    st.caption("  ·  ".join(f"{RULE_ICON.get(k, '')} {k.replace('_', ' ')}: {n}" for k, n in counts.items()))
-    df = pd.DataFrame([{"": RULE_ICON.get(c["status"], ""), "Rule": c["rule_id"], "Title": c.get("title"), "Status": c["status"].replace("_", " "),
+    st.caption("  ·  ".join(f"{RULE_LABEL.get(k, k)}: {n}" for k, n in counts.items()))
+    df = pd.DataFrame([{"Rule": c["rule_id"], "Title": c.get("title"), "Status": RULE_LABEL.get(c["status"], c["status"]),
                         "Reason": c.get("reason"), "Policy threshold read": c.get("extracted_threshold"), "Numeric check": c.get("numeric_check"),
                         "Citation": c.get("citation")} for c in checks])
     show_table(df)
     with st.expander("Evidence quoted from the policy text"):
         for c in checks:
-            st.markdown(f"**{c['rule_id']} · {c.get('title', '')}** — {RULE_ICON.get(c['status'], '')} {c['status'].replace('_', ' ')}")
+            st.markdown(f"**{c['rule_id']} · {c.get('title', '')}** — {RULE_LABEL.get(c['status'], c['status'])}")
             st.caption(c.get("evidence") or "—")
 
 
@@ -286,7 +286,7 @@ def tab_risk(v: dict) -> None:
     sc = g.get("scorecard")
     if sc:
         st.markdown(f"**Scorecard:** {sc['class']} ({sc['passed']}/3 ratio tests passed, using the thresholds read from the policy)")
-        show_table(pd.DataFrame([{"Test": k, "Passed": "✅" if ok else "❌"} for k, ok in sc["tests"].items()]))
+        show_table(pd.DataFrame([{"Test": k, "Passed": "Yes" if ok else "No"} for k, ok in sc["tests"].items()]))
     st.caption(f"Model `{rk.get('model_version')}` — trained on SBA 7(a) loan outcomes; profile features only (see the documentation's Risk model page).")
 
 
@@ -305,7 +305,7 @@ def tab_research(v: dict) -> None:
         st.caption(rs["summary"])
     c1, c2 = st.columns(2)
     reg = rs.get("registry") or {}
-    c1.metric("Registry", "found" if reg.get("found") else "not found", help="Mock registry backed by the synthetic world.")
+    c1.metric("Registry", "found" if reg.get("found") else "not found", help="Business registry lookup. The bundled provider is a mock that answers from the demonstration data.")
     rate = rs.get("industry_default_rate")
     c2.metric("Sector 5-yr default rate (SBA)", f"{rate:.1%}" if rate is not None else "—")
 
@@ -323,7 +323,7 @@ def tab_application(thread_id: str, v: dict) -> None:
     if v.get("history"):
         st.markdown("**Prior decisions for this applicant**")
         show_table(pd.DataFrame(v["history"]))
-    with st.expander("🔒 Sealed identity (hidden from the agents)"):
+    with st.expander("Sealed identity (hidden from the agents)"):
         if st.checkbox("I need to see the applicant's identity (e.g. to verify the documents)", key=f"reveal-{thread_id}"):
             s = v.get("sealed") or {}
             st.json({"owner": s.get("owner_name"), "business": s.get("business_name"), "address": s.get("address")})
@@ -347,8 +347,8 @@ def tab_timeline(v: dict) -> None:
 
 def downloads(thread_id: str, v: dict) -> None:
     c1, c2, _ = st.columns([1, 1, 3])
-    c1.download_button("⬇️ Memo (Markdown)", memo_to_markdown(v), file_name=f"memo-{v.get('case_id')}.md", mime="text/markdown", key=f"dl-memo-{thread_id}")
-    c2.download_button("⬇️ Evidence (JSON)", evidence_json(v), file_name=f"evidence-{thread_id}.json", mime="application/json", key=f"dl-json-{thread_id}",
+    c1.download_button("Memo (Markdown)", memo_to_markdown(v), icon=":material/download:", file_name=f"memo-{v.get('case_id')}.md", mime="text/markdown", key=f"dl-memo-{thread_id}")
+    c2.download_button("Evidence (JSON)", evidence_json(v), icon=":material/download:", file_name=f"evidence-{thread_id}.json", mime="application/json", key=f"dl-json-{thread_id}",
                        help="The full case state without the sealed identity block.")
 
 
@@ -390,7 +390,7 @@ def case_detail(thread_id: str, snap: dict, *, actions: bool = True) -> dict | N
 def approval_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
     required = intr.get("required_tier") or "Credit Committee"
     rec = v.get("recommendation")
-    st.subheader("🧑‍⚖️ Your decision")
+    st.subheader("Your decision")
     st.caption(f"The system recommends **{(rec or '—').upper()}**. The policy requires at least **{required}** authority to decide this case.")
     if intr.get("error"):
         st.error(intr["error"])
@@ -424,7 +424,7 @@ def approval_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
 
 
 def doc_review_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
-    st.subheader("📄 Document review needed")
+    st.subheader("Document review needed")
     st.warning("The extracted figures failed consistency checks even after an automatic repair. Compare them with the PDFs, then accept, correct or reject.")
     for i in intr.get("reconciliation_issues") or []:
         st.markdown(f"- FY{i.get('year', '')} · {i.get('check')} (expected {i.get('expected', '—')}, got {i.get('actual', '—')})")
@@ -438,9 +438,9 @@ def doc_review_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
         edited = st.data_editor(original, width="stretch", key=f"edit-{thread_id}")
     c1, c2, c3 = st.columns(3)
     action = None
-    if c1.button("✅ Accept as is", key=f"acc-{thread_id}"):
+    if c1.button("Accept as is", key=f"acc-{thread_id}"):
         action = {"action": "accept"}
-    if c2.button("✏️ Submit my corrections", key=f"cor-{thread_id}", disabled=edited is None):
+    if c2.button("Submit my corrections", key=f"cor-{thread_id}", disabled=edited is None):
         diff = {}
         for year in edited.columns:
             for field in edited.index:
@@ -450,6 +450,6 @@ def doc_review_panel(thread_id: str, v: dict, intr: dict) -> dict | None:
         action = {"action": "correct", "corrections": diff} if diff else None
         if not diff:
             st.info("You have not changed any values.")
-    if c3.button("🛑 Reject the documents", key=f"rej-{thread_id}"):
+    if c3.button("Reject the documents", key=f"rej-{thread_id}"):
         action = {"action": "reject"}
     return resume_case(thread_id, action) if action else None

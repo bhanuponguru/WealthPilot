@@ -18,7 +18,12 @@ from langchain_core.messages import messages_from_dict, messages_to_dict
 from langchain_core.outputs import ChatGeneration, ChatResult
 from langchain_nvidia_ai_endpoints import ChatNVIDIA, NVIDIARerank
 from pydantic import PrivateAttr
-from tenacity import Retrying, retry_if_exception, stop_after_attempt, wait_exponential_jitter
+from tenacity import (
+    Retrying,
+    retry_if_exception,
+    stop_after_attempt,
+    wait_exponential_jitter,
+)
 
 from ..config import get_settings
 from . import chaos, store

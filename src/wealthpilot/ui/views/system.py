@@ -11,11 +11,11 @@ from ..common import cached_health, friendly_error, require_db, show_table
 
 
 def tab_health() -> None:
-    if st.button("↻ Re-check now", key="sys-refresh"):
+    if st.button("Re-check now", icon=":material/refresh:", key="sys-refresh"):
         cached_health.clear()
         st.rerun()
     checks = cached_health()
-    df = pd.DataFrame([{"": "✅" if c.ok else ("⚠️" if not c.required else "❌"), "Component": c.name, "Status": c.detail,
+    df = pd.DataFrame([{"State": "OK" if c.ok else ("Optional" if not c.required else "Needs attention"), "Component": c.name, "Status": c.detail,
                         "Required": "yes" if c.required else "optional", "How to fix": "" if c.ok else c.fix} for c in checks])
     show_table(df)
     bad = [c for c in checks if not c.ok and c.required]

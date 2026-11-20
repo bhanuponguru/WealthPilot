@@ -7,10 +7,10 @@ measured. For each candidate chat model this sends two small requests:
   2. a plain question with a checkable answer (must contain the right number).
 
 It records status, latency and whether the reply was empty (reasoning models can spend the whole token budget thinking).
-Results go to ``report/results/nim_probe.json`` so they can be compared over time.
+Results go to ``results/nim_probe.json`` so they can be compared over time.
 
-    uv run python scripts/probe_nim_models.py                 # probe every tool-capable chat model in the catalog
-    uv run python scripts/probe_nim_models.py --only nvidia/x # probe specific models
+    uv run python research/scripts/probe_nim_models.py                 # probe every tool-capable chat model in the catalog
+    uv run python research/scripts/probe_nim_models.py --only nvidia/x # probe specific models
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ import httpx
 from wealthpilot.config import get_settings
 
 BASE = "https://integrate.api.nvidia.com/v1"
-OUT = Path(__file__).resolve().parents[1] / "report" / "results" / "nim_probe.json"
+OUT = Path(__file__).resolve().parents[1] / "results" / "nim_probe.json"
 SKIP = re.compile(r"embed|rerank|guard|safety|reward|parse|clip|vl\b|vision|vila|neva|paligemma|fuyu|kosmos|riva|translate|"
                   r"nemoretriever|retriev|content-safety|topic-control|nv-embed|bge|arctic-embed|deplot|synthetic|steer", re.I)
 

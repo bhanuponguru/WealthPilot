@@ -15,13 +15,8 @@ mlruns/
 mlflow.db
 mlartifacts/
 
-# Downloaded / generated data (large or reproducible)
-data/sba/raw/
-data/sba/header_probe/
-data/ofac/
-data/synthetic/
-data/uploads/
-models/
-
-# Built documentation
+# Runtime and generated data (large or reproducible)
+data/
+research/data/
 site/
+writeup/*.html

@@ -1,4 +1,4 @@
-"""Sanctions-list screening: real OFAC SDN list + a small synthetic watchlist (planted hits)."""
+"""Sanctions-list screening: the OFAC SDN list, plus an optional extra watchlist (the demonstration data ships one)."""
 
 from __future__ import annotations
 
@@ -8,10 +8,10 @@ from functools import lru_cache
 
 from rapidfuzz import fuzz, process
 
-from .config import PROJECT_ROOT
+from .config import DATA_DIR, DEMO_DIR
 
-SDN_CSV = PROJECT_ROOT / "data" / "ofac" / "sdn.csv"
-WATCHLIST_CSV = PROJECT_ROOT / "data" / "synthetic" / "watchlist.csv"
+SDN_CSV = DATA_DIR / "ofac" / "sdn.csv"
+WATCHLIST_CSV = DEMO_DIR / "watchlist.csv"
 THRESHOLD = 92.0
 
 
@@ -38,7 +38,7 @@ def _entries() -> tuple[list[str], list[dict]]:
         with open(WATCHLIST_CSV, newline="") as f:
             for row in csv.DictReader(f):
                 names.append(normalize(row["name"]))
-                meta.append({"list": "SYNTH-WATCHLIST", "name": row["name"], "type": row.get("type", ""), "program": row.get("program", "")})
+                meta.append({"list": "WATCHLIST", "name": row["name"], "type": row.get("type", ""), "program": row.get("program", "")})
     return names, meta
 
 

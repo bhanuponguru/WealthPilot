@@ -14,8 +14,8 @@ from langgraph.types import Command
 
 from ..compliance.redaction import Redactor
 from ..config import get_settings
-from ..observability import case_trace, enable as enable_tracing
-from ..synth.render_docs import DOCS_DIR
+from ..observability import case_trace
+from ..observability import enable as enable_tracing
 from . import cases
 from . import nodes as N
 from .runtime import rt
@@ -64,12 +64,6 @@ def make_input_from_applicant(applicant: dict, policy_id: str, doc_paths: dict, 
             "degraded_reasons": [], "errors": [], "trace": []}
 
 
-def make_input(applicant: dict, policy_id: str, variant: str = "clean", redaction: bool = True, docs_root=DOCS_DIR) -> dict:
-    """`make_input_from_applicant` for a synthetic applicant whose documents were rendered under `docs_root/<case>/<variant>/`."""
-    d = docs_root / applicant["case_id"] / variant
-    return make_input_from_applicant(applicant, policy_id, {"financials": d / "financials.pdf", "bank": d / "bank_statement.pdf"}, redaction)
-
-
 class Runner:
     def __init__(self, graph):
         self.graph = graph
@@ -110,7 +104,7 @@ class Runner:
             pass
 
     async def start(self, state_in: dict, thread_id: str | None = None, on_update=None, meta: dict | None = None) -> dict:
-        """Run a new case until it finishes or needs a human. `meta` may carry `source` ('synthetic' | 'upload') and `variant`."""
+        """Run a new case until it finishes or needs a human. `meta` may carry `source` ('demo' | 'upload') and `variant`."""
         return await self._drive(state_in, thread_id or state_in["case_id"], on_update, meta)
 
     async def resume(self, thread_id: str, value: dict, on_update=None) -> dict:

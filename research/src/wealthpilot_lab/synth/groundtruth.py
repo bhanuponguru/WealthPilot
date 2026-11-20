@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import json
 
-from ..policy_ref import evaluate_case, load_reference
-from ..risk import pd_model
-from .applicants import OUT_DIR, load, truth_of
+from wealthpilot.risk import pd_model
 
-GT_PATH = OUT_DIR / "ground_truth.json"
+from ..paths import DATA
+from ..reference_engine import evaluate_case, load_reference
+from .applicants import load, truth_of
+
+GT_PATH = DATA / "ground_truth.json"
 POLICIES = ["strict", "lenient"]
 
 
@@ -24,6 +26,7 @@ def build() -> dict:
         risk = score_applicant(a)
         gt[a["case_id"]] = {"pd": risk["pd"], "reasons": risk["reasons"],
                             **{p: evaluate_case(truth_of(a), risk["pd"], load_reference(p)) for p in POLICIES}}
+    DATA.mkdir(parents=True, exist_ok=True)
     GT_PATH.write_text(json.dumps(gt, indent=1))
     return gt
 

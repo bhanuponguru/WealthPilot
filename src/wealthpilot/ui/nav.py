@@ -1,36 +1,48 @@
-"""Navigation: the page list (grouped by who needs it) and a helper for jumping between pages."""
+"""Navigation: the page list and a helper for jumping between pages."""
 
 from __future__ import annotations
+
+import importlib
+from dataclasses import dataclass
 
 import streamlit as st
 
 
-def pages() -> dict[str, list[st.Page]]:
-    """Sections of the sidebar. Day-to-day work first; reference material and the research/diagnostic pages after it."""
-    from .views import history, home, policies, queue, results, system, underwrite
+@dataclass(frozen=True)
+class PageSpec:
+    title: str
+    icon: str
+    url_path: str
+    module: str       # module in ui.views that exposes render()
+    help: str
+    default: bool = False
 
-    return {
-        "Work": [
-            st.Page(home.render, title="Inbox", icon=":material/inbox:", url_path="inbox", default=True,
-                    help="Cases waiting for your decision, runs in progress and recent decisions."),
-            st.Page(underwrite.render, title="New case", icon=":material/add_circle:", url_path="new-case",
-                    help="Submit a loan application with its PDF statements, or try a sample applicant."),
-            st.Page(queue.render, title="Cases", icon=":material/folder_open:", url_path="cases",
-                    help="Every case: open one to read the memo and evidence, and to record your decision."),
-            st.Page(history.render, title="History", icon=":material/history:", url_path="history",
-                    help="The tamper-evident record of every decision."),
-        ],
-        "Reference": [
-            st.Page(policies.render, title="Credit policies", icon=":material/menu_book:", url_path="policies",
-                    help="Read the credit policies, compare two of them and test how the rules are found."),
-        ],
-        "Admin and research": [
-            st.Page(results.render, title="Experiments", icon=":material/science:", url_path="experiments",
-                    help="Evaluation results: policy adherence, parsing, retrieval, fairness and reliability."),
-            st.Page(system.render, title="System", icon=":material/settings:", url_path="system",
-                    help="Service health with fix commands, configuration and model-call diagnostics."),
-        ],
-    }
+
+#: Sections of the sidebar: day-to-day work first, then reference material, then administration.
+SECTIONS: dict[str, list[PageSpec]] = {
+    "Work": [
+        PageSpec("Inbox", ":material/inbox:", "inbox", "home", "Cases waiting for your decision, runs in progress and recent decisions.", default=True),
+        PageSpec("New case", ":material/add_circle:", "new-case", "underwrite", "Submit a loan application with its PDF statements."),
+        PageSpec("Cases", ":material/folder_open:", "cases", "queue", "Every case: open one to read the memo and evidence, and to record your decision."),
+        PageSpec("History", ":material/history:", "history", "history", "The tamper-evident record of every decision."),
+    ],
+    "Reference": [
+        PageSpec("Credit policies", ":material/menu_book:", "policies", "policies", "Read the credit policies, compare two of them and test how the rules are found."),
+    ],
+    "Administration": [
+        PageSpec("System", ":material/settings:", "system", "system", "Service health with fix commands, configuration and model-call diagnostics."),
+    ],
+}
+
+
+def pages() -> dict[str, list[st.Page]]:
+    out: dict[str, list[st.Page]] = {}
+    for section, specs in SECTIONS.items():
+        out[section] = [
+            st.Page(importlib.import_module(f"wealthpilot.ui.views.{s.module}").render, title=s.title, icon=s.icon, url_path=s.url_path, help=s.help, default=s.default)
+            for s in specs
+        ]
+    return out
 
 
 def go(url_path: str) -> None:

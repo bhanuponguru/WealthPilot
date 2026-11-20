@@ -1,0 +1,13 @@
+{
+  "n_train": 266226,
+  "n_cal": 56786,
+  "n_test": 155941,
+  "base_rate_train": 0.03708503301706069,
+  "base_rate_test": 0.043029094336960776,
+  "auc_test": 0.6818943078085934,
+  "brier_test_calibrated": 0.040433708046891476,
+  "brier_test_raw": 0.04045401602074158,
+  "mean_pred_test": 0.03930859188580449,
+  "best_iteration": 105,
+  "split": "label=chargeoff within 5y; train FY2010-15, calibrate FY2016, test FY2017-19"
+}

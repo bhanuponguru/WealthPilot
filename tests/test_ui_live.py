@@ -10,10 +10,9 @@ import time
 import pytest
 from streamlit.testing.v1 import AppTest
 
-from wealthpilot.config import PROJECT_ROOT
+from wealthpilot import demo
 from wealthpilot.graph import cases
 from wealthpilot.graph.builder import make_input_from_applicant, session
-from wealthpilot.synth.render_docs import DOCS_DIR
 from wealthpilot.ui import forms
 
 pytestmark = pytest.mark.live
@@ -60,7 +59,7 @@ def test_sample_case_runs_and_a_human_decides_through_the_form():
     thread = at.session_state["active_thread"]
     assert any(m.label == "Recommendation" and m.value == "DECLINE" for m in at.metric)
     row = cases.get(thread)
-    assert row["status"] == "awaiting_approval" and row["recommendation"] == "decline" and row["source"] == "synthetic"
+    assert row["status"] == "awaiting_approval" and row["recommendation"] == "decline" and row["source"] == "demo"
     assert "Jane" not in str(row) and row["business_label"].startswith("[OWNER]")        # the index never holds identity
 
     # an under-authorised approver is stopped by the form itself, before anything is sent to the graph
@@ -150,10 +149,10 @@ def test_new_application_with_uploaded_pdfs_end_to_end():
             "business_type": "CORPORATION", "jobs_supported": 8, "street": "12 Main St", "city": "Columbus", "state": "OH", "zip": "43215", "loan_amount": 100000,
             "term_months": 84, "purpose": "expansion", "collateral_value": 160000, "fixed_or_variable": "V", "guarantor_provided": True, "franchise": False}
     assert forms.validate_application(form) == []
-    src = DOCS_DIR / "C004" / "clean"                                            # real statements, "uploaded" as raw bytes
+    src = demo.docs_dir("C004", "clean")                                            # real statements, "uploaded" as raw bytes
     case_id = forms.new_case_id() + "t"
     paths = forms.save_uploads(case_id, (src / "financials.pdf").read_bytes(), (src / "bank_statement.pdf").read_bytes())
-    assert paths["financials"].is_relative_to(PROJECT_ROOT / "data" / "uploads")
+    assert paths["financials"].is_relative_to(forms.UPLOAD_DIR)
     state_in = make_input_from_applicant(forms.build_applicant(form, case_id), "strict", paths, redaction=True)
     assert "Jane" not in str(state_in["application"])
 

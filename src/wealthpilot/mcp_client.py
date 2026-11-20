@@ -6,8 +6,10 @@ import json
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
-SERVERS = {"fincalc": 8101, "policydocs": 8102, "research": 8103}
-CONNECTIONS = {name: {"transport": "streamable_http", "url": f"http://127.0.0.1:{port}/mcp"} for name, port in SERVERS.items()}
+from .config import MCP_HOST, MCP_PORTS
+
+SERVERS = MCP_PORTS
+CONNECTIONS = {name: {"transport": "streamable_http", "url": f"http://{MCP_HOST}:{port}/mcp"} for name, port in SERVERS.items()}
 
 
 def make_client(servers: list[str] | None = None) -> MultiServerMCPClient:

@@ -10,14 +10,20 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from fairlearn.metrics import MetricFrame, demographic_parity_difference, equalized_odds_difference, false_positive_rate, selection_rate, true_positive_rate
+from common import log_mlflow, md_table, save
+from fairlearn.metrics import (
+    MetricFrame,
+    demographic_parity_difference,
+    equalized_odds_difference,
+    false_positive_rate,
+    selection_rate,
+    true_positive_rate,
+)
 from fairlearn.postprocessing import ThresholdOptimizer
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.metrics import roc_auc_score
 
 from wealthpilot.risk import pd_model
-
-from common import log_mlflow, md_table, save
 
 
 def proxy_audit() -> dict:

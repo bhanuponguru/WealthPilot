@@ -2,13 +2,12 @@
 
 import pytest
 
-from wealthpilot import finance, policy_ref
+from wealthpilot import decision, finance
 from wealthpilot.compliance.language_scan import scan
 from wealthpilot.compliance.redaction import Redactor, leaked_terms
 from wealthpilot.config import Settings
 from wealthpilot.graph import nodes as N
 from wealthpilot.parsing.pipeline import reconcile, reconcile_bank
-from wealthpilot.synth.applicants import load, truth_of
 
 FS = {"revenue": 1_000_000, "cogs": 500_000, "operating_expenses": 250_000, "depreciation": 40_000, "interest_expense": 20_000, "income_tax": 47_500,
       "net_income": 142_500, "total_current_assets": 400_000, "total_current_liabilities": 200_000, "current_portion_ltd": 20_000,
@@ -40,13 +39,13 @@ def test_scorecard_grade_matrix():
     assert finance.grade_at_most("C", "C") and not finance.grade_at_most("D", "C")
 
 
-# ---------------------------------------------------------------- decision rule + reference engine
+# ---------------------------------------------------------------- decision rule
 def test_decision_rule():
     f = lambda *s: [{"status": x} for x in s]  # noqa: E731
-    assert policy_ref.derive_recommendation(f("pass", "fail", "exception")) == "decline"
-    assert policy_ref.derive_recommendation(f("pass", "exception")) == "refer"
-    assert policy_ref.derive_recommendation(f("pass", "missing_data")) == "refer"
-    assert policy_ref.derive_recommendation(f("pass", "not_applicable")) == "approve"
+    assert decision.derive_recommendation(f("pass", "fail", "exception")) == "decline"
+    assert decision.derive_recommendation(f("pass", "exception")) == "refer"
+    assert decision.derive_recommendation(f("pass", "missing_data")) == "refer"
+    assert decision.derive_recommendation(f("pass", "not_applicable")) == "approve"
 
 
 def test_degraded_never_auto_decides():
@@ -54,29 +53,6 @@ def test_degraded_never_auto_decides():
     assert N.final_recommendation([{"status": "fail"}], degraded=True) == "refer"   # no adverse action caused by an outage
     assert N.final_recommendation([{"status": "pass"}], degraded=False) == "approve"
     assert N.final_recommendation([{"status": "fail"}], degraded=False) == "decline"
-
-
-def test_lenient_dscr_exception_band():
-    a = load()[0]
-    t = truth_of(a)
-    strict, lenient = policy_ref.load_reference("strict"), policy_ref.load_reference("lenient")
-    assert strict["dscr_exception_floor"] is None and lenient["dscr_exception_floor"] == 1.05
-    # craft statements giving DSCR ~1.10 and ample collateral
-    fs = dict(FS)
-    t = dict(t, statements={"2024": fs}, years_in_business=10, industry_tag="software", guarantor_provided=True, sanctions_hit=False,
-             adverse_severity=None, loan_amount=100_000, term_months=60, collateral_value=130_000)
-    base = finance.compute_ratios(fs, 100_000, 60, 130_000)["dscr"]
-    fs["net_income"] = int(1.10 * (20_000 + 20_000 + 12 * 2075.84) - 20_000 - 40_000)
-    assert 1.05 <= finance.compute_ratios(fs, 100_000, 60, 130_000)["dscr"] < 1.15 < base
-    res = policy_ref.evaluate_case(t, 0.01, lenient)
-    assert {c["rule_id"]: c["status"] for c in res["checks"]}["CP-3"] == "exception"
-    assert policy_ref.evaluate_case(t, 0.01, strict)["checks"][2]["status"] == "fail"
-
-
-def test_ground_truth_decisions_differ_between_policies():
-    from wealthpilot.synth.groundtruth import load_gt
-    gt = load_gt()
-    assert sum(v["strict"]["recommendation"] != v["lenient"]["recommendation"] for v in gt.values()) >= 20
 
 
 # ---------------------------------------------------------------- reconciliation

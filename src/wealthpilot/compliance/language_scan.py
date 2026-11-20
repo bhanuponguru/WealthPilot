@@ -6,9 +6,9 @@ import re
 
 import yaml
 
-from ..config import PROJECT_ROOT
+from ..config import CONFIG_DIR
 
-PROFILE = PROJECT_ROOT / "data" / "compliance_profiles" / "us_example.yaml"
+PROFILE = CONFIG_DIR / "compliance_profiles" / "us_example.yaml"
 
 
 def load_profile() -> dict:

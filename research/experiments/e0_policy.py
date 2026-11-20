@@ -15,14 +15,15 @@ import os
 import sys
 import time
 
-from wealthpilot.graph.builder import make_input, session
+from common import log_mlflow, md_table, save, wilson
+from wealthpilot_lab.inputs import make_input
+from wealthpilot_lab.reference_engine import load_reference
+from wealthpilot_lab.synth.applicants import load
+from wealthpilot_lab.synth.groundtruth import load_gt
+
+from wealthpilot.graph.builder import session
 from wealthpilot.nim import run_tag
 from wealthpilot.nim.store import pool
-from wealthpilot.policy_ref import load_reference
-from wealthpilot.synth.applicants import load
-from wealthpilot.synth.groundtruth import load_gt
-
-from common import log_mlflow, md_table, save, wilson
 
 POLICIES = ["strict", "lenient"]
 THRESH = {"CP-1": "min_years_in_business", "CP-3": "min_dscr", "CP-4": "max_debt_to_equity", "CP-5": "min_current_ratio",

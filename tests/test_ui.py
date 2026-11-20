@@ -88,8 +88,8 @@ def test_degraded_memo_is_flagged():
 
 
 def test_parse_rules_reads_a_real_policy():
-    from wealthpilot.config import PROJECT_ROOT
-    rules = forms.parse_rules((PROJECT_ROOT / "data" / "policies" / "strict" / "policy.md").read_text())
+    from wealthpilot.config import POLICIES_DIR
+    rules = forms.parse_rules((POLICIES_DIR / "strict" / "policy.md").read_text())
     assert [r["rule_id"] for r in rules] == [f"CP-{i}" for i in range(1, 14)]
     assert "1.30" in next(r for r in rules if r["rule_id"] == "CP-3")["text"]
 
@@ -122,7 +122,7 @@ def test_blocking_checks_are_only_the_essential_ones():
 
 
 # ---------------------------------------------------------------- pages render (with or without services)
-PAGE_MODULES = ["home", "underwrite", "queue", "history", "policies", "results", "system"]
+PAGE_MODULES = ["home", "underwrite", "queue", "history", "policies", "system"]
 
 
 @pytest.mark.parametrize("page", PAGE_MODULES)
@@ -174,3 +174,12 @@ def test_decision_form_refuses_an_empty_approver_id(monkeypatch):
     next(b for b in at.get("form_submit_button")).click()
     at.run()
     assert any("name or id" in e.value for e in at.error) and not sent
+
+
+def test_new_case_page_hides_samples_unless_demo_mode(monkeypatch):
+    """The deployed product shows only the real application form; sample applicants are a demo-mode feature."""
+    monkeypatch.setattr("wealthpilot.demo.enabled", lambda: False)
+    at = AppTest.from_string("from wealthpilot.ui.views import underwrite\nunderwrite.render()", default_timeout=60).run()
+    assert not at.exception
+    assert not at.tabs and not any(s.key == "sample-case" for s in at.selectbox)
+    assert any(t.label == "Business name" for t in at.text_input)

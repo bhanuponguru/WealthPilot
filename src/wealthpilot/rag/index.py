@@ -10,11 +10,11 @@ from functools import lru_cache
 
 from rank_bm25 import BM25Okapi
 
-from ..config import PROJECT_ROOT
+from ..config import POLICIES_DIR
 from ..nim import embed, gateway
 from ..nim.store import pool
 
-POLICY_DIR = PROJECT_ROOT / "data" / "policies"
+POLICY_DIR = POLICIES_DIR
 RULE_HEAD = re.compile(r"^## (CP-\d+)\s+(.*)$")
 STRATEGIES = ("structure", "fixed")
 

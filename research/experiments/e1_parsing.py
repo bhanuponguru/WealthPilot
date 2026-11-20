@@ -13,12 +13,19 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from wealthpilot.nim import run_tag
-from wealthpilot.parsing.pipeline import baseline_extract, extract_bank, extract_statements, parse_financials, reconcile, reconcile_bank
-from wealthpilot.synth.applicants import load
-from wealthpilot.synth.render_docs import ALL_FIELDS, DOCS_DIR
-
 from common import log_mlflow, md_table, save, wilson
+from wealthpilot_lab.synth.applicants import load
+from wealthpilot_lab.synth.render_docs import ALL_FIELDS, DOCS_DIR
+
+from wealthpilot.nim import run_tag
+from wealthpilot.parsing.pipeline import (
+    baseline_extract,
+    extract_bank,
+    extract_statements,
+    parse_financials,
+    reconcile,
+    reconcile_bank,
+)
 
 VARIANTS = ["clean", "noisy", "scanned"]
 ARMS = ["baseline_oracle", "baseline_canonical", "llm_raw", "llm_layout", "llm_layout_repair"]

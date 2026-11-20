@@ -1,43 +1,26 @@
-"""Reference policy engine (ground truth) + the fixed decision rule.
+"""Reference policy engine: the ground truth that agent results are scored against.
 
-The reference engine reads data/policies/<id>/reference.yaml, which agents never see.
-`derive_recommendation` implements the policy's "Decision Rule" section; the graph uses it
-on the agent-produced checks, and the reference engine uses it on ground-truth checks.
+It reads a hidden, machine-readable answer key for each credit policy, which the agents never see, and applies the same fixed
+decision rule the product uses to the ground-truth rule results.
 """
 
 from __future__ import annotations
 
-
 import yaml
 
-from . import finance
-from .config import PROJECT_ROOT
+from wealthpilot import finance
+from wealthpilot.decision import (  # noqa: F401
+    RULE_IDS,
+    STATUSES,
+    derive_recommendation,
+    required_tier,
+)
 
-POLICY_DIR = PROJECT_ROOT / "data" / "policies"
-STATUSES = ("pass", "fail", "exception", "not_applicable", "missing_data")
-RULE_IDS = [f"CP-{i}" for i in range(1, 13)]  # CP-13 (authority) is informational
+from .paths import REFERENCE
 
 
 def load_reference(policy_id: str) -> dict:
-    return yaml.safe_load((POLICY_DIR / policy_id / "reference.yaml").read_text())
-
-
-def derive_recommendation(checks: list[dict]) -> str:
-    """Policy 'Decision Rule': any fail -> decline; else any exception/missing -> refer; else approve."""
-    statuses = [c["status"] for c in checks]
-    if "fail" in statuses:
-        return "decline"
-    if "exception" in statuses or "missing_data" in statuses:
-        return "refer"
-    return "approve"
-
-
-def required_tier(loan_amount: float, authority: dict, has_exception: bool) -> str:
-    if has_exception or loan_amount > authority["officer_max"]:
-        return "Credit Committee"
-    if loan_amount > authority["analyst_max"]:
-        return "Senior Credit Officer"
-    return "Analyst"
+    return yaml.safe_load((REFERENCE / f"{policy_id}.yaml").read_text())
 
 
 def _chk(rule: str, status: str, reason: str | None = None) -> dict:

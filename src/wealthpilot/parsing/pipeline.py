@@ -14,7 +14,7 @@ import pymupdf
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from ..nim import get_chat, get_vlm
-from ..synth.render_docs import ALL_FIELDS, IS_FIELDS, LABELS
+from .fields import ALL_FIELDS, IS_FIELDS, LABELS
 
 FIELD_HELP = {
     "revenue": "total sales / revenue", "cogs": "cost of goods sold / cost of sales / direct costs",

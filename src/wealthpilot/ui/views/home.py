@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import streamlit as st
 
+from ... import demo
 from ...graph import cases
 from .. import nav
 from ..common import cached_health, friendly_error, require_db
@@ -56,7 +57,8 @@ def render() -> None:
         st.markdown("**Get started:** open **New case**, enter an application and upload the applicant's financial statements and bank statement as PDFs. "
                     "The assistant reads them, applies your credit policy, researches the borrower and drafts a credit memo. "
                     "Then it stops and waits for **your** decision.")
-        st.caption("No application to hand? **New case → Try a sample applicant** runs one of the bundled examples.")
+        if demo.enabled():
+            st.caption("No application to hand? **New case → Try a sample applicant** runs one of the demonstration applicants.")
         return
 
     st.subheader(f"Needs your decision ({len(waiting)})")
