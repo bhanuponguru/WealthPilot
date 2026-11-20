@@ -23,7 +23,8 @@ import sys
 import time
 from pathlib import Path
 
-from playwright.sync_api import Page, TimeoutError as PWTimeout, sync_playwright
+from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import TimeoutError as PWTimeout
 
 BASE = os.environ.get("CONSOLE_URL", "http://127.0.0.1:8501")
 OUT = Path(__file__).resolve().parents[1] / "docs" / "assets" / "screenshots"
@@ -129,8 +130,7 @@ def main() -> int:
         if not run_sample(page, "C020", "lenient"):
             return 1
 
-        for path, name in (("", "inbox"), ("cases", "cases"), ("history", "history"), ("policies", "policies"),
-                           ("experiments", "experiments"), ("system", "system")):
+        for path, name in (("", "inbox"), ("cases", "cases"), ("history", "history"), ("policies", "policies"), ("system", "system")):
             goto(page, path)
             shot(page, name)
         goto(page, "cases")                                        # the case view reached from the list

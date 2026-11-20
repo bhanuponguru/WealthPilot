@@ -1,112 +1,86 @@
 # WealthPilot
 
-**A multi-agent assistant for SME loan underwriting and credit research.**
+**An underwriting assistant for small-business loans.**
 
-WealthPilot reads a small business's financial documents, computes credit ratios, scores default risk, applies a bank's
-credit policy *as written*, researches the borrower, and drafts a credit memo — and then **stops for a human decision**.
-Every step is observable, every number is re-checked by code, and every decision is written to a tamper-evident audit log.
+WealthPilot reads an applicant's financial statements, computes the credit ratios, scores default risk, applies your bank's credit policy as written, researches the borrower and drafts a
+credit memo. It then stops for a human decision. Every figure the assistant states is checked by code, and every decision is recorded in a tamper-evident audit log.
 
-!!! abstract "The question this project answers"
-    *Given a clear credit policy, how faithfully does an LLM-based system apply it?* WealthPilot is **policy-agnostic**:
-    the credit policy is a Markdown document the agents must read and apply. US-flavoured inputs (SBA 7(a) loan data, an
-    ECOA/Reg-B-style compliance profile) are example configuration, not the thing under test.
+![The WealthPilot inbox: cases waiting for a decision and recent decisions](assets/screenshots/inbox.png)
 
-![The WealthPilot console showing a case under review: recommendation, grade, default probability, required approver, memo and decision form](assets/screenshots/case-review-memo.png)
-
-## At a glance
+## What it does
 
 <div class="grid cards" markdown>
 
--   :material-graph-outline: **Orchestration**
+-   **Reads the documents**
 
     ---
 
-    A LangGraph workflow with six agent roles, parallel branches, bounded loops and a Postgres checkpointer. All routing
-    is code over typed state — never an LLM.
+    Extracts income statements, balance sheets and bank statements from digital or scanned PDFs and verifies that the figures reconcile before using them.
 
-    [:octicons-arrow-right-24: The workflow](concepts/workflow.md)
-
--   :material-file-document-check-outline: **Policy RAG**
+-   **Applies your policy, as written**
 
     ---
 
-    Hybrid retrieval (BM25 + vectors) with a NIM reranker over a policy written in prose. The system extracts thresholds
-    from the text; the answer key is hidden from it.
+    The credit policy is a document you maintain. The assistant finds each rule, reads its thresholds and exceptions, and quotes the sentence behind every verdict.
 
-    [:octicons-arrow-right-24: Policy and RAG](concepts/policy-rag.md)
-
--   :material-puzzle-outline: **MCP integration**
+-   **Scores risk with deterministic tools**
 
     ---
 
-    Three FastMCP servers (16 tools) for credit math, policy search and borrower research, consumed through
-    `langchain-mcp-adapters`.
+    Ratios, stress tests and the default-risk score come from calculation tools, never from the language model. A fixed rule turns rule results into a recommendation.
 
-    [:octicons-arrow-right-24: MCP servers](concepts/mcp-servers.md)
-
--   :material-shield-check-outline: **Safety by design**
+-   **Keeps a person in charge**
 
     ---
 
-    Redaction of protected attributes, numeric verification of LLM comparisons, a memo validator, mandatory human approval
-    and a hash-chained audit log.
+    Every case ends at an approval gate. The policy defines which authority tier may decide, and each decision is written to a hash-chained audit log.
 
-    [:octicons-arrow-right-24: Compliance](concepts/compliance.md)
-
--   :material-lightning-bolt-outline: **Reliability**
+-   **Protects applicants**
 
     ---
 
-    A shared NIM gateway with a cache, an adaptive rate limit, retries, circuit breakers, model fallback and built-in
-    fault injection.
+    Names, addresses and ZIP codes are removed from everything the language model reads, and memos are scanned for prohibited-basis language.
 
-    [:octicons-arrow-right-24: NIM gateway](concepts/nim-gateway.md)
-
--   :material-chart-box-outline: **Evaluated, not just built**
+-   **Fails safe**
 
     ---
 
-    Five experiments with ground truth: policy adherence, parsing, RAG, fairness and fault tolerance — including the bugs
-    they exposed.
-
-    [:octicons-arrow-right-24: Experiments](experiments/index.md)
+    If a tool or check is unavailable, the run is flagged as degraded and the recommendation is capped at refer. A run can never auto-approve on partial information.
 
 </div>
 
-## Headline results
+## How a case flows
 
-All numbers come from the scripts in `experiments/` and are stored in `report/results/`. Sample sizes are small by design
-(free NVIDIA NIM tier); treat them as evidence of mechanism, not precise rates. See [Experiments](experiments/index.md).
-
-| Question | Result |
-|---|---|
-| Does it follow the policy it is given? (**E0**) | **100 %** decision accuracy under the strict policy and **91.7 %** under the lenient one (12 cases each); it changed its decision correctly in 5 of the 6 cases where the two policies disagree. |
-| Does it read the right numbers from the text? (**E0**) | **100 %** of policy thresholds extracted correctly from prose, in both policies. |
-| Can it parse messy and scanned documents? (**E1**) | **99.5 %** field accuracy on noisy layouts (100 % with reconciliation repair) and **96.9 %** on image-only scans. |
-| Does retrieval find the right rule? (**E2**) | Hybrid search + rerank ranks the correct rule first **97 %** of the time (vs 77 % without the reranker). |
-| Does identity affect outcomes? (**E3**) | No decision flips under name/gender/ZIP swaps; with redaction on, identity reached **0 of 84** LLM prompts. |
-| Does it fail safely? (**E4**) | **0 unsafe approvals and 0 wrongful declines** in 28 fault-injected runs; degraded runs always recommend *refer*. |
+```mermaid
+flowchart LR
+    A[Application and PDFs] --> B[Read and verify documents]
+    B --> C[Ratios and stress test]
+    B --> D[Sanctions, media and registry research]
+    C --> E[Default-risk score]
+    D --> E
+    E --> F[Apply credit policy]
+    F --> G[Draft and validate memo]
+    G --> H{{Human decision}}
+    H --> I[Audit log]
+```
 
 ## Where to start
 
-=== "I want to run it"
+| I want to... | Go to |
+|---|---|
+| run the system | [Deploy with Docker](get-started/deploy.md), then [Your first case](get-started/first-case.md) |
+| use the console day to day | [Using the console](user-guide/console.md) |
+| change the bank's rules | [Managing credit policies](administration/policies.md) |
+| operate and secure an installation | [Operations](administration/operations.md) and [Security and access](administration/security.md) |
+| understand how it works and why | [Architecture](architecture/index.md) |
+| see how well it performs | [Research](research/index.md) |
 
-    1. Check the [prerequisites](getting-started/prerequisites.md).
-    2. Follow the [installation guide](getting-started/installation.md).
-    3. Underwrite your first case in the [quickstart](getting-started/quickstart.md), or in the browser with [the web console](guides/console.md) (`uv run wealthpilot ui`), which is the way an officer would normally work.
+## Product and research
 
-=== "I want to understand it"
+WealthPilot is organised as two separate parts. The **product** (this documentation, apart from the Research tab) is what an organisation deploys: the console, the underwriting workflow, the tool servers and the
+audit trail. The **research** is the evaluation that was run against it: a synthetic-data generator, a reference engine that holds the ground truth, and five experiments on policy adherence, document parsing,
+policy retrieval, fairness and reliability. The product contains no experiment code and no answer keys; the research package depends on the product, never the reverse.
 
-    1. Read the [architecture overview](concepts/architecture.md).
-    2. Walk through the [workflow](concepts/workflow.md) and the [decision rule](concepts/decision-rule.md).
-    3. See what was measured in the [experiments](experiments/index.md).
-
-=== "I want to extend it"
-
-    1. [Write a new credit policy](guides/new-policy.md).
-    2. Browse the [MCP tool reference](reference/mcp-tools.md) and the [Python API](reference/api.md).
-    3. Read the [design decisions](project/decisions.md) before changing the architecture.
-
-!!! warning "Not a production lending system"
-    WealthPilot is a research and teaching project. It runs on synthetic applicants, mock adverse-media and registry sources,
-    and the free tier of a hosted LLM service. See [Limitations](project/limitations.md) before drawing conclusions.
+!!! warning "Decision support, not a lending system of record"
+    The assistant supports an underwriter; it does not replace one. Its policy reading, document extraction and research sources have known limits, and several external sources are placeholders.
+    Read [Known limitations](administration/limitations.md) before using it on real applications.

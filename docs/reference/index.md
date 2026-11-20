@@ -1,13 +1,16 @@
 # Reference
 
-Precise, look-up-oriented material.
+Look-up material for operators, integrators and reviewers: tool interfaces, data structures, stored tables, rule definitions and terminology.
 
 | Page | Contents |
 |---|---|
-| [MCP tools](mcp-tools.md) | every tool's arguments and return shape |
-| [Case state](state.md) | every field of the LangGraph state |
-| [Database](database.md) | Postgres tables and columns |
-| [Policy rules](policy-rules.md) | the rule set, definitions and how each rule is evaluated |
-| [Python API](api.md) | generated from the docstrings |
+| [Tool reference](tool-reference.md) | The 16 tools of the three tool servers: arguments, return values and behavior |
+| [Case state](case-state.md) | The structured record the workflow builds up for each case |
+| [Database](database.md) | Every table the product creates, with columns, retention and backup notes |
+| [Policy rules](policy-rules.md) | The rule catalogue CP-1 to CP-13 as implemented by the two bundled policies |
+| [Glossary](glossary.md) | Definitions of the terms used throughout the documentation |
 
-See also [Configuration](../getting-started/configuration.md) for settings and the [CLI guide](../guides/cli.md) for commands.
+Related pages:
+
+* [Configuration](../get-started/configuration.md) lists every setting, environment variable and port.
+* [Command-line interface](../user-guide/cli.md) lists every `wealthpilot` command.

@@ -1,5 +1,5 @@
 site_name: WealthPilot
-site_description: A multi-agent assistant for SME loan underwriting and credit research, with policy RAG, MCP tools, human approval and a full evaluation suite.
+site_description: A multi-agent assistant for small-business loan underwriting, with policy retrieval, deterministic credit tools, mandatory human approval and a tamper-evident audit trail.
 docs_dir: docs
 site_dir: site
 use_directory_urls: true
@@ -72,69 +72,53 @@ markdown_extensions:
 
 plugins:
   - search
-  - mkdocstrings:
-      handlers:
-        python:
-          paths: [src]
-          options:
-            show_source: false
-            show_if_no_docstring: true
-            show_root_heading: true
-            show_root_full_path: false
-            show_symbol_type_heading: true
-            members_order: source
-            heading_level: 3
-            docstring_section_style: list
-            filters: ["!^_"]
 
 nav:
   - Home: index.md
-  - Getting started:
-      - getting-started/index.md
-      - Prerequisites: getting-started/prerequisites.md
-      - Installation: getting-started/installation.md
-      - Quickstart: getting-started/quickstart.md
-      - Configuration: getting-started/configuration.md
-  - Concepts:
-      - concepts/index.md
-      - Architecture: concepts/architecture.md
-      - The underwriting workflow: concepts/workflow.md
-      - Agents and tools: concepts/agents.md
-      - The decision rule: concepts/decision-rule.md
-      - Credit policy and RAG: concepts/policy-rag.md
-      - Document parsing: concepts/document-parsing.md
-      - Risk model: concepts/risk-model.md
-      - Memory: concepts/memory.md
-      - Compliance and human approval: concepts/compliance.md
-      - NIM gateway and reliability: concepts/nim-gateway.md
-      - MCP servers: concepts/mcp-servers.md
-      - Observability: concepts/observability.md
-      - The console (implementation): concepts/user-interface.md
-  - Guides:
-      - guides/index.md
-      - Command-line interface: guides/cli.md
-      - Using the web console: guides/console.md
-      - Writing a new policy: guides/new-policy.md
-      - The synthetic world: guides/synthetic-data.md
-      - Running the tests: guides/testing.md
-      - Operations: guides/operations.md
-  - Experiments:
-      - experiments/index.md
-      - "E0 · Policy adherence": experiments/e0-policy-adherence.md
-      - "E1 · Document parsing": experiments/e1-parsing.md
-      - "E2 · Policy RAG": experiments/e2-rag.md
-      - "E3 · Fairness and compliance": experiments/e3-fairness.md
-      - "E4 · Reliability": experiments/e4-reliability.md
+  - Get started:
+      - Deploy with Docker: get-started/deploy.md
+      - Your first case: get-started/first-case.md
+      - Configuration: get-started/configuration.md
+  - User guide:
+      - Using the console: user-guide/console.md
+      - Command-line interface: user-guide/cli.md
+  - Administration:
+      - Operations: administration/operations.md
+      - Managing credit policies: administration/policies.md
+      - Security and access: administration/security.md
+      - Troubleshooting: administration/troubleshooting.md
+      - Known limitations: administration/limitations.md
+  - Architecture:
+      - architecture/index.md
+      - System design: architecture/system-design.md
+      - The underwriting workflow: architecture/workflow.md
+      - Agents and tools: architecture/agents.md
+      - The decision rule: architecture/decision-rule.md
+      - Policy retrieval: architecture/policy-retrieval.md
+      - Document parsing: architecture/document-parsing.md
+      - Risk model: architecture/risk-model.md
+      - Memory: architecture/memory.md
+      - Compliance and human approval: architecture/compliance.md
+      - Model gateway and reliability: architecture/model-gateway.md
+      - Tool servers: architecture/tool-servers.md
+      - Observability: architecture/observability.md
+      - The console: architecture/console.md
+      - Design decisions: architecture/decisions.md
+      - Developer guide: architecture/development.md
   - Reference:
       - reference/index.md
-      - MCP tools: reference/mcp-tools.md
-      - Case state: reference/state.md
+      - Tool reference: reference/tool-reference.md
+      - Case state: reference/case-state.md
       - Database: reference/database.md
       - Policy rules: reference/policy-rules.md
-      - Python API: reference/api.md
-  - Project:
-      - Design decisions: project/decisions.md
-      - Lessons learned: project/lessons-learned.md
-      - Limitations and future work: project/limitations.md
-      - Troubleshooting: project/troubleshooting.md
-      - Glossary: project/glossary.md
+      - Glossary: reference/glossary.md
+  - Research:
+      - research/index.md
+      - Synthetic data: research/synthetic-data.md
+      - "E0 Policy adherence": research/e0-policy-adherence.md
+      - "E1 Document parsing": research/e1-parsing.md
+      - "E2 Policy retrieval": research/e2-rag.md
+      - "E3 Fairness and compliance": research/e3-fairness.md
+      - "E4 Reliability": research/e4-reliability.md
+      - Limits of the evaluation: research/limitations.md
+      - Reproducing the experiments: research/reproduce.md
