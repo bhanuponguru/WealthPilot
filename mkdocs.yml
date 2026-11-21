@@ -73,6 +73,13 @@ markdown_extensions:
 plugins:
   - search
 
+# The project report and the decision records are submission documents that link to files outside docs/.
+# They are read on GitHub; the site links to them instead of building them.
+exclude_docs: |
+  Project_Report.md
+  Project_Report.pdf
+  Architecture_Decision_Records.md
+
 nav:
   - Home: index.md
   - Get started:

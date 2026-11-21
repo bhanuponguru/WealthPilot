@@ -86,7 +86,8 @@ make test                        # quiet run of everything
 
 The test paths cover the product tests in `tests/` and the research tests in `research/tests/`. A shared fixture turns on
 demonstration mode for the whole suite, because the product ships with it off. Tests that use sample applicants need the
-demonstration data in `data/demo/`.
+demonstration data in `data/demo/` (`make demo-data` generates them into the deployment's `data` volume). The research tests build their own population in
+a temporary folder and need no generated files. To run the live tests inside the deployed containers instead of on the host, use `make test-live-docker`.
 
 | Area | Offline | Live | What is verified |
 |---|---|---|---|

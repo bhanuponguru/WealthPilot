@@ -1,0 +1,29 @@
+docker compose --profile lab run --rm lab sh -c "python -m wealthpilot_lab.synth.applicants && python -m wealthpilot_lab.synth.news && python -m wealthpilot_lab.synth.render_docs"
+ Container wealthpilot-ollama-1 Running 
+ Container wealthpilot-mcp-1 Running 
+ Container wealthpilot-postgres Running 
+ Container wealthpilot-bootstrap-1 Starting 
+ Container wealthpilot-postgres Waiting 
+ Container wealthpilot-ollama-1 Waiting 
+ Container wealthpilot-ollama-1 Healthy 
+ Container wealthpilot-ollama-pull-1 Starting 
+ Container wealthpilot-postgres Healthy 
+ Container wealthpilot-bootstrap-1 Started 
+ Container wealthpilot-bootstrap-1 Waiting 
+ Container wealthpilot-ollama-pull-1 Started 
+ Container wealthpilot-ollama-pull-1 Waiting 
+ Container wealthpilot-bootstrap-1 Exited 
+ Container wealthpilot-ollama-pull-1 Exited 
+ Container wealthpilot-mcp-1 Waiting 
+ Container wealthpilot-postgres Waiting 
+ Container wealthpilot-postgres Healthy 
+ Container wealthpilot-mcp-1 Healthy 
+ Container wealthpilot-lab-run-e760da787ef9 Creating 
+ Container wealthpilot-lab-run-e760da787ef9 Created 
+generated 80 applicants -> /data/demo/applicants.json
+47 articles -> /data/demo/news.json
+rendered 240 document sets -> /data/demo/docs
+
+real	0m59.774s
+user	0m0.293s
+sys	0m0.163s

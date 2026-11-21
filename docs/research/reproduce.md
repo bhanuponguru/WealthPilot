@@ -53,6 +53,10 @@ docker compose --profile lab run --rm lab python -m wealthpilot_lab.synth.news  
 docker compose --profile lab run --rm lab python -m wealthpilot_lab.synth.groundtruth  # reference-engine truth under both policies
 ```
 
+The generator rejects invented names that fuzzy-match an entry on the real OFAC list, so the exact population depends on whether the sanctions list
+was present when it ran (without it the names differ slightly and the outcome counts below can shift by a case or two). The research unit tests do not depend
+on generated files: they build their own population in a temporary folder.
+
 The first three write applicants, documents, news and the watchlist to the demonstration-data folder (`<data>/demo/`). The last writes
 `ground_truth.json` to the research data folder and prints the outcome counts under each policy, which should match the table in
 [The synthetic world](synthetic-data.md). To try the product with these files, set `WEALTHPILOT_DEMO=1` (see

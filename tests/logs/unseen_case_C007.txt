@@ -1,0 +1,88 @@
+# Unseen case C007 (used in no experiment), strict policy, through the CLI in the deployed console container
+$ docker compose exec console wealthpilot demo-run C007 --policy strict --thread unseen-c007-strict
+  ✓ intake
+  ✓ parse
+  ✓ analyst
+  ✓ research
+  ✓ risk
+  ✓ policy
+  ✓ grade
+  ✓ policy2
+  ✓ memo
+  ✓ memo_validator
+  ✓ memo
+  ✓ memo_validator
+  ✓ 
+recommendation: decline   required approver: Senior Credit Officer   grade: C
+  CP-1   pass            The applicant has exactly 3 years in business, meeting the minimum requirement.
+  CP-2   pass            Auto repair shop is not a prohibited industry.
+  CP-3   fail            The DSCR of 1.2407 is below the required minimum of 1.30.
+  CP-4   pass            The debt-to-equity ratio of 2.0623 does not exceed 3.0.
+  CP-5   pass            The current ratio of 1.7949 meets the minimum requirement of 1.20.
+  CP-6   fail            The loan-to-revenue ratio of 0.3217 exceeds the maximum allowed 0.30.
+  CP-7   pass            The applicant provided 3 years of financial statements, meeting the requirement.
+  CP-8   fail            The loan amount of USD 175,000 exceeds the USD 150,000 threshold, requiring collateral cov
+  CP-9   pass            The loan is to an SME and a personal guarantee was provided.
+  CP-10  pass            Screening found no match; no confirmed match exists.
+  CP-11  pass            The maximum adverse media severity is low; the rule only triggers exceptions for medium or
+  CP-12  pass            The case risk grade is C, which is within the acceptable range of A, B, or C.
+
+Waiting for human input (approval). Resume with `wealthpilot approve C007 ...`
+2026/11/20 23:36:51 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+$ docker compose exec console wealthpilot show unseen-c007-strict
+recommendation: decline   required approver: Senior Credit Officer   grade: C
+  CP-1   pass            The applicant has exactly 3 years in business, meeting the minimum requirement.
+  CP-2   pass            Auto repair shop is not a prohibited industry.
+  CP-3   fail            The DSCR of 1.2407 is below the required minimum of 1.30.
+  CP-4   pass            The debt-to-equity ratio of 2.0623 does not exceed 3.0.
+  CP-5   pass            The current ratio of 1.7949 meets the minimum requirement of 1.20.
+  CP-6   fail            The loan-to-revenue ratio of 0.3217 exceeds the maximum allowed 0.30.
+  CP-7   pass            The applicant provided 3 years of financial statements, meeting the requirement.
+  CP-8   fail            The loan amount of USD 175,000 exceeds the USD 150,000 threshold, requiring collateral cov
+  CP-9   pass            The loan is to an SME and a personal guarantee was provided.
+  CP-10  pass            Screening found no match; no confirmed match exists.
+  CP-11  pass            The maximum adverse media severity is low; the rule only triggers exceptions for medium or
+  CP-12  pass            The case risk grade is C, which is within the acceptable range of A, B, or C.
+
+Waiting for human input (approval). Resume with `wealthpilot approve C007 ...`
+
+# Reference engine (answer key, research package only) for C007 under the strict policy
+recommendation: decline  tier: Senior Credit Officer  grade: C
+{'CP-1': 'pass', 'CP-2': 'pass', 'CP-3': 'fail', 'CP-4': 'pass', 'CP-5': 'pass', 'CP-6': 'fail', 'CP-7': 'pass', 'CP-8': 'fail', 'CP-9': 'pass', 'CP-10': 'pass', 'CP-11': 'pass', 'CP-12': 'pass'}
+
+$ docker compose exec console wealthpilot approve unseen-c007-strict --decision decline --tier "Senior Credit Officer" --approver evaluation-run --reason "Evaluation of the unseen case; agrees with the recommendation."
+recommendation: decline   required approver: Senior Credit Officer   grade: C
+  CP-1   pass            The applicant has exactly 3 years in business, meeting the minimum requirement.
+  CP-2   pass            Auto repair shop is not a prohibited industry.
+  CP-3   fail            The DSCR of 1.2407 is below the required minimum of 1.30.
+  CP-4   pass            The debt-to-equity ratio of 2.0623 does not exceed 3.0.
+  CP-5   pass            The current ratio of 1.7949 meets the minimum requirement of 1.20.
+  CP-6   fail            The loan-to-revenue ratio of 0.3217 exceeds the maximum allowed 0.30.
+  CP-7   pass            The applicant provided 3 years of financial statements, meeting the requirement.
+  CP-8   fail            The loan amount of USD 175,000 exceeds the USD 150,000 threshold, requiring collateral cov
+  CP-9   pass            The loan is to an SME and a personal guarantee was provided.
+  CP-10  pass            Screening found no match; no confirmed match exists.
+  CP-11  pass            The maximum adverse media severity is low; the rule only triggers exceptions for medium or
+  CP-12  pass            The case risk grade is C, which is within the acceptable range of A, B, or C.
+
+FINAL: {
+ "case_id": "C007",
+ "policy_id": "strict",
+ "recommendation": "decline",
+ "decision": "decline",
+ "override": false,
+ "override_reason": null,
+ "approver": "evaluation-run",
+ "approver_tier": "Senior Credit Officer",
+ "required_tier": "Senior Credit Officer",
+ "grade": "C",
+ "pd": 0.0321,
+ "degraded": false,
+ "degraded_reasons": [],
+ "documents_rejected": false,
+ "decided_at": "2026-11-20T23:37:24"
+}
+
+$ docker compose exec console wealthpilot audit-verify
+{"ok": true, "records": 48, "first_bad_id": null}

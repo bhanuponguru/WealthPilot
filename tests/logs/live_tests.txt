@@ -1,0 +1,47 @@
+$ make test-live-docker
+docker compose --profile lab run --rm -e WEALTHPILOT_DEMO=1 -v "./tests:/app/tests:ro" -v "./pyproject.toml:/app/pyproject.toml:ro" \
+  lab python -m pytest -q -m live -p no:cacheprovider --rootdir /app -c /app/pyproject.toml /app/tests
+ Container wealthpilot-mcp-1 Running 
+ Container wealthpilot-postgres Running 
+ Container wealthpilot-ollama-1 Running 
+ Container wealthpilot-bootstrap-1 Starting 
+ Container wealthpilot-ollama-1 Waiting 
+ Container wealthpilot-postgres Waiting 
+ Container wealthpilot-ollama-1 Healthy 
+ Container wealthpilot-ollama-pull-1 Starting 
+ Container wealthpilot-postgres Healthy 
+ Container wealthpilot-bootstrap-1 Started 
+ Container wealthpilot-bootstrap-1 Waiting 
+ Container wealthpilot-ollama-pull-1 Started 
+ Container wealthpilot-ollama-pull-1 Waiting 
+ Container wealthpilot-bootstrap-1 Exited 
+ Container wealthpilot-ollama-pull-1 Exited 
+ Container wealthpilot-mcp-1 Waiting 
+ Container wealthpilot-postgres Waiting 
+ Container wealthpilot-mcp-1 Healthy 
+ Container wealthpilot-postgres Healthy 
+ Container wealthpilot-lab-run-fbf142ae8763 Creating 
+ Container wealthpilot-lab-run-fbf142ae8763 Created 
+/app/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.................                                                        [100%]
+=============================== warnings summary ===============================
+tests/test_gateway_live.py: 4 warnings
+tests/test_ui_live.py: 11 warnings
+  /app/src/wealthpilot/nim/gateway.py:165: DeprecationWarning: The 'max_tokens' parameter is deprecated and will be removed in a future version. Please use 'max_completion_tokens' instead.
+    llm = GatewayChat(model=model, api_key=s.nvidia_api_key.get_secret_value(), temperature=temperature, max_tokens=max_tokens)
+
+tests/test_gateway_live.py::test_retry_recovers_from_injected_429
+tests/test_gateway_live.py::test_fallback_when_primary_is_gone
+tests/test_gateway_live.py::test_fallback_when_primary_is_gone
+tests/test_ui_live.py::test_override_requires_a_reason
+tests/test_ui_live.py::test_new_application_with_uploaded_pdfs_end_to_end
+tests/test_ui_live.py::test_new_application_with_uploaded_pdfs_end_to_end
+  /app/src/wealthpilot/nim/gateway.py:72: DeprecationWarning: The 'initial' parameter is deprecated, use 'multiplier' instead
+    for attempt in Retrying(stop=stop_after_attempt(attempts), wait=wait_exponential_jitter(initial=2, max=25),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+17 passed, 59 deselected, 21 warnings in 69.14s (0:01:09)
+2026/11/20 23:35:40 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...

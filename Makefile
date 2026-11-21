@@ -1,4 +1,4 @@
-.PHONY: up down build logs ps doctor demo-data lab test test-live docs docs-build dev-services mlflow ui
+.PHONY: up down build logs ps doctor demo-data lab test test-live test-live-docker docs docs-build dev-services mlflow ui
 
 # ---- Deployment (Docker Compose)
 up:
@@ -46,6 +46,12 @@ test:
 
 test-live:
 	uv run pytest -q -m live
+
+# The same live tests, run inside the Compose network against the deployed services (the stack must be up and
+# demonstration data generated with `make demo-data`; restart mcp and console afterwards).
+test-live-docker:
+	docker compose --profile lab run --rm -e WEALTHPILOT_DEMO=1 -v "$(CURDIR)/tests:/app/tests:ro" -v "$(CURDIR)/pyproject.toml:/app/pyproject.toml:ro" \
+	  lab python -m pytest -q -m live -p no:cacheprovider --rootdir /app -c /app/pyproject.toml /app/tests
 
 # ---- Documentation (needs: uv sync --group docs)
 docs:

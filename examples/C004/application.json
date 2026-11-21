@@ -1,0 +1,29 @@
+{
+  "business_name": "Ibarra Restaurant Co.",
+  "owner_name": "Hector Ibarra",
+  "address": {
+    "street": "180 Congress St",
+    "city": "Tucson",
+    "state": "AZ",
+    "zip": "85701"
+  },
+  "industry": {
+    "name": "Restaurant and catering",
+    "tag": "restaurant",
+    "naics": "722511"
+  },
+  "years_in_business": 15,
+  "incorporation_year": 2010,
+  "loan_amount": 100000.0,
+  "term_months": 84,
+  "purpose": "equipment purchase",
+  "collateral_value": 160000.0,
+  "guarantor_provided": true,
+  "profile": {
+    "state": "AZ",
+    "business_type": "PARTNERSHIP",
+    "fixed_or_variable": "F",
+    "jobs_supported": 15,
+    "franchise": false
+  }
+}

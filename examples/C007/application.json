@@ -1,0 +1,29 @@
+{
+  "business_name": "Prescott Auto Co.",
+  "owner_name": "Paul Prescott",
+  "address": {
+    "street": "88 Bayshore Ave",
+    "city": "Tampa",
+    "state": "FL",
+    "zip": "33602"
+  },
+  "industry": {
+    "name": "Auto repair shop",
+    "tag": "auto_repair",
+    "naics": "811111"
+  },
+  "years_in_business": 3,
+  "incorporation_year": 2022,
+  "loan_amount": 175000.0,
+  "term_months": 84,
+  "purpose": "debt refinancing",
+  "collateral_value": 0.0,
+  "guarantor_provided": true,
+  "profile": {
+    "state": "FL",
+    "business_type": "CORPORATION",
+    "fixed_or_variable": "V",
+    "jobs_supported": 30,
+    "franchise": false
+  }
+}

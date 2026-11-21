@@ -1,85 +1,45 @@
 # Design decisions
 
-This page is the decision record for the significant design choices. Each entry states the context, the decision, the rationale and
-the consequences. Numbering is stable so that other pages can refer to a decision.
+This page lists the decisions behind the design. The main ones, those that involved a real choice between approaches or a change after
+measurement, are recorded in full in the [Architecture Decision Records](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md), with options, rationale, evidence and a revisit trigger. Each
+of those appears here as a one-line summary with a link. The remaining decisions, mostly about the console, tooling and operations, are
+written out in full on this page. The numbering (D1 to D24) is stable so that other pages can refer to it.
 
 ## D1. Deterministic routing instead of a model supervisor
 
-**Context.** A multi-agent system needs something to decide which agent runs next. A language-model supervisor is the common choice.
+The workflow is a fixed graph. Conditional branches are code conditions over typed state, and every loop has a counter.
 
-**Decision.** The workflow is a fixed graph. Conditional branches are code conditions over typed state, and every loop has a counter.
-
-**Rationale.** Control flow becomes testable without a model, repeatable from run to run and explainable to an auditor. It also removes
-a source of nondeterminism from every case.
-
-**Consequences.** The six agents are roles with defined responsibilities, not autonomous planners. See [Agents](agents.md) and
-[Underwriting workflow](workflow.md).
+Record: [ADR-002, Deterministic routing instead of a model supervisor](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-002-deterministic-routing-instead-of-a-model-supervisor).
 
 ## D2. The language model reads; code decides
 
-**Context.** Each place a language model is trusted with a decision or with arithmetic can produce a confident error, such as a
-rule marked as failed in the same breath as an explanation that it is satisfied, or a comparison that states that 132,000 exceeds
-150,000.
+The recommendation comes from a fixed decision rule over rule statuses. Ratios and thresholds are compared by code. The approver tier is chosen by code from extracted limits. Sanctions matches are classified by code.
 
-**Decision.** The recommendation comes from a fixed decision rule over rule statuses. Ratios and thresholds are compared by code. The
-approver tier is chosen by code from extracted limits. Sanctions matches are classified by code.
-
-**Rationale.** Moving the decision into code and keeping the model for reading removes those failure classes, or converts them into
-missing data, which leads to a referral.
-
-**Consequences.** Every outcome can be reproduced from the recorded rule statuses. The model's quality limits how many rules can be read
-correctly, not what the decision is. See [Decision rule](decision-rule.md).
+Record: [ADR-004, The language model reads; code decides](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-004-the-language-model-reads-code-decides).
 
 ## D3. The policy is data
 
-**Context.** A bank's credit policy is written in prose and changes. Hard-coding it would make every change a software release, and
-would mean the system never reads the policy at all.
+A policy is a Markdown document with stable rule ids, and it is the only input. The system extracts thresholds from the text. The `policies/` folder contains policy text only. Any machine-readable answer key lives in the research package, never in the product.
 
-**Decision.** A policy is a Markdown document with stable rule ids, and it is the only input. The system extracts thresholds from the
-text. The `policies/` folder contains policy text only. Any machine-readable answer key lives in the research package, never in the
-product.
-
-**Rationale.** Reading the prose is the capability being delivered, and it is the capability the evaluation measures. If the product
-could see an answer key, swapping a policy would be a file swap and the evaluation would measure nothing.
-
-**Consequences.** Policies must follow a few conventions for rule ids and for the thresholds that feed the scorecard. See
-[Policy retrieval](policy-retrieval.md) and [Managing credit policies](../administration/policies.md).
+Record: [ADR-005, The policy is data](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-005-the-policy-is-data).
 
 ## D4. Boolean answers, not labels
 
-**Context.** Asking the model for a pass or fail label on prohibition-style rules invites double negatives.
+For each rule the model answers whether the rule applies, whether the case is in compliance and whether the situation is an exception. Code maps the answers to a status.
 
-**Decision.** For each rule the model answers whether the rule applies, whether the case is in compliance and whether the situation is
-an exception. Code maps the answers to a status.
-
-**Rationale.** Questions about the case have unambiguous polarity, while a label depends on how the rule is phrased.
-
-**Consequences.** Statuses are consistent with the answers by construction. See [Decision rule](decision-rule.md#rule-statuses).
+Record: [ADR-007, Boolean answers mapped to statuses by code](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-007-boolean-answers-mapped-to-statuses-by-code).
 
 ## D5. Verify the model's arithmetic
 
-**Context.** Arithmetic comparisons against policy thresholds are a frequent class of model error in policy judging.
+Each rule answer lists the numeric comparisons it relied on. Code re-evaluates them. A contradiction triggers one targeted re-ask, and a persistent contradiction turns the rule into missing data.
 
-**Decision.** Each rule answer lists the numeric comparisons it relied on. Code re-evaluates them. A contradiction triggers one
-targeted re-ask, and a persistent contradiction turns the rule into missing data.
-
-**Rationale.** A verified wrong answer is corrected, and an unverifiable one becomes a referral rather than a silent error.
-
-**Consequences.** A rule with an inconsistent answer is referred to a human instead of decided. The effect is measured in the
-[policy adherence evaluation](../research/e0-policy-adherence.md).
+Record: [ADR-010, Verify the model's arithmetic](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-010-verify-the-models-arithmetic).
 
 ## D6. Batched rule judging with retrieval in code
 
-**Context.** Giving each rule its own tool-using agent that searches the policy multiplies the number of model calls per case, and
-hosted model APIs limit the request rate.
+Code retrieves passages for every rule through the search tool, then one model call judges four rules at a time.
 
-**Decision.** Code retrieves passages for every rule through the search tool, then one model call judges four rules at a time.
-
-**Rationale.** Far fewer calls per case keep the run time acceptable under rate limits, and retrieval always happens because code
-performs it.
-
-**Consequences.** The model cannot forget to look. It has fewer chances to self-correct through tool use, which the numeric
-verification in D5 compensates for. See [Policy retrieval](policy-retrieval.md#how-rules-are-judged).
+Record: [ADR-009, Batched rule judging with retrieval in code](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-009-batched-rule-judging-with-retrieval-in-code).
 
 ## D7. MLflow for tracing and the model registry
 
@@ -107,15 +67,9 @@ fixed at 768.
 
 ## D9. One shared gateway backed by Postgres
 
-**Context.** The workflow process and the policy tool server both call the model API and must respect one request budget.
+The gateway is a library, not a service. Its cache, rate limiter and call log live in Postgres, and both processes load it.
 
-**Decision.** The gateway is a library, not a service. Its cache, rate limiter and call log live in Postgres, and both processes load
-it.
-
-**Rationale.** One request budget and one cache across all processes without operating another service. It also gives uniform fault
-injection and observability.
-
-**Consequences.** The database is on the path of every model call. See [Model gateway](model-gateway.md).
+Record: [ADR-011, One shared gateway backed by Postgres](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-011-one-shared-gateway-backed-by-postgres).
 
 ## D10. An adaptive rate limit and an explicit, empty-by-default fallback
 
@@ -145,61 +99,33 @@ supplied text rather than open-ended reasoning.
 
 ## D12. Layout reconstruction before extraction
 
-**Context.** A model reading flattened table text can assign values of one fiscal year to another when headers differ. Reconciliation
-cannot detect this, because each year's totals still balance.
+Tables are rebuilt from word coordinates so that each row states its values by year before the model sees them.
 
-**Decision.** Tables are rebuilt from word coordinates so that each row states its values by year before the model sees them.
-
-**Rationale.** Fixing the input works where instructing the model to be careful does not.
-
-**Consequences.** Text PDFs are handled deterministically up to label mapping. Scans take the vision path. See
-[Document parsing](document-parsing.md) and the [parsing evaluation](../research/e1-parsing.md).
+Record: [ADR-013, Layout reconstruction before extraction](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-013-layout-reconstruction-before-extraction).
 
 ## D13. Degraded means refer, in both directions
 
-**Context.** A check that could not be performed can be misread as a failure, and an incomplete check can be misread as a pass.
+A run with any unavailable tool or check cannot be recommended for approval or decline. Both are capped at refer.
 
-**Decision.** A run with any unavailable tool or check cannot be recommended for approval or decline. Both are capped at refer.
-
-**Rationale.** Approving on incomplete checks is unsafe, and declining because a tool was down is an adverse action without a real
-basis.
-
-**Consequences.** Outages produce referrals and visible limitations instead of wrong decisions. See
-[Decision rule](decision-rule.md#the-degraded-run-cap) and the [reliability evaluation](../research/e4-reliability.md).
+Record: [ADR-016, Degraded means refer, in both directions](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-016-degraded-means-refer-in-both-directions).
 
 ## D14. A fixed five-year label and no term feature
 
-**Context.** The training data records the realized term for charged-off loans, which reveals the outcome.
+The probability label is "charged off within five years of approval", and the term field is not a feature.
 
-**Decision.** The probability label is "charged off within five years of approval", and the term field is not a feature.
-
-**Rationale.** A fixed horizon avoids right-censoring for the approval years used, and excluding the term field removes a label leak.
-
-**Consequences.** The model uses profile features only. See [Risk model](risk-model.md#the-label).
+Record: [ADR-018, A fixed five-year label and no term feature](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-018-a-fixed-five-year-label-and-no-term-feature).
 
 ## D15. Human approval for every case
 
-**Context.** Credit decisions are consequential and regulated.
+There is no automatic decision path. The approver's tier must meet the policy's own delegation-of-authority requirement.
 
-**Decision.** There is no automatic decision path. The approver's tier must meet the policy's own delegation-of-authority
-requirement.
-
-**Rationale.** The system's job is to prepare a verified recommendation, not to take the decision.
-
-**Consequences.** Throughput is bounded by reviewers. Every decision has a named human and a tier in the audit log. See
-[Compliance](compliance.md#human-approval).
+Record: [ADR-019, Human approval for every case](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-019-human-approval-for-every-case).
 
 ## D16. Redaction instead of "don't mention it"
 
-**Context.** Instructions in a prompt such as "do not consider gender" cannot be verified.
+Identity is stripped from every text before a model sees it, with whole-word matching. Memos are additionally scanned for prohibited language.
 
-**Decision.** Identity is stripped from every text before a model sees it, with whole-word matching. Memos are additionally scanned for
-prohibited language.
-
-**Rationale.** Removing the information is verifiable, and instructions are not.
-
-**Consequences.** Scanned pages cannot be redacted by text matching. The measured effect is reported in the
-[fairness evaluation](../research/e3-fairness.md). See [Compliance](compliance.md#redaction).
+Record: [ADR-021, Whole-word redaction instead of prompt instructions](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-021-whole-word-redaction-instead-of-prompt-instructions).
 
 ## D17. Superseded results are preserved
 
@@ -292,17 +218,6 @@ its own option. Owner names stay masked on the review screens (D21).
 
 ## D24. Product and research are separate packages
 
-**Context.** The system was evaluated with synthetic applicants, a reference engine that holds ground truth and a set of experiments.
-Mixing that material into the deployed product would blur what is delivered, and would risk exposing answer keys to the system under
-test.
+The repository has two packages. The product never imports research code. The answer keys live in the research package. The `policies/` folder contains policy text only. Demonstration data, produced by the research package, is consumed by the product as plain files and is off by default. A test enforces these rules: it fails if product code imports the research package, if a policy folder holds anything but the policy text, or if the console exposes a page beyond the six product pages.
 
-**Decision.** The repository has two packages. The product never imports research code. The answer keys live in the research package.
-The `policies/` folder contains policy text only. Demonstration data, produced by the research package, is consumed by the product as
-plain files and is off by default. A test enforces these rules: it fails if product code imports the research package, if a policy
-folder holds anything but the policy text, or if the console exposes a page beyond the six product pages.
-
-**Rationale.** Keeping the evaluation outside the product makes the product deployable on its own, keeps the measurements honest and
-lets the research package depend on the product but never the other way round.
-
-**Consequences.** The product image contains no experiment code. The research package is built as a separate image target and runs
-under its own Compose profile. See [Research](../research/index.md) and the [Developer guide](development.md).
+Record: [ADR-022, Product and research are separate packages](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md#adr-022-product-and-research-are-separate-packages).

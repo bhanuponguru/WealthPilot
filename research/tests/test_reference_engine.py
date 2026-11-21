@@ -1,7 +1,7 @@
 """Research tests: the reference engine and the generated ground truth."""
 
 from wealthpilot_lab import reference_engine as policy_ref
-from wealthpilot_lab.synth.applicants import load, truth_of
+from wealthpilot_lab.synth.applicants import truth_of
 
 from wealthpilot import finance
 
@@ -10,8 +10,8 @@ FS = {"revenue": 1_000_000, "cogs": 500_000, "operating_expenses": 250_000, "dep
       "total_liabilities": 600_000, "total_equity": 300_000}
 
 
-def test_lenient_dscr_exception_band():
-    a = load()[0]
+def test_lenient_dscr_exception_band(world):
+    a = world[0][0]
     t = truth_of(a)
     strict, lenient = policy_ref.load_reference("strict"), policy_ref.load_reference("lenient")
     assert strict["dscr_exception_floor"] is None and lenient["dscr_exception_floor"] == 1.05
@@ -27,7 +27,6 @@ def test_lenient_dscr_exception_band():
     assert policy_ref.evaluate_case(t, 0.01, strict)["checks"][2]["status"] == "fail"
 
 
-def test_ground_truth_decisions_differ_between_policies():
-    from wealthpilot_lab.synth.groundtruth import load_gt
-    gt = load_gt()
+def test_ground_truth_decisions_differ_between_policies(world):
+    gt = world[1]
     assert sum(v["strict"]["recommendation"] != v["lenient"]["recommendation"] for v in gt.values()) >= 20

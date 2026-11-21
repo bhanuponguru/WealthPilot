@@ -74,6 +74,7 @@ flowchart LR
 | operate and secure an installation | [Operations](administration/operations.md) and [Security and access](administration/security.md) |
 | understand how it works and why | [Architecture](architecture/index.md) |
 | see how well it performs | [Research](research/index.md) |
+| read the project report and the decision records | [Project report](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Project_Report.pdf) and [Architecture decision records](https://github.com/bhanuponguru/WealthPilot/blob/cs5903-final-2026/docs/Architecture_Decision_Records.md) |
 
 ## Product and research
 
